@@ -4,3 +4,9 @@
 
 
 ![Alt Text](clouds.gif)
+
+
+* runterskalieren hat zur Folge, dass die Wolken gröber werden:
+
+
+![Alt Text](clouds_40_scaled.gif)
