@@ -5,5 +5,5 @@
 
 * Schwerpunkte der Wolken ändern sich kaum (Außer Wolken brechen auseinander)
 
-![Alt Text](track.gif)
+![Alt Text](clouds.gif)
 
