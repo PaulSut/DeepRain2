@@ -8,10 +8,13 @@
     -> Mögliche Lösung: stärke der Wolke beachten
 
 
-![Alt Text](opticalFlow.gif)
+![Alt Text](animations/opticalFlow.gif)
 
 
 * Schwerpunkte der Wolken ändern sich kaum (Außer Wolken brechen auseinander)
 
-![Alt Text](clouds.gif)
+![Alt Text](animations/clouds.gif)
 
+
+
+![Alt Text](animations/maxContrast.gif)
