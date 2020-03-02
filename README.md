@@ -14,17 +14,17 @@ Das ist problematisch, denn wird dies nicht beachtet, so fehlt Information über
 Für das Jahr 2017 existieren bei für folgende größen zusammenhängende Sequenzen:
 
 | Anz | Prozent |
-|     |         |
+
 |  2  |   33 %  |
-|     |         |
+
 |  3  |   25 %  |
-|     |         |
+
 |  4  |   16 %  |
-|     |         |
+
 |  5  |    8 %  |
-|     |         |
+
 |  6  |    0 %  |
-|     |         |
+
 
 (Intervall = 5min, Vorhersage 35min)
 
