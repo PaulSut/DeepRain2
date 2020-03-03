@@ -32,13 +32,13 @@ class Dataset(keras.utils.Sequence):
     def __init__(self,path,
                       batch_size,
                       dim,
-                      n_channels=7,
+                      n_channels=4,
                       shuffle=True,
                       saveListOfFiles="./.listOfFiles.csv",
                       workingdir="./",
-                      timeToPred = 20,
+                      timeToPred = 35,
                       timeSteps = 5,
-                      sequenceExist = True):
+                      sequenceExist = False):
 
 
         """
@@ -85,6 +85,13 @@ class Dataset(keras.utils.Sequence):
         if self.sequenceExist:
             self.sortOutSequence()
 
+        else:
+            for i in range(self.label_offset,len(self.listOfFiles)):
+                pass
+                #for j in range()
+
+
+
 
 
     def sortOutSequence(self):
@@ -115,11 +122,15 @@ class Dataset(keras.utils.Sequence):
             ..YW2017.002_200801/0801010055.png !!
             ..YW2017.002_200801/0801010100.png !! BIG GAP
             ..YW2017.002_200801/0801010105.png
+            
+            THIS IS WRONG !!!!
 
+            50 -> 55 -> 0 ... 60 MINUTES = 1 HOUR 
 
         """
 
         regex = r".+\/(YW[\d\._]+)\/([\d]+).png"
+        regex = r".+\/(scaled)_([\d]+).png"
 
         def regexPath(path):
 
@@ -149,6 +160,8 @@ class Dataset(keras.utils.Sequence):
                     return None
 
                 yearmonth_ch,timestamp_ch = result[0],int(result[1])
+
+                print("Label: ",timestamp," | ",timestamp-(self.label_offset*self.timeSteps) + ctr,timestamp_ch)
                 
                 if timestamp-(self.label_offset*self.timeSteps) + ctr != timestamp_ch:
                     #print("No Sequence found for: ",path)
@@ -167,6 +180,7 @@ class Dataset(keras.utils.Sequence):
             
             path = self.listOfFiles[i]
             sequence = getSequence(i,path)
+            print("------------")
             if sequence:
                 self.sequenceList.append((sequence,i))
                 exist += 1
@@ -174,6 +188,10 @@ class Dataset(keras.utils.Sequence):
 
         print("#Sequences: ",exist," | #total",sum_e," => ",exist/sum_e,"%")
 
+
+
+    def __data_generation(self):
+        pass
 
     def __len__(self):
         
@@ -187,8 +205,10 @@ class Dataset(keras.utils.Sequence):
 
         """
 
-        Y = self.listOfFiles[index + self.label_offset]
-        X = [ self.listOfFiles[i] for i in range(index,index+self.n_channels) ]
+        X = np.empty((self.batch_size,*self.dim,self.n_channels))
+        Y = np.empty((self.batch_size,*self.dim))
+        #Y = self.listOfFiles[index + self.label_offset]
+        #X = [ self.listOfFiles[i] for i in range(index,index+self.n_channels) ]
 
         return X,Y
 

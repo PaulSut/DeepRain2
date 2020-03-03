@@ -37,7 +37,8 @@ def Unet(optimizer,loss='binary_crossentropy',metrics = ['accuracy'] ):
 
 model = Unet(Adam(lr = 1e-4))
 """
-data = Dataset("/home/simon/gitprojects/DeepRain2/opticFlow/PNG_NEW/MonthPNGData",batch_size=5,dim=(256,256))
+#data = Dataset("/home/simon/gitprojects/DeepRain2/opticFlow/PNG_NEW/MonthPNGData/YW2017.002_200801",batch_size=5,dim=(256,256))
+data = Dataset("/home/simon/gitprojects/DeepRain2_TEST/PNG",batch_size=5,dim=(256,256))
 exit(0)
 
 for x,y in data:
