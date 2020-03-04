@@ -35,7 +35,7 @@ class Dataset(keras.utils.Sequence):
                       n_channels=4,
                       shuffle=True,
                       saveListOfFiles="./.listOfFiles.csv",
-                      workingdir="./",
+                      workingdir="./Data",
                       timeToPred = 35,
                       timeSteps = 5,
                       sequenceExist = False):
@@ -45,7 +45,6 @@ class Dataset(keras.utils.Sequence):
         
             timeToPred    : minutes forecast, default is 30 minutes
             timeSteps     : time between images, default is 5 minutes
-            sequenceExist : only use coherent data
 
         """
         assert batch_size > 0, "batch_size needs to be greater than 0"
@@ -63,139 +62,54 @@ class Dataset(keras.utils.Sequence):
         self.timeToPred = timeToPred
         self.timeSteps = timeSteps
         self.steps = int(timeToPred / timeSteps)
-        self.sequenceExist = sequenceExist
-        self.sequenceList = []
 
         # index offset
         self.label_offset = self.n_channels + self.steps - 1
 
-        if not os.path.exists(saveListOfFiles):
+        if not os.path.exists(self.workingdir):
+            os.mkdir(self.workingdir)
+
+        if not os.path.exists(os.path.join(self.workingdir,saveListOfFiles)):
             self.listOfFiles = getListOfFiles(self.path)
             self.listOfFiles.sort()
             dataframe = pd.DataFrame(self.listOfFiles,columns=["colummn"])
-            dataframe.to_csv(saveListOfFiles,index=False)
+            dataframe.to_csv(os.path.join(self.workingdir,saveListOfFiles),index=False)
             self.listOfFiles = dataframe
 
-        else:
-            self.listOfFiles = list(pd.read_csv(saveListOfFiles)["colummn"])
-
-        #self.indizes = np.arange(len(self.listOfFiles)-self.n_channels-self.steps)
-
-
-        if self.sequenceExist:
-            self.sortOutSequence()
-
-        else:
-            for i in range(self.label_offset,len(self.listOfFiles)):
-                pass
-                #for j in range()
+        
+        self.listOfFiles = list(pd.read_csv(os.path.join(self.workingdir,saveListOfFiles))["colummn"])
+        self.indizes = np.arange(len(self.listOfFiles))
 
 
 
 
+    def __data_generation(self,index):
 
-    def sortOutSequence(self):
+        X = np.empty((*self.dim,self.n_channels))
+        Y = np.empty((*self.dim,1))
 
-        """
+        for i,id in enumerate(range(index,index+self.n_channels)):
             
-            This function ensures that a sequence is coherent.
-            Some measurements doesn't exists, so we need to sort them out.
-
-
-            ..YW2017.002_200801/0801010000.png +
-            ..YW2017.002_200801/0801010005.png +
-            ..YW2017.002_200801/0801010010.png +
-            ..YW2017.002_200801/0801010015.png +
-            ..YW2017.002_200801/0801010020.png -> Channels
-            ..YW2017.002_200801/0801010025.png +
-            ..YW2017.002_200801/0801010030.png +
-            ..YW2017.002_200801/0801010035.png +
-            ..YW2017.002_200801/0801010040.png +
-            ..YW2017.002_200801/0801010045.png -> steps
-            ..YW2017.002_200801/0801010050.png -> label
-
-            here: 5 channels, 30 min forecasting
-
-
-
-            ..YW2017.002_200801/0801010050.png
-            ..YW2017.002_200801/0801010055.png !!
-            ..YW2017.002_200801/0801010100.png !! BIG GAP
-            ..YW2017.002_200801/0801010105.png
+            img = np.array(Image.open(self.listOfFiles[id]))
+            assert img.shape == self.dim, \
+            "[Error] (Data generation) Image shape {} does not match dimension {}".format(img.shape,self.dim)            
             
-            THIS IS WRONG !!!!
+            X[:,:,i] = img
 
-            50 -> 55 -> 0 ... 60 MINUTES = 1 HOUR 
+        Y = np.array(Image.open(self.listOfFiles[index+self.label_offset]))
+        
+        return X,Y
+        
 
-        """
-
-        regex = r".+\/(YW[\d\._]+)\/([\d]+).png"
-        regex = r".+\/(scaled)_([\d]+).png"
-
-        def regexPath(path):
-
-
-            matches = re.search(regex, path)
-            if matches:
-                x,y = matches.groups()
-                return x,y
-            return None
-
-
-        def getSequence(index,path):
-
-
-            result = regexPath(path)
-            if result is None:
-                return False
-
-            yearmonth,timestamp = result[0],int(result[1])
-            ctr = 0
-            sequence = []
-
-            for i in range(index - self.label_offset,index - self.steps + 1):
-                result = regexPath(self.listOfFiles[i])
-                if result is None:
-                    #print("No Sequence found for: ",path)
-                    return None
-
-                yearmonth_ch,timestamp_ch = result[0],int(result[1])
-
-                print("Label: ",timestamp," | ",timestamp-(self.label_offset*self.timeSteps) + ctr,timestamp_ch)
-                
-                if timestamp-(self.label_offset*self.timeSteps) + ctr != timestamp_ch:
-                    #print("No Sequence found for: ",path)
-                    return None
-
-                sequence.append(i)
-                ctr+=self.timeSteps
-            #print("+ Sequence found for: ",path)
-            return sequence
-
-
-        exist = 0
-        sum_e = 0
-
-        for i in range(self.label_offset,len(self.listOfFiles)):
-            
-            path = self.listOfFiles[i]
-            sequence = getSequence(i,path)
-            print("------------")
-            if sequence:
-                self.sequenceList.append((sequence,i))
-                exist += 1
-            sum_e += 1
-
-        print("#Sequences: ",exist," | #total",sum_e," => ",exist/sum_e,"%")
-
-
-
-    def __data_generation(self):
-        pass
+    def on_epoch_end(self):
+        
+        self.indizes = np.arange(len(self.listOfFiles))
+        if self.shuffle == True:
+            np.random.shuffle(self.indizes)
 
     def __len__(self):
         
-        self.len = int(np.floor(len(self.listOfFiles)/self.batch_size )) - self.n_channels - self.steps
+        return int(np.floor(len(self.listOfFiles)/self.batch_size ))
 
     def __getitem__(self,index):
 
@@ -207,8 +121,11 @@ class Dataset(keras.utils.Sequence):
 
         X = np.empty((self.batch_size,*self.dim,self.n_channels))
         Y = np.empty((self.batch_size,*self.dim))
-        #Y = self.listOfFiles[index + self.label_offset]
-        #X = [ self.listOfFiles[i] for i in range(index,index+self.n_channels) ]
+
+        id_list = self.indizes[index*self.batch_size:(index+1)*self.batch_size]
+ 
+        for i, idd in enumerate(id_list):
+            X[i,],Y[i,] = self.__data_generation(idd)
 
         return X,Y
 
