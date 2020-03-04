@@ -13,6 +13,7 @@ from keras.optimizers import *
 from Utils.Data import Dataset
 from Models.Unet import unet
 from PIL import Image
+import numpy as np
 
 """
 print("Num GPUs Available:", len(tf.config.experimental.list_physical_devices('GPU')))
@@ -38,12 +39,10 @@ def Unet(optimizer,loss='binary_crossentropy',metrics = ['accuracy'] ):
 model = Unet(Adam(lr = 1e-4))
 """
 #data = Dataset("/home/simon/gitprojects/DeepRain2/opticFlow/PNG_NEW/MonthPNGData/YW2017.002_200801",batch_size=5,dim=(256,256))
-data = Dataset("/home/simon/gitprojects/DeepRain2_TEST/PNG",batch_size=5,dim=(1100,900))
-
+data = Dataset("/home/simon/gitprojects/DeepRain2_TEST/PNG",batch_size=6,dim=(512,512))
 
 
 for i,(x,y) in enumerate(data):
-	
 	print(x.shape,y.shape,"\t",i,len(data))
 	
 	

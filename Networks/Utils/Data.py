@@ -5,6 +5,7 @@ import pandas as pd
 import re
 import keras
 import os
+from .transform import resizeImages
 
 def getListOfFiles(path):
     """
@@ -76,8 +77,22 @@ class Dataset(keras.utils.Sequence):
             dataframe.to_csv(os.path.join(self.workingdir,saveListOfFiles),index=False)
             self.listOfFiles = dataframe
 
-        
+
         self.listOfFiles = list(pd.read_csv(os.path.join(self.workingdir,saveListOfFiles))["colummn"])
+
+
+        savefolder = ""
+        for i in self.dim:
+            savefolder += str(i)+"x"
+        savefolder = savefolder[:-1]
+        
+     
+        self.new_listOfFiles = resizeImages(self.listOfFiles,dim,os.path.join("./Data",savefolder),saveListOfFiles)
+
+        if len(self.new_listOfFiles) != len(self.listOfFiles):
+            print("WARNING: Length of lists does not match! ")
+
+        self.listOfFiles = self.new_listOfFiles
         self.indizes = np.arange(len(self.listOfFiles))
 
 
@@ -109,7 +124,7 @@ class Dataset(keras.utils.Sequence):
 
     def __len__(self):
         
-        return int(np.floor(len(self.listOfFiles)/self.batch_size ))
+        return int(np.floor(len(self.listOfFiles)/self.batch_size )) - self.label_offset
 
     def __getitem__(self,index):
 
