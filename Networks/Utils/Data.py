@@ -7,6 +7,10 @@ import keras
 import os
 from .transform import resizeImages
 
+
+def splitData(split=0.25):
+    pass
+
 def getListOfFiles(path):
     """
     
@@ -39,7 +43,8 @@ class Dataset(keras.utils.Sequence):
                       workingdir="./Data",
                       timeToPred = 35,
                       timeSteps = 5,
-                      sequenceExist = False):
+                      sequenceExist = False,
+                      dtype=np.float32):
 
 
         """
@@ -63,6 +68,8 @@ class Dataset(keras.utils.Sequence):
         self.timeToPred = timeToPred
         self.timeSteps = timeSteps
         self.steps = int(timeToPred / timeSteps)
+        self.datatype = dtype
+
 
         # index offset
         self.label_offset = self.n_channels + self.steps - 1
@@ -92,7 +99,8 @@ class Dataset(keras.utils.Sequence):
         if len(self.new_listOfFiles) != len(self.listOfFiles):
             print("WARNING: Length of lists does not match! ")
 
-        self.listOfFiles = self.new_listOfFiles
+        #self.listOfFiles = self.new_listOfFiles
+        self.listOfFiles = self.new_listOfFiles[:300]
         self.indizes = np.arange(len(self.listOfFiles))
 
 
@@ -105,25 +113,25 @@ class Dataset(keras.utils.Sequence):
 
         for i,id in enumerate(range(index,index+self.n_channels)):
             
-            img = np.array(Image.open(self.listOfFiles[id]))
+            img = np.array(Image.open(self.listOfFiles[id]),dtype=self.datatype)
+            
             assert img.shape == self.dim, \
             "[Error] (Data generation) Image shape {} does not match dimension {}".format(img.shape,self.dim)            
             
             X[:,:,i] = img
 
-        Y = np.array(Image.open(self.listOfFiles[index+self.label_offset]))
+        Y = np.array(Image.open(self.listOfFiles[index+self.label_offset]),dtype=self.datatype)
         
         return X,Y
         
 
     def on_epoch_end(self):
         
-        self.indizes = np.arange(len(self.listOfFiles))
+        self.indizes = np.arange(len(self))
         if self.shuffle == True:
             np.random.shuffle(self.indizes)
 
     def __len__(self):
-        
         return int(np.floor(len(self.listOfFiles)/self.batch_size )) - self.label_offset
 
     def __getitem__(self,index):
@@ -133,14 +141,37 @@ class Dataset(keras.utils.Sequence):
             index of Y = index + channels +steps
 
         """
-
+        X = None
+        Y = None
         X = np.empty((self.batch_size,*self.dim,self.n_channels))
-        Y = np.empty((self.batch_size,*self.dim))
+        Y = np.empty((self.batch_size,*self.dim,1))
 
         id_list = self.indizes[index*self.batch_size:(index+1)*self.batch_size]
  
         for i, idd in enumerate(id_list):
-            X[i,],Y[i,] = self.__data_generation(idd)
+            X[i,],Y[i,:,:,0] = self.__data_generation(idd)
 
+        
+        if np.isnan(X).any():
+            print(X)
+            print("NAN")
+            exit(-1)
+
+        if np.isnan(Y).any():
+            print(Y)
+            print("NAN")
+            exit(-1)
+
+        if np.isinf(X).any():
+            print("INF")
+            exit(-1)
+
+        if np.isinf(Y).any():
+            print("INF")
+            exit(-1)
+
+        X,Y = X/255,Y/255
+        print("\t{:5.2f}\t{:5.2f}\t{:5.2f}\t{:5.2f}".format(X.max(),X.min(),Y.max(),Y.min()))
+        
         return X,Y
 

@@ -25,12 +25,6 @@ def fProcess(listOfFiles,savedir,dim):
 
 
         
-
-
-
-
-
-
 def resizeImages(listOfFiles,dim,savedir,saveListOfFiles):
     
 
