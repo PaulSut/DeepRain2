@@ -8,8 +8,81 @@ import os
 from .transform import resizeImages
 
 
-def splitData(split=0.25):
-    pass
+CSVFILE = "./.listOfFiles.csv"
+WRKDIR = "./Data"
+TRAINSETFOLDER=os.path.join(WRKDIR,"train")
+VALSETFOLDER=os.path.join(WRKDIR,"val")
+
+def dataWrapper(path,dimension,channels,batch_size,csvFile=CSVFILE,workingdir=WRKDIR,split=0.25):
+    data = prepareListOfFiles(path)
+    trainingsSet,validationSet = splitData(data)
+    
+
+    if not os.path.exists(TRAINSETFOLDER):
+        os.mkdir(TRAINSETFOLDER)
+    if not os.path.exists(VALSETFOLDER):
+        os.mkdir(VALSETFOLDER)
+
+
+    filename,ext = os.path.splitext(csvFile) 
+    trainsetCSV = filename+"_train_"+ext
+    valsetCSV = filename+"_val_"+ext
+
+
+    train_dataframe = pd.DataFrame(trainingsSet,columns=["colummn"])
+    train_dataframe.to_csv(os.path.join(TRAINSETFOLDER,trainsetCSV),index=False)
+    val_dataframe = pd.DataFrame(validationSet,columns=["colummn"])
+    val_dataframe.to_csv(os.path.join(VALSETFOLDER,valsetCSV),index=False)
+
+
+    train = Dataset(TRAINSETFOLDER,
+                    dim = dimension,
+                    n_channels = channels,
+                    batch_size = batch_size,
+                    workingdir=TRAINSETFOLDER,
+                    saveListOfFiles=trainsetCSV)
+
+    val = Dataset(VALSETFOLDER,
+                    dim = dimension,
+                    n_channels = channels,
+                    batch_size = batch_size,
+                    workingdir=VALSETFOLDER,
+                    saveListOfFiles=valsetCSV)
+
+
+    return train,val
+
+def splitData(data,split=0.25):
+    
+    dataLength = len(data)
+    validation_length = int(np.floor(dataLength * split))
+
+    validationSet = data[-validation_length:]
+    trainingsSet = data[:-validation_length]
+
+    return trainingsSet,validationSet
+
+def dimToFolder(dim):
+    savefolder = ""
+    for i in dim:
+        savefolder += str(i)+"x"
+    savefolder = savefolder[:-1]
+    return savefolder
+
+def prepareListOfFiles(path,workingdir = WRKDIR,nameOfCsvFile=CSVFILE):
+    if not os.path.exists(workingdir):
+        os.mkdir(workingdir)
+
+    if not os.path.exists(os.path.join(workingdir,nameOfCsvFile)):
+        listOfFiles = getListOfFiles(path)
+        listOfFiles.sort()
+        dataframe = pd.DataFrame(listOfFiles,columns=["colummn"])
+        dataframe.to_csv(os.path.join(workingdir,nameOfCsvFile),index=False)
+        listOfFiles = dataframe
+    
+    listOfFiles = list(pd.read_csv(os.path.join(workingdir,nameOfCsvFile))["colummn"])
+
+    return listOfFiles
 
 def getListOfFiles(path):
     """
@@ -39,9 +112,9 @@ class Dataset(keras.utils.Sequence):
                       dim,
                       n_channels=4,
                       shuffle=True,
-                      saveListOfFiles="./.listOfFiles.csv",
-                      workingdir="./Data",
-                      timeToPred = 35,
+                      saveListOfFiles=CSVFILE,
+                      workingdir=WRKDIR,
+                      timeToPred = 30,
                       timeSteps = 5,
                       sequenceExist = False,
                       dtype=np.float32):
@@ -88,19 +161,16 @@ class Dataset(keras.utils.Sequence):
         self.listOfFiles = list(pd.read_csv(os.path.join(self.workingdir,saveListOfFiles))["colummn"])
 
 
-        savefolder = ""
-        for i in self.dim:
-            savefolder += str(i)+"x"
-        savefolder = savefolder[:-1]
+        savefolder = dimToFolder(self.dim)
         
      
-        self.new_listOfFiles = resizeImages(self.listOfFiles,dim,os.path.join("./Data",savefolder),saveListOfFiles)
+        self.new_listOfFiles = resizeImages(self.listOfFiles,dim,os.path.join(workingdir,savefolder),saveListOfFiles)
 
         if len(self.new_listOfFiles) != len(self.listOfFiles):
             print("WARNING: Length of lists does not match! ")
 
-        #self.listOfFiles = self.new_listOfFiles
-        self.listOfFiles = self.new_listOfFiles[:300]
+        self.listOfFiles = self.new_listOfFiles
+        #self.listOfFiles = self.new_listOfFiles[:300]
         self.indizes = np.arange(len(self.listOfFiles))
 
 
@@ -171,7 +241,7 @@ class Dataset(keras.utils.Sequence):
             exit(-1)
 
         X,Y = X/255,Y/255
-        print("\t{:5.2f}\t{:5.2f}\t{:5.2f}\t{:5.2f}".format(X.max(),X.min(),Y.max(),Y.min()))
+        #print("\t{:5.2f}\t{:5.2f}\t{:5.2f}\t{:5.2f}".format(X.max(),X.min(),Y.max(),Y.min()))
         
         return X,Y
 

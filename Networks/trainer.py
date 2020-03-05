@@ -9,14 +9,21 @@ from keras.layers import Conv2D, MaxPooling2D
 from keras import backend as K
 from keras.optimizers import *
 
-from Utils.Data import Dataset
+from Utils.Data import Dataset,dataWrapper
 from Models.Unet import unet
 import numpy as np
+import os
 
 #dtype='float16'
 #K.set_floatx(dtype)
 #K.set_epsilon(1e-7) 
 
+PATHTOMODEL = "./models_h5"
+MODELNAME = "UNET.h5"
+MODELPATH = os.path.join(PATHTOMODEL,MODELNAME)
+
+if not os.path.exists(PATHTOMODEL):
+    os.mkdir(PATHTOMODEL)
 
 print("Num GPUs Available:", len(tf.config.experimental.list_physical_devices('GPU')))
 gpu = tf.config.experimental.list_physical_devices('GPU')
@@ -35,33 +42,25 @@ def Unet(optimizer,loss='mse',metrics = ['accuracy'],dimension = (256,256),chann
 
 
 
+pathToData = "/home/simon/gitprojects/DeepRain2/opticFlow/PNG_NEW/MonthPNGData/YW2017.002_200801"
 
 channels = 5
-#dimension = (256,256)
 dimension = (128,128)
 batch_size = 20
 epochs = 10
 
-pathToData = "/home/simon/gitprojects/DeepRain2/opticFlow/PNG_NEW/MonthPNGData/YW2017.002_200801"
+
+train,test = dataWrapper(pathToData,dimension = dimension,channels = channels,batch_size = batch_size)
 
 model = Unet(Adam(lr = 1e-7),loss='mse',dimension=dimension,channels=channels)
+try:
+    model.load(MODELPATH)
+except Exception as e:
+    pass
 
+history = model.fit(train,verbose=1,epochs=epochs,workers = 0,use_multiprocessing=False,validation_data=test)
 
-data = Dataset(pathToData,batch_size=batch_size,dim=dimension,n_channels=channels)
-
- 
-history = model.fit(data,verbose=1,epochs=epochs,workers = 0,use_multiprocessing=False,validation_data=data)
+model.reset_metrics()
+model.save(MODELPATH)
 
 print(history)
-
-
-            
-    
-    
-
-
-    
-    
-    
-    
-#print(Image.fromarray(data[0]).show())
