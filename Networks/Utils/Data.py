@@ -160,7 +160,6 @@ class Dataset(keras.utils.Sequence):
 
         self.listOfFiles = list(pd.read_csv(os.path.join(self.workingdir,saveListOfFiles))["colummn"])
 
-
         savefolder = dimToFolder(self.dim)
         
      

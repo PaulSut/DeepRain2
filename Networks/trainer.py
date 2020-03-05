@@ -45,14 +45,17 @@ def Unet(optimizer,loss='mse',metrics = ['accuracy'],dimension = (256,256),chann
 pathToData = "/home/simon/gitprojects/DeepRain2/opticFlow/PNG_NEW/MonthPNGData/YW2017.002_200801"
 
 channels = 5
-dimension = (128,128)
-batch_size = 20
+# we should keep ratio of original images
+# dimension should be multiple divisible by two (4 times)
+
+dimension = (272,224)
+batch_size = 5
 epochs = 10
 
 
 train,test = dataWrapper(pathToData,dimension = dimension,channels = channels,batch_size = batch_size)
 
-model = Unet(Adam(lr = 1e-7),loss='mse',dimension=dimension,channels=channels)
+model = Unet(Adam(lr = 1e-6),loss='mse',dimension=dimension,channels=channels)
 try:
     model.load(MODELPATH)
 except Exception as e:
@@ -63,4 +66,3 @@ history = model.fit(train,verbose=1,epochs=epochs,workers = 0,use_multiprocessin
 model.reset_metrics()
 model.save(MODELPATH)
 
-print(history)

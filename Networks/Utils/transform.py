@@ -19,7 +19,8 @@ def fProcess(listOfFiles,savedir,dim):
 
         
         img = np.array(Image.open(file))
-        img = cv2.resize(img,dim)
+        x,y = dim
+        img = cv2.resize(img,(y,x))
         img = Image.fromarray(img)
         img.save(pathToWrite)
 
