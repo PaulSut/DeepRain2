@@ -28,23 +28,37 @@ dimension = (272, 224)
 batch_size = 10
 
 train, test = dataWrapper(pathToData, dimension=dimension, channels=channels, batch_size=batch_size)
-#model = Unet(Adam(lr=1e-6), loss='mse', dimension=dimension, channels=channels)
+# model = Unet(Adam(lr=1e-6), loss='mse', dimension=dimension, channels=channels)
 model = load_model(MODELPATH)
 
-for x,y in test:
-    prediction = model.predict(x,batch_size=batch_size)
+for x, y in test:
+    prediction = model.predict(x, batch_size=batch_size)
+    prediction = 255 * prediction
+    inp = x * 255
+    print("SHAPE", x.shape)
     label = y
+
+    print(inp.max(), inp.min())
     break
 
+for i, img in enumerate(prediction):
 
-for i,img in enumerate(prediction):
+    frame = None
+    for j in range(channels):
+        x_img = inp[i, :, :, j]
 
+        if frame is None:
+            frame = x_img
+            continue
+        frame = np.concatenate((frame, x_img), axis=1)
+
+    print(img.max(), img.min(), inp[i, :, :, :].max())
+    y_ = np.concatenate((img[:, :, 0], label[i, :, :, 0]), axis=1)
+
+    frame = np.concatenate((frame, y_), axis=1)
+    indizes = np.where(frame > 0)
+    frame[indizes] = 255
     while True:
-        frame = np.concatenate((img,label[i]),axis=1)
-        indizes = np.where(frame > 0)
-        frame[indizes] = 255
-        cv2.imshow("windowname", frame)
+        cv2.imshow("windowname", frame.astype(np.uint8))
         if cv2.waitKey(25) & 0XFF == ord('q'):
             break
-
-
