@@ -13,8 +13,19 @@ WRKDIR = "./Data"
 TRAINSETFOLDER=os.path.join(WRKDIR,"train")
 VALSETFOLDER=os.path.join(WRKDIR,"val")
 
-def dataWrapper(path,dimension,channels,batch_size,csvFile=CSVFILE,workingdir=WRKDIR,split=0.25):
-    data = prepareListOfFiles(path)
+def dataWrapper(path,
+                dimension,
+                channels,
+                batch_size,
+                csvFile=CSVFILE,
+                workingdir=WRKDIR,
+                split=0.25,
+                flatten=False,
+                sortOut=True,
+                shuffle=True):
+
+
+    data = prepareListOfFiles(path,sortOut=sortOut)
     trainingsSet,validationSet = splitData(data)
     
 
@@ -40,17 +51,22 @@ def dataWrapper(path,dimension,channels,batch_size,csvFile=CSVFILE,workingdir=WR
                     n_channels = channels,
                     batch_size = batch_size,
                     workingdir=TRAINSETFOLDER,
-                    saveListOfFiles=trainsetCSV)
+                    saveListOfFiles=trainsetCSV,
+                    flatten=flatten,
+                    shuffle=shuffle)
 
     val = Dataset(VALSETFOLDER,
                     dim = dimension,
                     n_channels = channels,
                     batch_size = batch_size,
                     workingdir=VALSETFOLDER,
-                    saveListOfFiles=valsetCSV)
+                    saveListOfFiles=valsetCSV,
+                    flatten=flatten,
+                    shuffle=shuffle)
 
 
     return train,val
+
 
 def splitData(data,split=0.25):
     
@@ -60,7 +76,9 @@ def splitData(data,split=0.25):
     validationSet = data[-validation_length:]
     trainingsSet = data[:-validation_length]
 
+
     return trainingsSet,validationSet
+
 
 def dimToFolder(dim):
     savefolder = ""
@@ -69,7 +87,8 @@ def dimToFolder(dim):
     savefolder = savefolder[:-1]
     return savefolder
 
-def prepareListOfFiles(path,workingdir = WRKDIR,nameOfCsvFile=CSVFILE):
+
+def prepareListOfFiles(path,workingdir = WRKDIR,nameOfCsvFile=CSVFILE,sortOut=False):
     if not os.path.exists(workingdir):
         os.mkdir(workingdir)
 
@@ -83,6 +102,7 @@ def prepareListOfFiles(path,workingdir = WRKDIR,nameOfCsvFile=CSVFILE):
     listOfFiles = list(pd.read_csv(os.path.join(workingdir,nameOfCsvFile))["colummn"])
 
     return listOfFiles
+
 
 def getListOfFiles(path):
     """
@@ -105,6 +125,13 @@ def getListOfFiles(path):
     return files
 
 
+def sortOutFiles(listOfFiles):
+    
+    for elem in listOfFiles:
+        print("HIER")
+        print(elem)
+    exit(0)
+
 class Dataset(keras.utils.Sequence):
 
     def __init__(self,path,
@@ -117,6 +144,8 @@ class Dataset(keras.utils.Sequence):
                       timeToPred = 30,
                       timeSteps = 5,
                       sequenceExist = False,
+                      flatten = False,
+                      sortOut=False,
                       dtype=np.float32):
 
 
@@ -142,6 +171,8 @@ class Dataset(keras.utils.Sequence):
         self.timeSteps = timeSteps
         self.steps = int(timeToPred / timeSteps)
         self.datatype = dtype
+        self.flatten = flatten
+        self.sortOut = sortOut
 
 
         # index offset
@@ -158,10 +189,11 @@ class Dataset(keras.utils.Sequence):
             self.listOfFiles = dataframe
 
 
+
         self.listOfFiles = list(pd.read_csv(os.path.join(self.workingdir,saveListOfFiles))["colummn"])
 
         savefolder = dimToFolder(self.dim)
-        
+
      
         self.new_listOfFiles = resizeImages(self.listOfFiles,dim,os.path.join(workingdir,savefolder),saveListOfFiles)
 
@@ -169,39 +201,57 @@ class Dataset(keras.utils.Sequence):
             print("WARNING: Length of lists does not match! ")
 
         self.listOfFiles = self.new_listOfFiles
-        #self.listOfFiles = self.new_listOfFiles[:300]
-        self.indizes = np.arange(len(self.listOfFiles))
+        #self.listOfFiles = self.new_listOfFiles[:200]
+
+        self.indizes = np.arange(len(self))
+
+        if self.sortOut:
+            self.indizes = sortOutFiles(self.listOfFiles,self.indizes)
 
 
 
 
     def __data_generation(self,index):
-
         X = np.empty((*self.dim,self.n_channels))
         Y = np.empty((*self.dim,1))
 
         for i,id in enumerate(range(index,index+self.n_channels)):
             
-            img = np.array(Image.open(self.listOfFiles[id]),dtype=self.datatype)
+            img = np.array(Image.open(self.listOfFiles[id]))
             
             assert img.shape == self.dim, \
             "[Error] (Data generation) Image shape {} does not match dimension {}".format(img.shape,self.dim)            
-            
+
             X[:,:,i] = img
 
-        Y = np.array(Image.open(self.listOfFiles[index+self.label_offset]),dtype=self.datatype)
-        
+
+        try:
+            label = np.array(Image.open(self.listOfFiles[index+self.label_offset]))
+            
+        except Exception as e:
+            print("\n\n",index,self.label_offset,len(self.listOfFiles))
+            exit(-1)
+            
+        if self.flatten:
+            Y = np.empty((self.dim[0]*self.dim[1]))
+            label = label.flatten()
+            #label = keras.utils.to_categorical(label, num_classes=255, dtype='float32')
+
+        Y = label
+
         return X,Y
         
 
     def on_epoch_end(self):
         
-        self.indizes = np.arange(len(self))
         if self.shuffle == True:
             np.random.shuffle(self.indizes)
 
+
     def __len__(self):
+        
         return int(np.floor(len(self.listOfFiles)/self.batch_size )) - self.label_offset
+
 
     def __getitem__(self,index):
 
@@ -212,35 +262,43 @@ class Dataset(keras.utils.Sequence):
         """
         X = None
         Y = None
-        X = np.empty((self.batch_size,*self.dim,self.n_channels))
-        Y = np.empty((self.batch_size,*self.dim,1))
+        X = np.empty((self.batch_size,*self.dim,self.n_channels),dtype=np.uint8)
+        if self.flatten:
+            Y = np.empty((self.batch_size,self.dim[0]*self.dim[1]),dtype=np.uint8)
+            
+
+        else:
+            Y = np.empty((self.batch_size,*self.dim,1),dtype=np.uint8)
 
         id_list = self.indizes[index*self.batch_size:(index+1)*self.batch_size]
  
         for i, idd in enumerate(id_list):
-            X[i,],Y[i,:,:,0] = self.__data_generation(idd)
+            if self.flatten:
+                X[i,],Y[i,:] = self.__data_generation(idd)
 
+            else:
+                X[i,],Y[i,:,:,0] = self.__data_generation(idd)
         
         if np.isnan(X).any():
             print(X)
-            print("NAN")
+            print("X NAN")
             exit(-1)
 
         if np.isnan(Y).any():
             print(Y)
-            print("NAN")
+            print("Y NAN")
             exit(-1)
 
         if np.isinf(X).any():
-            print("INF")
+            print("X INF")
             exit(-1)
 
         if np.isinf(Y).any():
-            print("INF")
+            print("Y INF")
             exit(-1)
 
-        X,Y = X/255,Y/255
+        #X,Y = X/255, Y/255
         #print("\t{:5.2f}\t{:5.2f}\t{:5.2f}\t{:5.2f}".format(X.max(),X.min(),Y.max(),Y.min()))
-        
+
         return X,Y
 

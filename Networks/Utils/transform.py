@@ -10,6 +10,7 @@ def fProcess(listOfFiles,savedir,dim):
 
     while listOfFiles:
         file = listOfFiles.pop()
+
         filename = file.split('/')[-1]
         pathToWrite = os.path.join(savedir,filename)
 
@@ -39,9 +40,9 @@ def resizeImages(listOfFiles,dim,savedir,saveListOfFiles):
     splittedlist = []
     stepsize = len(listOfFiles) // nbrProcesses
     splittedlist = [listOfFiles[i:i + stepsize] for i in range(0, len(listOfFiles), stepsize)]
-    
+
     jobs = []
-    for i in range(nbrProcesses):
+    for i in range(nbrProcesses+1):
         p = Process(target=fProcess, args=(splittedlist[i],savedir,dim))
         jobs.append(p)
         p.start()
