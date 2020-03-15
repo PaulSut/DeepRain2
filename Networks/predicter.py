@@ -12,8 +12,8 @@ print("Num GPUs Available:", len(tf.config.experimental.list_physical_devices('G
 gpu = tf.config.experimental.list_physical_devices('GPU')
 tf.config.experimental.set_memory_growth(gpu[0], True)
 
-PATHTOMODEL = "models_h5"
-MODELNAME = "UNET64.h5"
+PATHTOMODEL = "model_data/UNet64_SSIM"
+MODELNAME = "UNet64_SSIM.h5"
 MODELPATH = os.path.join(PATHTOMODEL, MODELNAME)
 
 
@@ -33,22 +33,23 @@ pathToData = "/home/simon/gitprojects/DeepRain2/opticFlow/PNG_NEW/MonthPNGData/Y
 #dimension = (272, 224)
 epochs = 15
 channels = 5
-dimension = (128,112)
+dimension = (272,224)
 batch_size = 30
 flatten = False
 
 train,test = dataWrapper(pathToData,dimension = dimension,channels = channels,batch_size = batch_size,flatten=flatten,shuffle=False)
 
-model = UNet64((*dimension,channels),lossfunction=SSIM(kernel_size=11),metrics=["accuracy"],flatten_output=flatten)
+model = UNet64((*dimension,channels))
 model.summary()
 
 model.load_weights(MODELPATH, by_name=False)
 for x, y in train:
     prediction = model.predict(x, batch_size=batch_size)
-    prediction = 255 * prediction
+    #prediction = 255 * prediction
     inp = x * 255
     print("SHAPE", x.shape)
     label = y
+    print(label.shape)
 
     #print(inp.max(), inp.min())
     
@@ -64,11 +65,13 @@ for x, y in train:
             frame = np.concatenate((frame, x_img), axis=1)
 
         print(prediction.max(),img.max(), img.min(), inp[i, :, :, :].max(),"\t",frame.shape)
-        y_ = np.concatenate((img[:, :, 0], label[i, :, :, 0]), axis=1)
+        print(label[i, :, :,0].shape)
+        print(img.shape)
+        y_ = np.concatenate((img[:, :, 0], label[i, :, :,0]), axis=1)
 
         frame = np.concatenate((frame, y_), axis=1)
         indizes = np.where(frame > 0)
-        frame[indizes] = 255
+        #frame[indizes] = 255
         #while True:
         cv2.imshow("windowname", frame.astype(np.uint8))
         if cv2.waitKey(25) & 0XFF == ord('q'):

@@ -4,13 +4,14 @@ from keras.layers import *
 
 def UNet64(input_shape,
            n_predictions=1,
-           lossfunction="mean_squared_error",
            simpleclassification=None,
-           flatten_output=True,
-           optimizer="adam",
+           flatten_output=False,
            activation_hidden="relu",
-           activation_output="relu",
-           metrics=None):
+           activation_output="relu"):
+
+    print("OUT",type(n_predictions),n_predictions)
+
+    
     inputs = Input(shape=input_shape)
 
     conv01 = Conv2D(10, kernel_size=(3, 3), padding="same")(inputs)       # 10 x 64x64
@@ -60,8 +61,4 @@ def UNet64(input_shape,
             print("9)", output.shape, "zur Klassifikation von {} Klassen (mit softmax)".format(simpleclassification))
 
     model = Model(inputs=inputs, outputs=output)
-    if metrics is not None:
-        model.compile(loss=lossfunction, optimizer=optimizer, metrics=metrics)
-    else:
-        model.compile(loss=lossfunction, optimizer=optimizer)
     return model

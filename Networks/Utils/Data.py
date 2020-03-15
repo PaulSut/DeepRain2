@@ -146,6 +146,7 @@ class Dataset(keras.utils.Sequence):
                       sequenceExist = False,
                       flatten = False,
                       sortOut=False,
+                      lstm=True,
                       dtype=np.float32):
 
 
@@ -173,6 +174,7 @@ class Dataset(keras.utils.Sequence):
         self.datatype = dtype
         self.flatten = flatten
         self.sortOut = sortOut
+        self.lstm = lstm
 
 
         # index offset
@@ -296,6 +298,10 @@ class Dataset(keras.utils.Sequence):
         if np.isinf(Y).any():
             print("Y INF")
             exit(-1)
+
+
+        if self.lstm:
+            X = X.reshape((self.batch_size,self.n_channels,*self.dim,1))
 
         #X,Y = X/255, Y/255
         #print("\t{:5.2f}\t{:5.2f}\t{:5.2f}\t{:5.2f}".format(X.max(),X.min(),Y.max(),Y.min()))

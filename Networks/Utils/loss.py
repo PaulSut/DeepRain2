@@ -23,6 +23,10 @@ class SSIM(tf.keras.losses.Loss):
     @tf.function
     def __call__(self,y_pred,y_true,sample_weight=None):
 
+        print(y_pred.shape)
+        #if y_pred.shape[1] is None:
+        #    return 0.0
+
         img_pred = tf.image.extract_patches(images=y_pred, 
                                             sizes=[1, self.kernel_size, self.kernel_size, 1], 
                                             strides=[1, self.kernel_size, self.kernel_size, 1], 
@@ -51,8 +55,7 @@ class SSIM(tf.keras.losses.Loss):
         u_y = tf.reduce_mean(img_pred,axis=(1,2))
 
         
-        
-        
+
         
         v_x = tf.math.reduce_std(img_true,axis=(1,2))
         v_y = tf.math.reduce_std(img_pred,axis=(1,2))
@@ -62,7 +65,7 @@ class SSIM(tf.keras.losses.Loss):
         ssim_top = ((2* u_x * u_y) + self.c1)*((2*cov) + self.c2)
         ssim_bot = (tf.square(u_x) + tf.square(u_y) + self.c1)*(tf.square(v_x) + tf.square(v_y) + self.c2)
         ssim = ssim_top / ssim_bot
-        
+
         return tf.reduce_mean((1-ssim)/2.0,axis=-1)
 
         
