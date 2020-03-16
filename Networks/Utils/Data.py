@@ -207,6 +207,7 @@ class Dataset(keras.utils.Sequence):
 
         self.indizes = np.arange(len(self))
 
+
         if self.sortOut:
             self.indizes = sortOutFiles(self.listOfFiles,self.indizes)
 
@@ -303,7 +304,7 @@ class Dataset(keras.utils.Sequence):
         if self.lstm:
             X = X.reshape((self.batch_size,self.n_channels,*self.dim,1))
 
-        #X,Y = X/255, Y/255
+        X,Y = X/255, Y/255
         #print("\t{:5.2f}\t{:5.2f}\t{:5.2f}\t{:5.2f}".format(X.max(),X.min(),Y.max(),Y.min()))
 
         return X,Y

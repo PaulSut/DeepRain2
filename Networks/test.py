@@ -19,6 +19,6 @@ args = {   "n_predictions":1,
 
 #t = Trainer(UNet64,batch_size = 30, optimizer=optimizer, lossfunction = SSIM(kernel_size = 11), kwargs=args)
 #t = Trainer(unet,batch_size = 10, optimizer=optimizer, lossfunction = SSIM(kernel_size = 11))
-t = Trainer(CnnLSTM,batch_size = 5, optimizer=optimizer,dimension = dimension, lossfunction = SSIM(kernel_size = 11))
-t.fit( epochs = 20 )
+t = Trainer(CnnLSTM,batch_size = 8, optimizer=optimizer,dimension = dimension, lossfunction = SSIM(kernel_size = 7))
+t.fit( epochs = 5 )
 #t = Trainer(unet,lossfunction = SSIM())
