@@ -17,7 +17,9 @@ import os
 import json
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 PATHTODATA = "/home/simon/gitprojects/DeepRain2/opticFlow/PNG_NEW/MonthPNGData/YW2017.002_200801"
-
+#dtype='float16'
+#K.set_floatx(dtype)
+#K.set_epsilon(1e-7)
 
 class Trainer(object):
     """docstring for Trainer"""
@@ -107,6 +109,7 @@ class Trainer(object):
                                       workers=0,
                                       use_multiprocessing=False,
                                       validation_data=self.test)
+                                      
         if self.history is None:
             self.history = history.history
         else:
@@ -119,9 +122,7 @@ class Trainer(object):
         self.model.save_weights(os.path.join(self.pathToModel,self.nameOfModel+".h5"))
 
 
-# dtype='float16'
-# K.set_floatx(dtype)
-# K.set_epsilon(1e-7)
+
 pathToData = "/home/simon/gitprojects/DeepRain2/opticFlow/PNG_NEW/MonthPNGData/YW2017.002_200801"
 print("Num GPUs Available:", len(
     tf.config.experimental.list_physical_devices('GPU')))

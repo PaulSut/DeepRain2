@@ -6,7 +6,7 @@ import re
 import keras
 import os
 from .transform import resizeImages
-
+import cv2
 
 CSVFILE = "./.listOfFiles.csv"
 WRKDIR = "./Data"
@@ -203,7 +203,7 @@ class Dataset(keras.utils.Sequence):
             print("WARNING: Length of lists does not match! ")
 
         self.listOfFiles = self.new_listOfFiles
-        #self.listOfFiles = self.new_listOfFiles[:200]
+        #self.listOfFiles = self.new_listOfFiles[:1500]
 
         self.indizes = np.arange(len(self))
 
@@ -212,7 +212,7 @@ class Dataset(keras.utils.Sequence):
             self.indizes = sortOutFiles(self.listOfFiles,self.indizes)
 
 
-
+    """
 
     def __data_generation(self,index):
         X = np.empty((*self.dim,self.n_channels))
@@ -244,6 +244,37 @@ class Dataset(keras.utils.Sequence):
 
         return X,Y
         
+    """
+
+    def __data_generation(self,index):
+        X = []
+        Y = []
+
+        for i,id in enumerate(range(index,index+self.n_channels)):
+            
+            img = np.array(Image.open(self.listOfFiles[id]))
+            
+            assert img.shape == self.dim, \
+            "[Error] (Data generation) Image shape {} does not match dimension {}".format(img.shape,self.dim)            
+
+            X.append(img)
+
+
+        try:
+            label = np.array(Image.open(self.listOfFiles[index+self.label_offset]))
+            
+        except Exception as e:
+            print("\n\n",index,self.label_offset,len(self.listOfFiles))
+            exit(-1)
+            
+        if self.flatten:
+            label = label.flatten()
+            #label = keras.utils.to_categorical(label, num_classes=255, dtype='float32')
+
+        Y.append(label)
+
+        return np.array(X),np.array(Y)
+
 
     def on_epoch_end(self):
         
@@ -255,57 +286,25 @@ class Dataset(keras.utils.Sequence):
         
         return int(np.floor(len(self.listOfFiles)/self.batch_size )) - self.label_offset
 
-
+ 
     def __getitem__(self,index):
 
-        """
-
-            index of Y = index + channels +steps
-
-        """
-        X = None
-        Y = None
-        X = np.empty((self.batch_size,*self.dim,self.n_channels),dtype=np.uint8)
-        if self.flatten:
-            Y = np.empty((self.batch_size,self.dim[0]*self.dim[1]),dtype=np.uint8)
-            
-
-        else:
-            Y = np.empty((self.batch_size,*self.dim,1),dtype=np.uint8)
-
-        id_list = self.indizes[index*self.batch_size:(index+1)*self.batch_size]
- 
-        for i, idd in enumerate(id_list):
-            if self.flatten:
-                X[i,],Y[i,:] = self.__data_generation(idd)
-
-            else:
-                X[i,],Y[i,:,:,0] = self.__data_generation(idd)
+        X = []
+        Y = []
+        id_list = self.indizes[index:index+self.batch_size]
         
-        if np.isnan(X).any():
-            print(X)
-            print("X NAN")
-            exit(-1)
+        for idd in id_list:
+            
+            x,y = self.__data_generation(idd)
 
-        if np.isnan(Y).any():
-            print(Y)
-            print("Y NAN")
-            exit(-1)
-
-        if np.isinf(X).any():
-            print("X INF")
-            exit(-1)
-
-        if np.isinf(Y).any():
-            print("Y INF")
-            exit(-1)
-
-
-        if self.lstm:
-            X = X.reshape((self.batch_size,self.n_channels,*self.dim,1))
-
-        X,Y = X/255, Y/255
-        #print("\t{:5.2f}\t{:5.2f}\t{:5.2f}\t{:5.2f}".format(X.max(),X.min(),Y.max(),Y.min()))
+            X.append(x)
+            Y.append(y)
+        
+        X = np.array(X)
+        Y = np.array(Y)
+        
+        X = np.expand_dims(X, axis=-1)
+        Y = np.transpose(Y,(0,2,3,1))
 
         return X,Y
-
+        #return X,Y
