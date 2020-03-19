@@ -46,7 +46,7 @@ def dataWrapper(path,
     val_dataframe.to_csv(os.path.join(VALSETFOLDER,valsetCSV),index=False)
 
 
-    train = Dataset(TRAINSETFOLDER,
+    train = Dataset(TRAINSETFOLDER ,
                     dim = dimension,
                     n_channels = channels,
                     batch_size = batch_size,
@@ -203,7 +203,7 @@ class Dataset(keras.utils.Sequence):
             print("WARNING: Length of lists does not match! ")
 
         self.listOfFiles = self.new_listOfFiles
-        #self.listOfFiles = self.new_listOfFiles[:1500]
+        #self.listOfFiles = self.new_listOfFiles[:300]
 
         self.indizes = np.arange(len(self))
 
@@ -211,40 +211,6 @@ class Dataset(keras.utils.Sequence):
         if self.sortOut:
             self.indizes = sortOutFiles(self.listOfFiles,self.indizes)
 
-
-    """
-
-    def __data_generation(self,index):
-        X = np.empty((*self.dim,self.n_channels))
-        Y = np.empty((*self.dim,1))
-
-        for i,id in enumerate(range(index,index+self.n_channels)):
-            
-            img = np.array(Image.open(self.listOfFiles[id]))
-            
-            assert img.shape == self.dim, \
-            "[Error] (Data generation) Image shape {} does not match dimension {}".format(img.shape,self.dim)            
-
-            X[:,:,i] = img
-
-
-        try:
-            label = np.array(Image.open(self.listOfFiles[index+self.label_offset]))
-            
-        except Exception as e:
-            print("\n\n",index,self.label_offset,len(self.listOfFiles))
-            exit(-1)
-            
-        if self.flatten:
-            Y = np.empty((self.dim[0]*self.dim[1]))
-            label = label.flatten()
-            #label = keras.utils.to_categorical(label, num_classes=255, dtype='float32')
-
-        Y = label
-
-        return X,Y
-        
-    """
 
     def __data_generation(self,index):
         X = []
@@ -303,8 +269,10 @@ class Dataset(keras.utils.Sequence):
         X = np.array(X)
         Y = np.array(Y)
         
-        X = np.expand_dims(X, axis=-1)
+        #X = np.expand_dims(X, axis=-1)
         Y = np.transpose(Y,(0,2,3,1))
+        X = np.transpose(X,(0,2,3,1))
+        
 
-        return X,Y
+        return X/255.0,Y/255.0
         #return X,Y

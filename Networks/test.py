@@ -4,10 +4,12 @@ from trainer import Trainer
 from Utils.loss import SSIM
 from Models.Unet import unet
 from keras.optimizers import *
-from Models.CnnLSTM import CnnLSTM
+from Models.CnnLSTM import *
 
+dimension = (256,192)
 dimension = (272,224)
 #dimension = (128, 112)
+#dimension = (64, 56)
 channels  = 5
 optimizer = Adam( lr = 1e-5 )
 
@@ -19,6 +21,19 @@ args = {   "n_predictions":1,
 
 #t = Trainer(UNet64,batch_size = 30, optimizer=optimizer, lossfunction = SSIM(kernel_size = 11), kwargs=args)
 #t = Trainer(unet,batch_size = 10, optimizer=optimizer, lossfunction = SSIM(kernel_size = 11))
-t = Trainer(CnnLSTM,batch_size = 2, optimizer=optimizer,dimension = dimension, lossfunction = SSIM(kernel_size=5,l=255.0))
-t.fit( epochs = 2 )
+
+t = Trainer(LSTM_Meets_Unet,
+#t = Trainer(CnnLSTM3,
+                batch_size = 10,
+                optimizer=optimizer,
+                dimension = dimension, 
+                channels = channels,
+                #lossfunction = SSIM(kernel_size=11,l=1.0))
+                lossfunction = "mse")
+
+t.fit( epochs = 3 )
+
+
+
+
 #t = Trainer(unet,lossfunction = SSIM())
