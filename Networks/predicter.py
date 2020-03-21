@@ -86,16 +86,17 @@ for x, y in test:
         for batch in range(bs):
             x_img = None
             for t in range(ts):
+                print(x[batch,:,:,t].mean(),end= "\t")
                 if x_img is None:
                     x_img = x[batch,:,:,t]
                     continue
                 x_img = np.concatenate((x_img,x[batch,:,:,t]),axis=1)
 
-
+            print()
             print(prediction[batch,:,:,0].min(),y[batch,:,:,0].min(),prediction[batch,:,:,0].max(),y[batch,:,:,0].max())
             x_img = np.concatenate((x_img,prediction[batch,:,:,0]),axis=1)
             x_img = np.concatenate((x_img,y[batch,:,:,0]),axis=1)
-
+            x_img *= 255
             i = np.where(x_img > 0)
             x_img[i] = 255
             cv2.imshow("windowname", x_img.astype(np.uint8))

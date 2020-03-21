@@ -22,7 +22,7 @@ args = {   "n_predictions":1,
 #t = Trainer(UNet64,batch_size = 30, optimizer=optimizer, lossfunction = SSIM(kernel_size = 11), kwargs=args)
 #t = Trainer(unet,batch_size = 10, optimizer=optimizer, lossfunction = SSIM(kernel_size = 11))
 
-t = Trainer(LSTM_Meets_Unet,
+t = Trainer(LSTM_Meets_Unet_Upconv,
 #t = Trainer(CnnLSTM3,
                 batch_size = 10,
                 optimizer=optimizer,

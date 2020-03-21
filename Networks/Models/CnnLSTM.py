@@ -30,7 +30,6 @@ def CnnLSTM(input_shape):
     model = Model(input = inputs, output = output)
     return model
 
-
 def CnnLSTM2(input_shape):
 
     inputs = Input((input_shape[2],input_shape[0],input_shape[1],1))
@@ -94,38 +93,102 @@ def CnnLSTM3(input_shape):
     model = Model(input = inputs, output = output)
     return model
 
-def LSTM_Meets_Unet(input_shape,
+
+def lstmLayer(inp,filters = [20,20]):
+
+    shape_inp = int_shape(inp)
+
+
+    lstm_shape = Reshape((shape_inp[-1],shape_inp[1],shape_inp[2],1))(inp)
+
+
+    lstm_conv = ConvLSTM2D(filters=filters[0], kernel_size=(3, 3), activation='relu',
+                       padding='same', return_sequences=True,data_format='channels_last')(lstm_shape)
+    
+    
+
+    for i in filters[1:-1]:
+        lstm_conv = ConvLSTM2D(filters=i, kernel_size=(3, 3), activation='relu',
+                       padding='same', return_sequences=True,data_format='channels_last')(lstm_conv)
+        
+
+    lstm_conv = ConvLSTM2D(filters=filters[-1], kernel_size=(3, 3), activation='relu',
+                       padding='same', return_sequences=False,data_format='channels_last')(lstm_conv)
+    
+
+    return lstm_conv
+
+
+def LSTM_Meets_Unet_Upconv(input_shape,
                     n_predictions=1,
                     simpleclassification=None,
                     flatten_output=False,
                     activation_hidden="relu",
                     activation_output="relu"):
 
-    def lstmLayer(inp,filters = [20,20]):
-
-        shape_inp = int_shape(inp)
-
-
-        lstm_shape = Reshape((shape_inp[-1],shape_inp[1],shape_inp[2],1))(inp)
+    
+    inputs = Input(shape=input_shape)
 
 
-        lstm_conv = ConvLSTM2D(filters=filters[0], kernel_size=(3, 3), activation='relu',
-                           padding='same', return_sequences=True,data_format='channels_last')(lstm_shape)
-        
-        
+    conv01 = Conv2D(10, kernel_size=(3, 3), padding="same")(inputs)       
+    conv01 = Activation(activation_hidden)(conv01)
+    conv01_pool = MaxPooling2D((2, 2), strides=(2, 2))(conv01)            
+    
 
-        for i in filters[1:-1]:
-            lstm_conv = ConvLSTM2D(filters=i, kernel_size=(3, 3), activation='relu',
-                           padding='same', return_sequences=True,data_format='channels_last')(lstm_conv)
-            
+    conv02 = Conv2D(20, kernel_size=(3, 3), padding="same")(conv01_pool)  
+    conv02 = Activation(activation_hidden)(conv02)
+    conv02_pool = MaxPooling2D((2, 2), strides=(2, 2))(conv02)            
+    
+    conv03 = Conv2D(20, kernel_size=(3, 3), padding="same")(conv02_pool)  
+    conv03 = Activation(activation_hidden)(conv03)
+    conv03_pool = MaxPooling2D((2, 2), strides=(2, 2))(conv03)            
+    
 
-        lstm_conv = ConvLSTM2D(filters=filters[-1], kernel_size=(3, 3), activation='relu',
-                           padding='same', return_sequences=False,data_format='channels_last')(lstm_conv)
-        
+    lstm_conv3 = lstmLayer(conv03,filters = [20,20,20])
+    conv03 = concatenate([conv03, lstm_conv3], axis=3)
+
+    conv04 = Conv2D(20, kernel_size=(3, 3), padding="same")(conv03_pool)  
+    conv04 = Activation(activation_hidden)(conv04)
+    conv04_pool = MaxPooling2D((2, 2), strides=(2, 2))(conv04)            
+    
+
+    lstm_conv4 = lstmLayer(conv04,filters = [20,20,20,20])
+    conv04 = concatenate([conv04, lstm_conv4], axis=3)
+
+    ### UPSAMPLING:
+    up04 = Conv2DTranspose(20,(3, 3),strides=(2,2),padding="same")(conv04_pool)    
+    up04 = concatenate([conv04, up04], axis=3)  
+    up04 = Conv2D(20, kernel_size=(3, 3), padding="same")(up04)  
+    
+
+    up03 = Conv2DTranspose(20,(3, 3),strides=(2,2),padding="same")(up04)           
+    up03 = concatenate([conv03, up03], axis=3)  
+    up03 = Conv2D(20, kernel_size=(3, 3), padding="same")(up03)  
+    
+
+    up02 = Conv2DTranspose(20,(3, 3),strides=(2,2),padding="same")(up03)           
+    up02 = concatenate([conv02, up02], axis=3)  
+    up02 = Conv2D(20, kernel_size=(3, 3), padding="same")(up02)  
+    
+
+    up01 = Conv2DTranspose(20,(3, 3),strides=(2,2),padding="same")(up02)           
+    up01 = concatenate([conv01, up01], axis=3)  
+    up01 = Conv2D(20, kernel_size=(3, 3), padding="same")(up01)  
+    
+    output = Conv2D(n_predictions, (1, 1), activation=activation_output)(up01) 
 
 
-        return lstm_conv
+    model = Model(inputs=inputs, outputs=output)
 
+    return model
+
+
+def LSTM_Meets_Unet(input_shape,
+                    n_predictions=1,
+                    simpleclassification=None,
+                    flatten_output=False,
+                    activation_hidden="relu",
+                    activation_output="relu"):
 
     
     inputs = Input(shape=input_shape)
@@ -182,3 +245,4 @@ def LSTM_Meets_Unet(input_shape,
     model = Model(inputs=inputs, outputs=output)
 
     return model
+

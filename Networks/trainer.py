@@ -1,4 +1,5 @@
-#!/home/simon/anaconda3/envs/tensorflow-gpu/bin/python
+#!/home/simon/anaconda3/bin/python
+#/home/simon/anaconda3/envs/tensorflow-gpu/bin/python
 from __future__ import print_function
 from Utils.Data import Dataset, dataWrapper
 import numpy as np
@@ -17,6 +18,8 @@ import os
 import json
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 PATHTODATA = "/home/simon/gitprojects/DeepRain2/opticFlow/PNG_NEW/MonthPNGData/YW2017.002_200801"
+PATHTODATA = "/home/simon/MonthPNGData/2017"
+
 print("Num GPUs Available:", len(
     tf.config.experimental.list_physical_devices('GPU')))
 gpu = tf.config.experimental.list_physical_devices('GPU')
@@ -90,7 +93,7 @@ class Trainer(object):
 
 
             try:
-                historypath = os.path.join(self.pathToModel,'history.json')
+                historypath = os.path.join(self.pathToModel,self.nameOfModel+'history.json')
                 file = open(historypath,'r')
                 json_str = file.read()
                 self.history = json.loads(json_str)
