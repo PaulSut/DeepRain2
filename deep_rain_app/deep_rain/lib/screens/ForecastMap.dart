@@ -1,10 +1,12 @@
 import 'dart:typed_data';
 
 import 'package:deep_rain/DataObjects/DataHolder.dart';
+import 'package:deep_rain/screens/UpdateImageData.dart';
 import 'package:deep_rain/services/SliderService.dart';
 import 'package:deep_rain/services/database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:photo_view/photo_view.dart';
 
 
@@ -18,7 +20,7 @@ class _ForecastMapState extends State<ForecastMap> {
   SliderService sliderService = SliderService();
   double rating = 0;
   int currentDivison = 1;
-  int numberOfDivisions = 18;
+  int numberOfDivisions = 20;
 
   Uint8List imageFile;
   DatabaseService dbInstance = new DatabaseService();
@@ -57,6 +59,17 @@ class _ForecastMapState extends State<ForecastMap> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Vorhersagekarte'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.update),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UpdateImageData()),
+              );
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: Container(

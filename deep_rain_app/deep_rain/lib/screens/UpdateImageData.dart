@@ -1,35 +1,38 @@
 import 'dart:async';
-import 'package:deep_rain/main.dart';
+import 'package:deep_rain/DataObjects/DataHolder.dart';
+import 'package:deep_rain/screens/ForecastMap.dart';
 import 'package:deep_rain/services/database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class Loading extends StatefulWidget {
+class UpdateImageData extends StatefulWidget {
   @override
-  _LoadingState createState() => _LoadingState();
+  _UpdateImageDataState createState() => _UpdateImageDataState();
 }
 
-class _LoadingState extends State<Loading> {
+class _UpdateImageDataState extends State<UpdateImageData> {
   void setupForecastMap() async{
     DatabaseService instance = DatabaseService();
     for(var i = 1; i <= 20; i++){
       await instance.getImage(i);
     }
-    //Navigator.pushReplacementNamed(context, '/MainApp');
   }
 
   @override
   void initState(){
     super.initState();
+    imageData = {};
+    requestedIndexes = [];
     setupForecastMap();
   }
+
 
   @override
   Widget build(BuildContext context) {
     Timer(
         Duration(seconds: 2, milliseconds: 500),
-        () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainApp()))
+            () => Navigator.of(context).pop(MaterialPageRoute(builder: (BuildContext context) => ForecastMap()))
     );
 
     return Scaffold(
@@ -38,6 +41,9 @@ class _LoadingState extends State<Loading> {
         child: SpinKitRotatingPlain(
           color: Colors.white,
           size: 50.0,
+          itemBuilder: (BuildContext context, int index) {
+            return Text('Bilder werden runtergeladen...');
+          },
         ),
       ),
     );
