@@ -2,6 +2,9 @@
 /.ipynb_checkpoints/
 __pycache__
 .listOfFiles.csv
+.swo
+.swp
 /opticFlow/
 Data/
 models_h5/
+model_data/

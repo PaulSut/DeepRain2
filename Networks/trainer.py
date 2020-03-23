@@ -1,5 +1,3 @@
-#!/home/simon/anaconda3/bin/python
-#/home/simon/anaconda3/envs/tensorflow-gpu/bin/python
 from __future__ import print_function
 from Utils.Data import Dataset, dataWrapper
 import numpy as np
@@ -17,8 +15,6 @@ import keras
 import os
 import json
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-PATHTODATA = "/home/simon/gitprojects/DeepRain2/opticFlow/PNG_NEW/MonthPNGData/YW2017.002_200801"
-PATHTODATA = "/home/simon/MonthPNGData/2017"
 
 print("Num GPUs Available:", len(
     tf.config.experimental.list_physical_devices('GPU')))
@@ -27,11 +23,36 @@ tf.config.experimental.set_memory_growth(gpu[0], True)
 
 
 class Trainer(object):
-    """docstring for Trainer"""
+    """
+        docstring for Trainer
+
+        Wrapper for handling keras models.
+        This Class will create a folder where it stores such things as weights
+        , history and more (in the future)
+
+        model       : function to model definition
+        lossfunction: e.g. mse
+        pathToData  : Full path to data (recursive paths are allowed too)
+        channels    : number of input channels which are used for forecasting
+        dimension   : image size (input = output dimension)
+        metrics     : list of metrics e.g. ["accuracy","mae"]
+        flatten     : useful for binary/cross entropy
+        pathToModel : Folder where Models are stored
+        load        : load model (if available)
+        kwargs      : dictionary which will be passed to model definiton
+
+
+        Functions:
+
+        fit()
+            >> trains the network
+            The only argument is the epochs to train
+
+    """
     def __init__(self,
                 model,
                 lossfunction,
-                pathToData=PATHTODATA, 
+                pathToData,
                 batch_size=5,
                 channels=5,
                 optimizer="adam",
@@ -43,7 +64,6 @@ class Trainer(object):
                 kwargs={}):
 
         super(Trainer, self).__init__()
-        
         self.nameOfModel = model.__name__
         self.pathToData = pathToData
         self.batch_size = batch_size
@@ -55,10 +75,10 @@ class Trainer(object):
         self.load = load
         self.initialEpoch = 0
         self.history = None
-        self.train, self.test = dataWrapper(self.pathToData, 
+        self.train, self.test = dataWrapper(self.pathToData,
                                             dimension=dimension,
-                                            channels=channels, 
-                                            batch_size=batch_size, 
+                                            channels=channels,
+                                            batch_size=batch_size,
                                             flatten=flatten)
 
 
@@ -79,9 +99,9 @@ class Trainer(object):
             self.nameOfModel += str(d)
             if i < len((*dimension,channels)) - 1:
                 self.nameOfModel +="x"
-    
+
+
         self.model.compile(loss=lossfunction, optimizer=optimizer, metrics=metrics)
-        
         if self.load:
             try:
                 filename = os.path.join(self.pathToModel,self.nameOfModel+".h5")
@@ -119,7 +139,6 @@ class Trainer(object):
                                       workers=0,
                                       use_multiprocessing=False,
                                       validation_data=self.test)
-                                      
         if self.history is None:
             self.history = history.history
         else:
