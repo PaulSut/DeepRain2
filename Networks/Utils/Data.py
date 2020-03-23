@@ -23,11 +23,28 @@ def dataWrapper(path,
                 flatten=False,
                 sortOut=True,
                 shuffle=True):
+    """
+    
+        Returns two Data objects, which can be used for training.
+        The first returned object is the trainingdata, second is
+        testdata.
 
+        path        : path to Data
+        channels    : number of channels used as input
+        batch_size  : self-explanatory
+        csvFile     : name of csvFile where path to files are stored
+                      (the benefit is that it is not necessary to load
+                      the whole set into RAM, which could be too large)
+        workingdir  : Directory where Data is expanded (resized image are
+                      stored)
+        split       : split ratio (train/test)
+        sortOut     : not used
+        shuffle     : shuffle Data after epochs
+
+    """
 
     data = prepareListOfFiles(path,sortOut=sortOut)
     trainingsSet,validationSet = splitData(data)
-    
 
     if not os.path.exists(TRAINSETFOLDER):
         os.mkdir(TRAINSETFOLDER)
