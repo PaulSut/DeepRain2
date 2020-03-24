@@ -86,7 +86,7 @@ class Trainer(object):
             self.nameOfModel += "_"+lossfunction
 
         else:
-            self.nameOfModel+="_"+lossfunction.__class__.__name__+"_"
+            self.nameOfModel+="_"+lossfunction.__class__.__name__
 
         self.pathToModel = os.path.join(pathToModel,self.nameOfModel)
 
