@@ -1,3 +1,5 @@
+import 'package:deep_rain/global/UIText.dart';
+import 'package:deep_rain/main.dart';
 import 'package:deep_rain/services/SliderService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -19,28 +21,73 @@ class Settings extends StatefulWidget {
 class _LoadingState extends State<Settings> {
 
   bool switchRegenwarnungen = true;
+  String currentValue = 'Deutsch';
+
+  UIText _uiText = UIText();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Einstellungen"),
+        title: Text(_uiText.settingsAppTitle),
       ),
       body: SettingsList(
         sections: [
           SettingsSection(
-            title: 'Allgemeines',
+            title: _uiText.settingsHeaderGeneral,
             tiles: [
               SettingsTile(
-                title: 'Sprache',
-                subtitle: 'Deutsch',
+                title: _uiText.settingsLanguage,
+                subtitle: AppLanguage,
                 leading: Icon(Icons.language),
-                onTap: () {
-                  showAlertDialog(context, "Sprache", "Hier könnte man eine Sprache auswählen");
+                onTap: () async {
+                  return await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text(_uiText.chooseLanguageDialogHeader),
+                          content: StatefulBuilder(
+                            builder: (BuildContext context, StateSetter setState){
+                              return DropdownButton<String>(
+                              value: _uiText.getLanguage(),
+                              onChanged: (String newValue){
+                                _uiText.setLanguage(newValue);
+                                setState(() {
+                                  currentValue = newValue;
+                                });
+                              },
+                              items: <String> ['Deutsch', 'English', 'Español'].map<DropdownMenuItem<String>>((String value){
+                                return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                              }).toList(),
+                              );
+                            },
+                          ),
+                          actions: <Widget>[
+                            FlatButton(
+                              color: Colors.blueGrey,
+                              textColor: Colors.white,
+                              disabledColor: Colors.grey,
+                              disabledTextColor: Colors.black,
+                              padding: EdgeInsets.all(8.0),
+                              splashColor: Colors.blueAccent,
+                              onPressed: (){
+                                Navigator.of(context).pop();
+
+                              },
+                              child: Text(_uiText.chooseLanguageDialogOkButton),
+                            )
+                          ],
+                        );
+                      }).then((value){
+                        setState((){});
+                      });
                 },
               ),
               SettingsTile(
-                title: 'Region',
+                title: _uiText.settingsRegion,
                 subtitle: 'Konstanz',
                 leading: Icon(Icons.location_on),
                 onTap: () {
@@ -50,10 +97,10 @@ class _LoadingState extends State<Settings> {
             ],
           ),
           SettingsSection(
-            title: 'Benachrichtigungen',
+            title: _uiText.settingsHeaderNotifications,
             tiles: [
               SettingsTile.switchTile(
-                title: 'Regenwarnungen',
+                title: _uiText.settingsRainWarning,
                 leading: Icon(Icons.priority_high),
                 switchValue: switchRegenwarnungen,
                 onToggle: (bool value) {
@@ -63,7 +110,7 @@ class _LoadingState extends State<Settings> {
                 },
               ),
               SettingsTile(
-                title: 'Zeitpunkt Regenwarnung',
+                title: _uiText.settingsTimeOfRainWarning,
                 subtitle: '30 Minuten',
                 leading: Icon(Icons.av_timer),
                 onTap: () {
