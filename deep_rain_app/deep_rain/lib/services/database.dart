@@ -21,7 +21,7 @@ class DatabaseService{
     });
   }
 
-  // brew list from snapshot
+  // forecast list from snapshot
   List<ForecastListItem> _forecastListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.documents.map((doc){
       return ForecastListItem(
@@ -30,7 +30,7 @@ class DatabaseService{
       );
     }).toList();
   }
-  //get brews stram
+  //get forecast stream
   Stream<List<ForecastListItem>> get Forecast{
     return ForecastCollection.snapshots()
     .map(_forecastListFromSnapshot);
@@ -43,7 +43,6 @@ class DatabaseService{
     if (!requestedIndexes.contains(division)) {
       int MAX_SIZE = 7 * 1024 * 1024;
       photosReference.child('$division.png').getData(MAX_SIZE).then((data){
-        print('HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH' + division.toString());
         requestedIndexes.add(division);
         imageData.putIfAbsent(division, () {
           return data;

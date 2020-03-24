@@ -1,12 +1,12 @@
 import 'dart:typed_data';
 
 import 'package:deep_rain/DataObjects/DataHolder.dart';
+import 'package:deep_rain/global/UIText.dart';
 import 'package:deep_rain/screens/UpdateImageData.dart';
 import 'package:deep_rain/services/SliderService.dart';
 import 'package:deep_rain/services/database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:photo_view/photo_view.dart';
 
 
@@ -16,6 +16,8 @@ class ForecastMap extends StatefulWidget {
 }
 
 class _ForecastMapState extends State<ForecastMap> {
+
+  UIText _uiText = UIText();
 
   SliderService sliderService = SliderService();
   double rating = 0;
@@ -47,7 +49,7 @@ class _ForecastMapState extends State<ForecastMap> {
 
   @override
   Widget build(BuildContext context) {
-    //if the image for the current devision is not stored in DataHolder
+    //if the image for the current dvision is not stored in DataHolder
     if (!imageData.containsKey(currentDivison)) {
       //imageFile = dbInstance.getImage(currentDivison);
     } else {
@@ -58,7 +60,7 @@ class _ForecastMapState extends State<ForecastMap> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text('Vorhersagekarte'),
+        title: Text(_uiText.forecastMapAppTitle),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.update),

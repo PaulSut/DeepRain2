@@ -1,3 +1,4 @@
+import 'package:deep_rain/global/UIText.dart';
 import 'package:flutter/material.dart';
 import '../DataObjects/ForecastListItem.dart';
 
@@ -6,20 +7,22 @@ class ForecastTile extends StatelessWidget {
   final ForecastListItem forecast;
   ForecastTile({this.forecast});
 
+  UIText _uiText = UIText();
+
   String getRainIntenseString(int rainIntense){
     if(rainIntense < 5){
-      return 'Kein Regen';
+      return _uiText.forecastListRainIntenseNoRain;
     }
     else if(rainIntense < 30){
-      return 'Leichter Regen';
+      return _uiText.forecastListRainIntenseSomeRain;
     }
     else if(rainIntense < 60){
-      return 'Mittlerer Regen';
+      return _uiText.forecastListRainIntenseMediumRain;
     }
     else if(rainIntense < 100){
-      return 'Starker Regen';
+      return _uiText.forecastListRainIntenseStrongRain;
     }
-    return 'Es gab einen Fehler';
+    return _uiText.forecastListRainIntenseError;
   }
 
   AssetImage getIcon(int rainIntese){

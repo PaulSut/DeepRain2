@@ -1,3 +1,4 @@
+import 'package:deep_rain/global/UIText.dart';
 import 'package:deep_rain/screens/ForecastList.dart';
 import 'package:deep_rain/screens/ImageGrid.dart';
 import 'package:deep_rain/screens/Settings.dart';
@@ -21,6 +22,12 @@ class MainApp extends StatefulWidget {
   }
 }
 class MainAppState extends State<MainApp> {
+
+  UIText _uiText;
+  MainAppState(){
+    _uiText = UIText();
+  }
+
   int _selectedTab = 0;
   final _pageOptions = [
     ForecastList(),
@@ -28,6 +35,11 @@ class MainAppState extends State<MainApp> {
     ForecastMap(),
     Settings(),
   ];
+
+  void _listener() {
+    print('Model changed!');
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -48,15 +60,15 @@ class MainAppState extends State<MainApp> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.view_quilt),
-              title: Text('Zahlen'),
+              title: Text(_uiText.List),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.map),
-              title: Text('Karte'),
+              title: Text(_uiText.Map),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),
-              title: Text('Einstellungen'),
+              title: Text(_uiText.Settings),
             ),
           ],
         ),
