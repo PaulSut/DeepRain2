@@ -3,6 +3,7 @@ import 'package:deep_rain/screens/ForecastList.dart';
 import 'package:deep_rain/screens/ImageGrid.dart';
 import 'package:deep_rain/screens/Settings.dart';
 import 'package:deep_rain/screens/loading.dart';
+import 'package:deep_rain/services/push_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_rain/screens/ForecastMap.dart';
 
@@ -24,8 +25,10 @@ class MainApp extends StatefulWidget {
 class MainAppState extends State<MainApp> {
 
   UIText _uiText;
-  MainAppState(){
+  MainAppState() {
     _uiText = UIText();
+    final PushNotificationService _pushNotificationService = PushNotificationService();
+    _pushNotificationService.initialise();
   }
 
   int _selectedTab = 0;
@@ -36,9 +39,6 @@ class MainAppState extends State<MainApp> {
     Settings(),
   ];
 
-  void _listener() {
-    print('Model changed!');
-  }
 
   @override
   Widget build(BuildContext context) {
