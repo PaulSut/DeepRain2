@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:deep_rain/screens/ForecastMap.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:io';
@@ -9,6 +7,11 @@ class PushNotificationService{
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
   Future initialise() async{
+
+    _fcm.getToken().then((String token) => {
+      print('Das ist ein Token: $token')
+    });
+
     if(Platform.isIOS){
       _fcm.requestNotificationPermissions(IosNotificationSettings());
     }
