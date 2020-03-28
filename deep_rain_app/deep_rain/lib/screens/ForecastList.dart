@@ -1,0 +1,27 @@
+import 'package:deep_rain/DataObjects/ForecastListItem.dart';
+import 'package:deep_rain/global/UIText.dart';
+import 'package:deep_rain/global/UIText.dart';
+import 'package:flutter/material.dart';
+import 'package:deep_rain/services/database.dart';
+import 'package:provider/provider.dart';
+import 'package:deep_rain/Widgets/forecast_list_widget.dart';
+import 'package:deep_rain/global/UIText.dart';
+
+class ForecastList extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    UIText _uiText = UIText();
+    return StreamProvider<List<ForecastListItem>>.value(
+      value: DatabaseService().Forecast,
+      child: Scaffold(
+        backgroundColor: Colors.brown[50],
+        appBar: AppBar(
+          title: Text(_uiText.forecastListAppTitle),
+          elevation: 0.0,
+        ),
+        body: ForecastListWidget()
+      ),
+    );
+  }
+}
