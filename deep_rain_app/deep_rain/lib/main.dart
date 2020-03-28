@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deep_rain/global/UIText.dart';
 import 'package:deep_rain/screens/ForecastList.dart';
 import 'package:deep_rain/screens/ImageGrid.dart';
 import 'package:deep_rain/screens/Settings.dart';
 import 'package:deep_rain/screens/loading.dart';
 import 'package:deep_rain/services/push_notification_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_rain/screens/ForecastMap.dart';
+import 'package:firebase_database/firebase_database.dart';
+
 
 void main() => runApp(MaterialApp(
   initialRoute: '/',
@@ -29,6 +33,12 @@ class MainAppState extends State<MainApp> {
     _uiText = UIText();
     final PushNotificationService _pushNotificationService = PushNotificationService();
     _pushNotificationService.initialise();
+
+    //The Devicetoken is needed to send Pushnotifications.
+    //If the device token of the current Device already exists in the DataBase, it will be overwritten.
+    //If not, it will be added.
+    pushDeviceTokenToDB();
+
   }
 
   int _selectedTab = 0;
@@ -75,4 +85,16 @@ class MainAppState extends State<MainApp> {
       ),
     );
   }
+
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+
+  pushDeviceTokenToDB() async {
+    final CollectionReference ForecastCollection = Firestore.instance.collection('DeviceTokens');
+    await _fcm.getToken().then((token) async =>{
+      await ForecastCollection.document(token).setData({'token' : token})
+    });
+    print('Hat etwas gepushed!');
+  }
+  // collection reference
+
 }
