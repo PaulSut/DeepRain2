@@ -75,7 +75,11 @@ class Trainer(object):
         self.load = load
         self.initialEpoch = 0
         self.history = None
-        self.train, self.test = dataWrapper(self.pathToData,
+
+        if type(self.pathToData) is 'tuble':
+            self.train, self.test = self.pathToData
+        else:
+            self.train, self.test = dataWrapper(self.pathToData,
                                             dimension=dimension,
                                             channels=channels,
                                             batch_size=batch_size,

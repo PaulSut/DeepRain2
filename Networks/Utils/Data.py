@@ -7,6 +7,7 @@ import keras
 import os
 from .transform import resizeImages
 import cv2
+from Utils.colors import *
 
 CSVFILE = "./.listOfFiles.csv"
 WRKDIR = "./Data"
@@ -22,7 +23,9 @@ def dataWrapper(path,
                 split=0.25,
                 flatten=False,
                 sortOut=True,
-                shuffle=True):
+                shuffle=True,
+                overwritecsv=False,
+                onlyUseYears=None):
     """
     
         Returns two Data objects, which can be used for training.
@@ -39,11 +42,13 @@ def dataWrapper(path,
                       stored)
         split       : split ratio (train/test)
         sortOut     : not used
-        shuffle     : shuffle Data after epochs
+        shuffle     : shuffle Data after epochs,
+        onlyUseYears: [2016,2017] ... make sure to use years in list
 
     """
 
-    data = prepareListOfFiles(path,sortOut=sortOut)
+
+    data = prepareListOfFiles(path,sortOut=sortOut,overwritecsv=overwritecsv,onlyUseYears=onlyUseYears)
     trainingsSet,validationSet = splitData(data)
 
     if not os.path.exists(TRAINSETFOLDER):
@@ -105,13 +110,27 @@ def dimToFolder(dim):
     return savefolder
 
 
-def prepareListOfFiles(path,workingdir = WRKDIR,nameOfCsvFile=CSVFILE,sortOut=False):
+def prepareListOfFiles(path,workingdir = WRKDIR,nameOfCsvFile=CSVFILE,sortOut=False,overwritecsv=False,onlyUseYears=None):
     if not os.path.exists(workingdir):
         os.mkdir(workingdir)
 
-    if not os.path.exists(os.path.join(workingdir,nameOfCsvFile)):
+    if not os.path.exists(os.path.join(workingdir,nameOfCsvFile)) or overwritecsv or onlyUseYears is not None:
+
         listOfFiles = getListOfFiles(path)
         listOfFiles.sort()
+
+        if onlyUseYears:
+            newlist = []
+            prefix = "YW2017.002_"
+            for year in onlyUseYears:
+                checkFile = prefix + str(year)
+                for file in listOfFiles:
+                    if checkFile in file:
+                        newlist.append(file)
+            listOfFiles = newlist
+
+
+
         dataframe = pd.DataFrame(listOfFiles,columns=["colummn"])
         dataframe.to_csv(os.path.join(workingdir,nameOfCsvFile),index=False)
         listOfFiles = dataframe
@@ -148,6 +167,17 @@ def sortOutFiles(listOfFiles):
         print("HIER")
         print(elem)
     exit(0)
+
+def mergeLists(list1,list2):
+    newlist = []
+    for file in list1:
+        name = file.split("/")[-1]
+        for file2 in list2:
+            name2 = file2.split("/")[-1]
+
+            if name == name2:
+                newlist.append(file)
+    return newlist
 
 class Dataset(keras.utils.Sequence):
 
@@ -217,10 +247,22 @@ class Dataset(keras.utils.Sequence):
         self.new_listOfFiles = resizeImages(self.listOfFiles,dim,os.path.join(workingdir,savefolder),saveListOfFiles)
 
         if len(self.new_listOfFiles) != len(self.listOfFiles):
-            print("WARNING: Length of lists does not match! ")
+            print(YELLOW + "WARNING: Length of lists does not match! " + RESET)
+            print(YELLOW +"To stop this warning, delete {} folder and restart".format(os.path.join(workingdir,savefolder))+RESET)
+            print(YELLOW +"Trying to update..\n"+ RESET)
+
+            newlist = mergeLists(self.new_listOfFiles,self.listOfFiles)
+            if len(newlist) == 0:
+                print(RED+"Could not fix this Problem!!! abort"+RESET)
+                exit(-1)
+
+            print(GREEN+"Fixed! "+RESET)
+            self.new_listOfFiles = newlist
+            if len(self.new_listOfFiles) != len(self.listOfFiles):
+                print(CYAN+"But length does not match again.... just delete the folders bruh"+RESET)
 
         self.listOfFiles = self.new_listOfFiles
-        #self.listOfFiles = self.new_listOfFiles[:300]
+        #self.listOfFiles = self.new_listOfFiles[:500]
 
         self.indizes = np.arange(len(self))
 
@@ -249,10 +291,14 @@ class Dataset(keras.utils.Sequence):
         except Exception as e:
             print("\n\n",index,self.label_offset,len(self.listOfFiles))
             exit(-1)
-            
+        
+
         if self.flatten:
+
             label = label.flatten()
-            #label = keras.utils.to_categorical(label, num_classes=255, dtype='float32')
+            label = keras.utils.to_categorical(label, num_classes=3, dtype='float32')
+            return np.array(X),np.array(label)
+            
 
         Y.append(label)
 
@@ -287,9 +333,11 @@ class Dataset(keras.utils.Sequence):
         Y = np.array(Y)
         
         #X = np.expand_dims(X, axis=-1)
-        Y = np.transpose(Y,(0,2,3,1))
+
         X = np.transpose(X,(0,2,3,1))
-        
+        if not self.flatten:
+            Y = np.transpose(Y,(0,2,3,1))
+
 
         return X/255.0,Y/255.0
         #return X,Y
