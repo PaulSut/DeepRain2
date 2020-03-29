@@ -1,6 +1,6 @@
 /data/
 /.ipynb_checkpoints/
-
+connection_cfg.py
 __pycache__
 .listOfFiles.csv
 .swo

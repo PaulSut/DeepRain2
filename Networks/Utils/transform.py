@@ -39,10 +39,14 @@ def resizeImages(listOfFiles,dim,savedir,saveListOfFiles):
     nbrProcesses = cpu_count() * 2   
     splittedlist = []
     stepsize = len(listOfFiles) // nbrProcesses
-    splittedlist = [listOfFiles[i:i + stepsize] for i in range(0, len(listOfFiles), stepsize)]
+    #splittedlist = [listOfFiles[i:i + stepsize] for i in range(0, len(listOfFiles), stepsize)]
+
+
+    for i in range(0,len(listOfFiles),stepsize):
+        splittedlist.append(listOfFiles[i:i + stepsize])
 
     jobs = []
-    for i in range(nbrProcesses+1):
+    for i in range(nbrProcesses):
         p = Process(target=fProcess, args=(splittedlist[i],savedir,dim))
         jobs.append(p)
         p.start()

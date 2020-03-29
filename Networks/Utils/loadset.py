@@ -3,8 +3,8 @@ import tarfile
 import getpass
 import paramiko
 import os
-
-HOST = "192.168.2.217"
+from Utils.Data import getListOfFiles
+HOST = "deeprain.ddns.net"
 PORT = 22
 DOWNLOAD_PATH = "/home/bananapi/Dataset/DeepRain"
 
@@ -50,12 +50,35 @@ def extract(root_dir,tarfilename):
 
     os.remove(root_dir+"/"+tarfilename)
 
-def getDataSet(working_dir,year=None):
+def getDataSet(working_dir,year=None,username=None,pswd=None):
     prefix = "YW2017.002_"
     suffix = ".tar.gz"
     start = 2008
     end   = 2017
     filenames = []
+    removeyears = []
+
+    try:
+        
+        # check if files exists
+        files = getListOfFiles(working_dir)
+        for y in year:
+            checkFile = prefix + str(y)
+            for file in files:
+
+                if checkFile in file:
+                    print("\u001b[33mFound Year \u001b[0m: ",y,\
+                        "=> won't download this year again... please check for consistency")
+                    removeyears.append(y)
+                    break
+
+
+        for y in removeyears:
+            year.remove(y)
+
+    except Exception as e:
+        print("No Data Found\n")
+
     if year is None:
         filenames = [prefix + str(i) + suffix for i in range(start,end+1)]
     else:
@@ -69,16 +92,25 @@ def getDataSet(working_dir,year=None):
             else:
                 print("[WARNING] : "+str(y)+" wrong format YYYY")
 
-    print("Downloading from:", str(HOST))
-    username = input('Enter your username\n')
-    pswd = getpass.getpass('Enter your password:\n')
-    print("Connecting to "+HOST+"...")
 
-    for filename in filenames:
-        print("Downloading ",filename,"...")
-        downloadDataSet(working_dir,HOST,PORT,os.path.join(DOWNLOAD_PATH,filename),username,pswd)
 
-    for filename in filenames:
-        print("Extracting ",filename,"...")
-        extract(working_dir,filename)
-getDataSet("./",year=[2016,2017])
+
+    if len(year) > 0 :
+        print("Downloading from:", str(HOST))
+        if username is None:
+            username = input('Enter your username\n')
+        if pswd is None:
+            pswd = getpass.getpass('Enter your password:\n')
+
+        print("Connecting to "+HOST+"...")
+
+        for filename in filenames:
+            print("Downloading ",filename,"...")
+            downloadDataSet(working_dir,HOST,PORT,os.path.join(DOWNLOAD_PATH,filename),username,pswd)
+
+        for filename in filenames:
+            print("Extracting ",filename,"...")
+            extract(working_dir,filename)
+
+    print("\u001b[32mFinished Loading Dataset\n \u001b[0m")
+
