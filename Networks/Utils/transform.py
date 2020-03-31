@@ -6,7 +6,112 @@ from PIL import Image
 import numpy as np
 import pandas as pd
 
-def fProcess(listOfFiles,savedir,dim):
+
+class fromCategorical(object):
+    """docstring for fromCategorical"""
+    def __init__(self, conditions):
+        super(fromCategorical, self).__init__()
+        self.conditions = conditions
+        
+
+class ToCategorical(object):
+    """
+
+        Map array values to values in conditions
+        
+        [1,50,60]
+
+        values between 1 and 50 will be mapped to index 0
+        => [1,0,0]
+
+    """
+    def __init__(self, conditions):
+        super(ToCategorical, self).__init__()
+        self.conditions = conditions
+        self.numClasses = len(self.conditions) -1
+
+    def __call__(self,array):
+        newVector = np.zeros((*array.shape,self.numClasses))
+
+        for i in range(1,self.numClasses):
+            value = self.conditions[i]
+            valuePrev = self.conditions[i-1]
+            idx = np.where((array < value) & (array >=valuePrev))
+            classV = np.zeros((self.numClasses))
+            classV[i-1] = 1
+            newVector[idx,:] = classV
+
+
+        for i in newVector:
+            if i.max() < 1:
+                print(i)
+                exit(-1)
+        return newVector.flatten()
+
+class Binarize(object):
+    """docstring for Binarize"""
+    def __init__(self,threshold=0,value=255):
+        super(Binarize, self).__init__()
+        self.threshold = threshold
+        self.value = value
+
+
+    def __call__(self,img):
+        img[np.where(img > self.threshold)] = self.value
+        img[np.where(img <= self.threshold)] = 0
+        return img
+
+class Flatten(object):
+    """docstring for Flatten"""
+    def __init__(self):
+        super(Flatten, self).__init__()
+        
+
+    def __call__(self,img):
+        img = img.flatten()
+        return img      
+
+class cutOut(object):
+    """docstring for cutOut"""
+    def __init__(self):
+        super(cutOut, self).__init__()
+    
+    def __call__(self,img):
+        print("CALL")
+        return img
+
+    def __str__(self):
+        return "dummy"
+        
+
+
+class resize(object):
+    """
+    
+        resizes image to dimension dim
+
+
+    """
+    def __init__(self, dim):
+        super(resize, self).__init__()
+        self.dim = dim
+
+    def __call__(self,img):
+
+        x,y = self.dim
+        img = cv2.resize(img,(y,x))
+        return img
+        
+    def __str__(self):
+        savefolder = ""
+        for i in self.dim:
+            savefolder += str(i)+"x"
+        savefolder = savefolder[:-1]
+        return savefolder
+    
+
+
+def fProcess(listOfFiles,savedir,transformation):
 
     while listOfFiles:
         file = listOfFiles.pop()
@@ -18,17 +123,26 @@ def fProcess(listOfFiles,savedir,dim):
             print("File ",pathToWrite," exists",len(listOfFiles))
             continue
 
-        
         img = np.array(Image.open(file))
-        x,y = dim
-        img = cv2.resize(img,(y,x))
+        img = transformation(img)
         img = Image.fromarray(img)
         img.save(pathToWrite)
 
 
         
-def resizeImages(listOfFiles,dim,savedir,saveListOfFiles):
-    
+def transformImages(listOfFiles,transformation,savedir,saveListOfFiles):
+    """
+
+        Transforms images specified by parameter transformation
+        transformation needs to be a class with functions __call__ and __str__
+
+        __call__ will should perform the transformation.
+                __call__ receives an image and returns the transformed image
+
+
+        __str__ should return the name of the path where the images are stored
+
+    """
     
     if not os.path.exists(savedir):
         os.mkdir(savedir)
@@ -47,7 +161,7 @@ def resizeImages(listOfFiles,dim,savedir,saveListOfFiles):
 
     jobs = []
     for i in range(nbrProcesses):
-        p = Process(target=fProcess, args=(splittedlist[i],savedir,dim))
+        p = Process(target=fProcess, args=(splittedlist[i],savedir,transformation))
         jobs.append(p)
         p.start()
 

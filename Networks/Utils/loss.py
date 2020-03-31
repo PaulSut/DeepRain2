@@ -70,4 +70,5 @@ class SSIM(tf.keras.losses.Loss):
 
         
 
-        
+def NLL(y_true,y_pred):
+    return -y_pred.log_prob(y_true)

@@ -5,7 +5,7 @@ from trainer import Trainer
 from keras.optimizers import *
 from keras.models import load_model
 from Models.tfModels import *
-from Utils.loss import SSIM
+from Utils.loss import SSIM, NLL
 from Models.CnnLSTM import *
 import pandas as pd
 import Models
@@ -24,7 +24,9 @@ networks = {"CnnLSTM":CnnLSTM,
             "LSTM_Meets_Unet_Upconv":LSTM_Meets_Unet_Upconv,
             "LSTM_Meets_Unet":LSTM_Meets_Unet,
             "UNet64":UNet64,
-            "unet":unet
+            "unet":unet,
+            "UNet64_Poisson":UNet64_Poisson,
+            "UNet64_Bernoulli":UNet64_Bernoulli
 }
 
 loss = {"SSIM":SSIM(),
@@ -119,6 +121,7 @@ class Predictor(object):
         print("\t\tTP\t\tTN\t\tFP\t\tFN")
         for i,(x, y) in enumerate(testdata):
             pred = model.predict(x)
+
             b,x_s,y_s,ch = y.shape
             prediction,label = pred[0,:,:,0],y[0,:,:,0]
             prediction *= 255
@@ -171,8 +174,9 @@ class Predictor(object):
             if not os.path.exists(self.validationFolder ):
                 os.mkdir(self.validationFolder )
 
-            #else:
-                #print(validationFolder+" exists.. skipping")
+            else:
+                print(self.validationFolder+" exists.. skipping")
+                continue
             try:
                 nnname = os.path.dirname(weights).split("/")[-1]
                 nnname = nnname.split("_")
@@ -182,14 +186,19 @@ class Predictor(object):
                 
             except Exception as e:
                 print("Couldn't create Network : ", )
-            
+            if l not in loss:
+                loss_f = NLL
+            else:
+                loss_f = loss[l]
+            print(loss_f)
             t = Trainer(networks[nnname],
                         pathToData=self.PathToData,
-                        lossfunction=loss[l],
+                        lossfunction=loss_f,
                         batch_size=1,
                         dimension=(dim[0],dim[1]),
                         channels=dim[2])
-            test_data = t.test
+            #test_data = t.test
+            test_data = t.train
             model = t.model
             history = t.history
 

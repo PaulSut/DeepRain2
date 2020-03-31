@@ -4,17 +4,13 @@ import numpy as np
 from Models.Unet import unet
 from Models.tfModels import UNet64
 from Utils.loss import SSIM
-from keras.optimizers import *
-from keras import backend as K
-from keras.layers import Conv2D, MaxPooling2D
-from keras.layers import Dense, Dropout, Flatten
-from keras.models import Sequential
-from keras.datasets import mnist
+from tensorflow.keras.optimizers import *
+#from keras import backend as K
 import tensorflow as tf
 import keras
 import os
 import json
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+#os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 print("Num GPUs Available:", len(
     tf.config.experimental.list_physical_devices('GPU')))
@@ -75,9 +71,11 @@ class Trainer(object):
         self.load = load
         self.initialEpoch = 0
         self.history = None
+        
 
-        if type(self.pathToData) is 'tuble':
+        if type(self.pathToData) is tuple:
             self.train, self.test = self.pathToData
+
         else:
             self.train, self.test = dataWrapper(self.pathToData,
                                             dimension=dimension,
@@ -142,12 +140,17 @@ class Trainer(object):
                                       initial_epoch = self.initialEpoch,
                                       workers=0,
                                       use_multiprocessing=False,
-                                      validation_data=self.test)
+                                      validation_data=self.test,
+                                      verbose = 1,
+                                      shuffle=False)    # Shuffle needs to be False, cause of shuffle buffer
         if self.history is None:
             self.history = history.history
         else:
             for key in history.history:
                 self.history[key] += history.history[key]
+
+        for key in self.history:
+            self.history[key] = list(np.array(self.history[key]).astype(float))
 
         with open(os.path.join(self.pathToModel,self.nameOfModel+'history.json'), 'w') as f:
             json.dump(self.history, f)
