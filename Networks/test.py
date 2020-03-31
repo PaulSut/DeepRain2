@@ -77,6 +77,7 @@ def Bernoulli():
 
 def Poisson():
 
+    dimension = (272,224)
     from Utils.transform import Flatten
     t = Trainer(UNet64_Poisson,
                     NLL,
@@ -91,11 +92,11 @@ def Poisson():
 #Bernoulli()
 #Poisson()
 def LSTM_POISSON():
-    dimension = (272,224)
+    dimension = (64,64)
     t = Trainer(LSTM_Meets_Unet_Poisson,
                     NLL,
-                    provideData(batch_size=20),
-                    batch_size = 20,
+                    provideData(batch_size=50),
+                    batch_size = 50,
                     optimizer=optimizer,
                     dimension = dimension,
                     channels = channels)

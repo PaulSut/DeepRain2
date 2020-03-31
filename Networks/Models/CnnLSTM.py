@@ -305,9 +305,10 @@ def LSTM_Meets_Unet_Poisson(input_shape,
     up01 = concatenate([conv01, up01], axis=3)  
     up01 = Conv2D(20, kernel_size=(3, 3), padding="same")(up01)  
     
-    output = Conv2D(n_predictions, (1, 1), activation=tf.exp)(up01) 
+    output = Conv2D(1, (1, 1), activation=tf.exp)(up01) 
     
-    output = tfp.layers.DistributionLambda(tfp.distributions.Poisson)(output)
+    #output = tfp.layers.DistributionLambda(tfp.distributions.Poisson)(output)
+    output = tfp.layers.IndependentPoisson(1)(output)
 
     model = Model(inputs=inputs, outputs=output)
 
