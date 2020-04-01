@@ -29,7 +29,7 @@ pathToData = "/home/simon/MonthPNGData/MonthPNGData"
 
 
 
-def provideData(flatten=False,batch_size=10,transform=None,preTransformation=None):
+def provideData(flatten=False,dimension=dimension,batch_size=10,transform=None,preTransformation=None):
 
     getDataSet(DatasetFolder,year=[2017],username=USRN,pswd=PSWD)
     train,test = dataWrapper(PathToData,
@@ -78,25 +78,27 @@ def Bernoulli():
 def Poisson():
 
     dimension = (272,224)
+    dimension = (64,64)
     from Utils.transform import Flatten
     t = Trainer(UNet64_Poisson,
                     NLL,
-                    provideData(batch_size=20),
-                    batch_size = 20,
+                    provideData(batch_size=200),
+                    batch_size = 200,
                     optimizer=optimizer,
                     dimension = dimension,
-                    channels = channels)
+                    channels = channels,
+                    metrics=["mse","accuracy"])
 
-    t.fit( epochs = 10 )
+    t.fit( epochs = 20 )
 
 #Bernoulli()
 #Poisson()
 def LSTM_POISSON():
-    dimension = (64,64)
+    dimension = (128,112)
     t = Trainer(LSTM_Meets_Unet_Poisson,
                     NLL,
-                    provideData(batch_size=50),
-                    batch_size = 50,
+                    provideData(batch_size=25,dimension=dimension),
+                    batch_size = 25,
                     optimizer=optimizer,
                     dimension = dimension,
                     channels = channels)

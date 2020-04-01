@@ -197,8 +197,7 @@ class Predictor(object):
                         batch_size=1,
                         dimension=(dim[0],dim[1]),
                         channels=dim[2])
-            #test_data = t.test
-            test_data = t.train
+            test_data = t.test
             model = t.model
             history = t.history
 

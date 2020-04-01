@@ -339,7 +339,7 @@ class Dataset(Sequence):
 
         X = np.transpose(X,(0,2,3,1))
         if self.transform is not None:
-            return X/255.0,Y/255.0
+            return X/255.0,Y/1.0
         if not self.flatten:
             Y = np.transpose(Y,(0,2,3,1))
 
@@ -347,5 +347,5 @@ class Dataset(Sequence):
             return X/255,Y.flatten()
 
         
-        return X/255.0,Y/255.0
+        return X/255.0,Y/1.0
         

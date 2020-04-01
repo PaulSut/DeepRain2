@@ -25,7 +25,7 @@ class Tracker(object):
     docstring for Tracker
 
     """
-    def __init__(self, path,max_dist = 10,binary=True,max_contrast=True,transform=None):
+    def __init__(self, path,max_dist = 10,binary=False,max_contrast=True,transform=None):
         super(Tracker, self).__init__()
 
         self.path = path
@@ -211,17 +211,19 @@ class Tracker(object):
     def showFlow(self,create_gif=False,name="clouds.gif",nbr_imgs=0):
         img_list = []
         flow = None 
-
         if create_gif: 
             folder = "GIF/"
             if not os.path.exists(folder):
                 os.mkdir(folder)
 
+        
         for i,img in enumerate(self.data):
+            img = img[256:768,256:768]
+
             if len(img_list) == 0:
                 mask = np.zeros_like(img)
 
-
+            img_cpy = img.copy()
             cloudlist = self.sequentialLabeling(img)
             clouds = self.getClouds(cloudlist,img)
 
@@ -246,7 +248,8 @@ class Tracker(object):
             flow = self.calcFlow(img_list[0][0],img_list[1][0],pts)
             vis = self.draw_flow(mask,flow)
             mask = cv.cvtColor(vis,cv.COLOR_RGB2GRAY)
-            frame = np.concatenate((img_list[0][0],mask),axis=1)
+
+            frame = np.concatenate((img_cpy,mask),axis=1)
             
             cv.imshow(windowname,frame)
             print(i,end="\r")
@@ -262,7 +265,7 @@ class Tracker(object):
                 if i == nbr_imgs and nbr_imgs != 0:
                     break
         if create_gif:
-            self.create(folder,name,20,250,0)
+            self.create(folder,name,50,250,0)
                 
 
 
@@ -271,5 +274,5 @@ class Tracker(object):
 
 t = Tracker("../PNG")
 #t.showset()
-t.showFlow(create_gif=False,name="clouds_as_center_of_mass.gif")
+t.showFlow(create_gif=True,name="example_flow.gif")
 cv.destroyAllWindows()

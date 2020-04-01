@@ -196,9 +196,9 @@ def UNet64_Poisson(input_shape,
     output = Conv2D(1, (1, 1), activation=tf.exp)(up01)  # 1 x 64x64
     #output = Flatten()(output)
     
-    output = tfp.layers.IndependentPoisson(1)(output)
-    #output = tfp.layers.DistributionLambda(tfp.distributions.Poisson)(output)
-    #output = tfp.layers.IndependentPoisson((input_shape[0],input_shape[1],1))(output)
+    #output = tfp.layers.IndependentPoisson(1)(output)
+    output = tfp.layers.DistributionLambda(tfp.distributions.Poisson)(output)
+    #output = tfp.layers.IndependentPoisson(1)(output)
 
     model = Model(inputs=inputs, outputs=output)
     return model
