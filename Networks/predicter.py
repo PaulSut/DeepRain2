@@ -120,12 +120,15 @@ class Predictor(object):
 
         print("\t\tTP\t\tTN\t\tFP\t\tFN")
         for i,(x, y) in enumerate(testdata):
-            pred = model.predict(x)
+            #pred = model.predict(x)
+            pred = model(x)
+
+            pred = pred.mean()
 
             b,x_s,y_s,ch = y.shape
             prediction,label = pred[0,:,:,0],y[0,:,:,0]
-            prediction *= 255
-            label *= 255
+            #prediction *= 255
+            #label *= 255
 
             con = np.concatenate((prediction,label),axis=1)
 
