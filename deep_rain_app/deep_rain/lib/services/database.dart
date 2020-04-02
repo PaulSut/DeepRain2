@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deep_rain/DataObjects/DataHolder.dart';
 import 'package:deep_rain/DataObjects/ForecastListItem.dart';
+import 'package:deep_rain/global/PushNotifications.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -52,6 +53,22 @@ class DatabaseService{
         debugPrint(onError.toString());
       });
     }
+  }
+  
+  void updatePushNotificationTime() async{
+    PushNotifications _pushNotifications = PushNotifications();
+
+    //Check if the default time of pushnotification is already changed
+    if(_pushNotifications.getAppLastDeviceTokenDocument() != null){
+      //Delete the old setting of pushnotificationtime
+      Firestore.instance.collection(_pushNotifications.getAppLastDeviceTokenDocument()).document(_pushNotifications.getDeviceToken()).delete();
+    }
+
+    //Set the new setting of pushnotificationtime
+    _pushNotifications.setAppLastDeviceTokenDocument('DeviceTokens_' + _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + '_min');
+    final CollectionReference ForecastCollection = Firestore.instance.collection('DeviceTokens_' + _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + '_min');
+    await ForecastCollection.document(_pushNotifications.getDeviceToken()).setData({'token' : _pushNotifications.getDeviceToken()});
+
   }
 
 }

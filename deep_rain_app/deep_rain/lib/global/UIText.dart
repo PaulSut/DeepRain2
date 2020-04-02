@@ -32,6 +32,7 @@ class UIText{
   String settingsHeaderNotifications;
   String settingsRainWarning;
   String settingsTimeOfRainWarning;
+  String settingsTimeOfRainWarningSubtitle;
     //Choose Language Dialog
     String chooseLanguageDialogHeader;
     String chooseLanguageDialogOkButton;
@@ -63,6 +64,7 @@ class UIText{
       settingsHeaderNotifications = 'Benachrichtigungen';
       settingsRainWarning = 'Regenwarnung';
       settingsTimeOfRainWarning = 'Zeitpunkt Regenwarnung';
+      settingsTimeOfRainWarningSubtitle = ' Minuten vor dem Regen';
         //choose language dialog
         chooseLanguageDialogHeader = 'Sprache auswählen';
         chooseLanguageDialogOkButton = 'Bestätigen';
@@ -94,6 +96,7 @@ class UIText{
       settingsHeaderNotifications = 'Notificaciones';
       settingsRainWarning = 'Advertencia de lluvia';
       settingsTimeOfRainWarning = 'La hora de la advertencia de la lluvia';
+      settingsTimeOfRainWarningSubtitle = ' minutos antes de la lluvia';
         //choose language dialog
         chooseLanguageDialogHeader = 'Seleccione el idioma';
         chooseLanguageDialogOkButton = 'Confirme';
@@ -125,6 +128,7 @@ class UIText{
       settingsHeaderNotifications = 'Notifications';
       settingsRainWarning = 'Rainwarning';
       settingsTimeOfRainWarning = 'Time of rainwarning';
+      settingsTimeOfRainWarningSubtitle = ' minutes before the rain';
         //choose language dialog
         chooseLanguageDialogHeader = 'Choose Language';
         chooseLanguageDialogOkButton = 'Ok';
