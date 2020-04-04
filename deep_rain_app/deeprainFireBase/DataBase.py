@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
         # random dummy rainintense
         rainIntense = randrange(100)
-        rainIntense = 95
+        rainIntense = 94
 
         # upload to firebase
         doc_ref = db.collection('forecast').document(str(documentID))
@@ -48,7 +48,8 @@ if __name__ == '__main__':
             doc_ref = db.collection('RainWarningPushNotification').document(str(documentID))
             doc_ref.set({
                 'title': 'Es gibt eine Regenwarnung!',
-                'body': 'Nehmen Sie besser Ihren Regenschirm mit, es wird in der nächsten Stunde regenen!'
+                'body': 'Nehmen Sie besser Ihren Regenschirm mit, es wird in 30 Minuten regenen!',
+                'time_before_raining': '30'
             })
 
         # increase the ID
@@ -62,8 +63,8 @@ if __name__ == '__main__':
             # delete from local  id list
             IDList.pop(0)
 
-        s.enter(30, 1, upload_data_to_firbase, (sc,))
-    s.enter(30, 1, upload_data_to_firbase, (s,))
+        s.enter(10, 1, upload_data_to_firbase, (sc,))
+    s.enter(10, 1, upload_data_to_firbase, (s,))
     s.run()
 
 
