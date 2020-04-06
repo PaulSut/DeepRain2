@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:deep_rain/main.dart';
 import 'package:deep_rain/services/database.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +13,7 @@ class Loading extends StatefulWidget {
 class _LoadingState extends State<Loading> {
   void setupForecastMap() async{
     DatabaseService instance = DatabaseService();
-    for(var i = 1; i <= 18; i++){
+    for(var i = 1; i <= 20; i++){
       await instance.getImage(i);
     }
     //Navigator.pushReplacementNamed(context, '/MainApp');
@@ -26,7 +24,6 @@ class _LoadingState extends State<Loading> {
     super.initState();
     setupForecastMap();
   }
-
 
   @override
   Widget build(BuildContext context) {

@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   firebase_storage:
@@ -39,12 +39,22 @@ dependencies:
   cloud_firestore: ^0.12.9+4
   provider: ^3.1.0
   flutter_spinkit: ^4.0.0
+  firebase_messaging: ^4.0.0+1
+  firebase_core: ^0.4.0
+  firebase_database: any
+  flutter_launcher_icons: "^0.7.3"
+  flutter_duration_picker: ^1.0.4
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   intl: ^0.15.8
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/regenschirm.png"
 
 
 # For information on the generic Dart part of this file, see the
