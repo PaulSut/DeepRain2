@@ -5,14 +5,50 @@ import pandas as pd
 import re
 import keras
 import os
-from .transform import resizeImages
+from .transform import transformImages,resize
 import cv2
 from Utils.colors import *
+from tensorflow.python.keras.utils.data_utils import Sequence
+from Utils.loadset import getDataSet
+
 
 CSVFILE = "./.listOfFiles.csv"
 WRKDIR = "./Data"
 TRAINSETFOLDER=os.path.join(WRKDIR,"train")
 VALSETFOLDER=os.path.join(WRKDIR,"val")
+
+DatasetFolder = "./Data/RAW"
+PathToData = os.path.join(DatasetFolder,"MonthPNGData")
+
+
+def provideData(dimension,
+                batch_size,
+                channels,
+                transform=None,
+                preTransformation=None,
+                year = [2017],
+                onlyUseYears = None,
+                DatasetFolder=DatasetFolder):
+
+    """
+        DatasetFolder       : Download Data to this Folder an use it as working directory
+        preTransformation   : Transformation to perform on Data BEFORE loading it
+        transform           : Transformation to perform on a single Image before hand it to the NN
+        onlyUseYears        : List of years to use in Dataset
+
+    """
+
+    getDataSet(DatasetFolder,year=[2017])
+    train,test = dataWrapper(PathToData,
+                            dimension=dimension,
+                            channels=channels,
+                            batch_size=batch_size,
+                            overwritecsv=True,
+                            onlyUseYears=onlyUseYears,
+                            transform=transform,
+                            preTransformation=preTransformation)
+    
+    return train,test
 
 def dataWrapper(path,
                 dimension,
@@ -25,7 +61,9 @@ def dataWrapper(path,
                 sortOut=True,
                 shuffle=True,
                 overwritecsv=False,
-                onlyUseYears=None):
+                onlyUseYears=None,
+                preTransformation=None,
+                transform=None):
     """
     
         Returns two Data objects, which can be used for training.
@@ -47,7 +85,7 @@ def dataWrapper(path,
 
     """
 
-
+    
     data = prepareListOfFiles(path,sortOut=sortOut,overwritecsv=overwritecsv,onlyUseYears=onlyUseYears)
     trainingsSet,validationSet = splitData(data)
 
@@ -67,7 +105,6 @@ def dataWrapper(path,
     val_dataframe = pd.DataFrame(validationSet,columns=["colummn"])
     val_dataframe.to_csv(os.path.join(VALSETFOLDER,valsetCSV),index=False)
 
-
     train = Dataset(TRAINSETFOLDER ,
                     dim = dimension,
                     n_channels = channels,
@@ -75,7 +112,9 @@ def dataWrapper(path,
                     workingdir=TRAINSETFOLDER,
                     saveListOfFiles=trainsetCSV,
                     flatten=flatten,
-                    shuffle=shuffle)
+                    shuffle=shuffle,
+                    transform=transform,
+                    preTransformation=preTransformation)
 
     val = Dataset(VALSETFOLDER,
                     dim = dimension,
@@ -84,7 +123,9 @@ def dataWrapper(path,
                     workingdir=VALSETFOLDER,
                     saveListOfFiles=valsetCSV,
                     flatten=flatten,
-                    shuffle=shuffle)
+                    shuffle=shuffle,
+                    transform=transform,
+                    preTransformation=preTransformation)
 
 
     return train,val
@@ -100,14 +141,6 @@ def splitData(data,split=0.25):
 
 
     return trainingsSet,validationSet
-
-
-def dimToFolder(dim):
-    savefolder = ""
-    for i in dim:
-        savefolder += str(i)+"x"
-    savefolder = savefolder[:-1]
-    return savefolder
 
 
 def prepareListOfFiles(path,workingdir = WRKDIR,nameOfCsvFile=CSVFILE,sortOut=False,overwritecsv=False,onlyUseYears=None):
@@ -161,13 +194,6 @@ def getListOfFiles(path):
     return files
 
 
-def sortOutFiles(listOfFiles):
-    
-    for elem in listOfFiles:
-        print("HIER")
-        print(elem)
-    exit(0)
-
 def mergeLists(list1,list2):
     newlist = []
     for file in list1:
@@ -179,7 +205,7 @@ def mergeLists(list1,list2):
                 newlist.append(file)
     return newlist
 
-class Dataset(keras.utils.Sequence):
+class Dataset(Sequence):
 
     def __init__(self,path,
                       batch_size,
@@ -194,7 +220,9 @@ class Dataset(keras.utils.Sequence):
                       flatten = False,
                       sortOut=False,
                       lstm=True,
-                      dtype=np.float32):
+                      dtype=np.float32,
+                      transform=None,
+                      preTransformation=None):
 
 
         """
@@ -222,7 +250,14 @@ class Dataset(keras.utils.Sequence):
         self.flatten = flatten
         self.sortOut = sortOut
         self.lstm = lstm
+        self.transform = transform
+        self.preTransformation = preTransformation
 
+
+        if preTransformation is None:
+            self.preTransformation=[resize(self.dim)]
+        else:
+            self.preTransformation=preTransformation
 
         # index offset
         self.label_offset = self.n_channels + self.steps - 1
@@ -237,14 +272,22 @@ class Dataset(keras.utils.Sequence):
             dataframe.to_csv(os.path.join(self.workingdir,saveListOfFiles),index=False)
             self.listOfFiles = dataframe
 
+        if type(self.preTransformation) is list:
+            pathName = ""
+            for i in range(0,len(self.preTransformation)-1):
+                transObj = self.preTransformation[i]
+                pathName += str(transObj)
+            pathName += str(self.preTransformation[-1])
+            savefolder = pathName
 
+        else:
+            savefolder = str(self.preTransformation)
 
         self.listOfFiles = list(pd.read_csv(os.path.join(self.workingdir,saveListOfFiles))["colummn"])
 
-        savefolder = dimToFolder(self.dim)
 
      
-        self.new_listOfFiles = resizeImages(self.listOfFiles,dim,os.path.join(workingdir,savefolder),saveListOfFiles)
+        self.new_listOfFiles = transformImages(self.listOfFiles,self.preTransformation,os.path.join(workingdir,savefolder),saveListOfFiles)
 
         if len(self.new_listOfFiles) != len(self.listOfFiles):
             print(YELLOW + "WARNING: Length of lists does not match! " + RESET)
@@ -262,19 +305,20 @@ class Dataset(keras.utils.Sequence):
                 print(CYAN+"But length does not match again.... just delete the folders bruh"+RESET)
 
         self.listOfFiles = self.new_listOfFiles
-        #self.listOfFiles = self.new_listOfFiles[:500]
+        self.listOfFiles = self.new_listOfFiles[416:436]
 
         self.indizes = np.arange(len(self))
 
 
         if self.sortOut:
             self.indizes = sortOutFiles(self.listOfFiles,self.indizes)
+        
 
 
     def __data_generation(self,index):
         X = []
         Y = []
-
+        
         for i,id in enumerate(range(index,index+self.n_channels)):
             
             img = np.array(Image.open(self.listOfFiles[id]))
@@ -291,14 +335,14 @@ class Dataset(keras.utils.Sequence):
         except Exception as e:
             print("\n\n",index,self.label_offset,len(self.listOfFiles))
             exit(-1)
-        
 
-        if self.flatten:
 
-            label = label.flatten()
-            label = keras.utils.to_categorical(label, num_classes=3, dtype='float32')
-            return np.array(X),np.array(label)
-            
+
+        if self.transform is not None:
+
+            for operation in self.transform:
+                label = operation(label)
+                    
 
         Y.append(label)
 
@@ -311,12 +355,16 @@ class Dataset(keras.utils.Sequence):
             np.random.shuffle(self.indizes)
 
 
+
     def __len__(self):
         
-        return int(np.floor(len(self.listOfFiles)/self.batch_size )) - self.label_offset
+        return int(np.floor((len(self.listOfFiles) - self.label_offset)/self.batch_size )) 
 
  
     def __getitem__(self,index):
+        
+        if index >= len(self)-1:
+            self.on_epoch_end()
 
         X = []
         Y = []
@@ -332,12 +380,16 @@ class Dataset(keras.utils.Sequence):
         X = np.array(X)
         Y = np.array(Y)
         
-        #X = np.expand_dims(X, axis=-1)
 
         X = np.transpose(X,(0,2,3,1))
+        if self.transform is not None:
+            return X/255.0,Y/255.0
         if not self.flatten:
             Y = np.transpose(Y,(0,2,3,1))
 
+        else:
+            return X/255,Y.flatten()
 
-        return X/255.0,Y/255.0
-        #return X,Y
+        
+        return X/255.0,Y/1.0
+        

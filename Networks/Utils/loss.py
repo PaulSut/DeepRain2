@@ -14,6 +14,8 @@ class SSIM(tf.keras.losses.Loss):
         self.c1=(l*self.k1)**2
         self.c2=(l*self.k2)**2
 
+    def __str__(self):
+        return "[LOSS] Structural Similarity Index\n"
 
     @tf.function
     def __int_shape(self,x):
@@ -69,5 +71,14 @@ class SSIM(tf.keras.losses.Loss):
         return tf.reduce_mean((1-ssim)/2.0,axis=-1)
 
         
+class NLL(tf.keras.losses.Loss):
+    """docstring for NLL"""
+    def __init__(self):
+        super(NLL, self).__init__()
+    
+    @tf.function
+    def __call__(self,y_pred,y_true):
+        return -y_pred.log_prob(y_true)
 
-        
+    def __str__(self):
+        return "[LOSS] Negative LogLiklihood\n"
