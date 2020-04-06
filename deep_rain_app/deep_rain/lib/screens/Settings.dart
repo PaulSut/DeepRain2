@@ -114,6 +114,13 @@ class _LoadingState extends State<Settings> {
                 switchValue: switchRegenwarnungen,
                 onToggle: (bool value) {
                   setState(() {
+                    if(value == true){
+                      DatabaseService _db = DatabaseService();
+                      _db.activatePushNotification();
+                    }else if(value == false){
+                      DatabaseService _db = DatabaseService();
+                      _db.deactivatePushNotification();
+                    }
                     switchRegenwarnungen = !switchRegenwarnungen;
                   });
                 },
