@@ -1,17 +1,10 @@
+import 'package:deep_rain/global/PushNotifications.dart';
 import 'package:deep_rain/global/UIText.dart';
-import 'package:deep_rain/main.dart';
-import 'package:deep_rain/services/SliderService.dart';
+import 'package:deep_rain/services/database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:map_overlay/google/options.dart';
-import 'package:map_overlay/google/overlay.dart';
-import 'package:map_overlay/google/widgetContainer.dart';
-import 'package:photo_view/photo_view.dart';
+import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:shared_preferences_settings/shared_preferences_settings.dart';
+import 'dart:io' show Platform;
 
 class Settings extends StatefulWidget {
   @override
@@ -21,12 +14,20 @@ class Settings extends StatefulWidget {
 class _LoadingState extends State<Settings> {
 
   bool switchRegenwarnungen = true;
-  String currentValue = 'Deutsch';
 
   UIText _uiText = UIText();
+  PushNotifications _pushNotifications = PushNotifications();
+
 
   @override
   Widget build(BuildContext context) {
+
+    Duration _duration = _pushNotifications.getTimeBeforeWarning();
+    if(_duration == null){
+      _duration = Duration(hours: 0, minutes: 20);
+      _pushNotifications.setTimeBeforeWarning(_duration);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(_uiText.settingsAppTitle),
@@ -52,9 +53,7 @@ class _LoadingState extends State<Settings> {
                               value: _uiText.getLanguage(),
                               onChanged: (String newValue){
                                 _uiText.setLanguage(newValue);
-                                setState(() {
-                                  currentValue = newValue;
-                                });
+                                setState(() {});
                               },
                               items: <String> ['Deutsch', 'English', 'Español'].map<DropdownMenuItem<String>>((String value){
                                 return DropdownMenuItem<String>(
@@ -105,16 +104,62 @@ class _LoadingState extends State<Settings> {
                 switchValue: switchRegenwarnungen,
                 onToggle: (bool value) {
                   setState(() {
+                    if(value == true){
+                      DatabaseService _db = DatabaseService();
+                      _db.activatePushNotification();
+                    }else if(value == false){
+                      DatabaseService _db = DatabaseService();
+                      _db.deactivatePushNotification();
+                    }
                     switchRegenwarnungen = !switchRegenwarnungen;
                   });
                 },
               ),
               SettingsTile(
                 title: _uiText.settingsTimeOfRainWarning,
-                subtitle: '30 Minuten',
+                subtitle: Platform.isAndroid ? _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + _uiText.settingsTimeOfRainWarningSubtitle : _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + 'min.',
                 leading: Icon(Icons.av_timer),
-                onTap: () {
-                  showAlertDialog(context, "Benachrichtigung vor Regen in Minuten", "Hier könnte man eine Sprache auswählen");
+                onTap: () async{
+                  return await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text(_uiText.chooseLanguageDialogHeader),
+                          content: StatefulBuilder(
+                            builder: (BuildContext context, StateSetter setState){
+                              return DurationPicker(
+                                    duration: _pushNotifications.getTimeBeforeWarning(),
+                                    onChange: (Duration val) {
+                                      if(val.inMinutes<60){
+                                        _pushNotifications.setTimeBeforeWarning(val);
+                                        setState((){});
+                                      }
+                                    },
+                                    snapToMins: 5.0,
+                                  );
+                            },
+                          ),
+                          actions: <Widget>[
+                            FlatButton(
+                              color: Colors.blueGrey,
+                              textColor: Colors.white,
+                              disabledColor: Colors.grey,
+                              disabledTextColor: Colors.black,
+                              padding: EdgeInsets.all(8.0),
+                              splashColor: Colors.blueAccent,
+                              onPressed: (){
+                                Navigator.of(context).pop();
+
+                              },
+                              child: Text(_uiText.chooseLanguageDialogOkButton),
+                            )
+                          ],
+                        );
+                      }).then((value){
+                        DatabaseService _db = DatabaseService();
+                        _db.updatePushNotificationTime();
+                    setState((){});
+                  });
                 },
               ),
             ],

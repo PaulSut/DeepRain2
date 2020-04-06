@@ -13,7 +13,9 @@ exports.pushNotificationTrigger = functions.firestore.document('RainWarningPushN
     var tokens = [];
     newData = snapshot.data();
 
-    const deviceTokens = await admin.firestore().collection('DeviceTokens').get();
+    var timeBeforeRaining = newData.time_before_raining;
+    var deviceTokens = await admin.firestore().collection('DeviceTokens_'+timeBeforeRaining.toString()+'_min').get();
+
     for(var token of deviceTokens.docs){
         tokens.push(token.data().token);
     }
