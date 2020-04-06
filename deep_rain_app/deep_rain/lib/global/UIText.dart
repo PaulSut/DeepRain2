@@ -63,7 +63,7 @@ class UIText{
       settingsRegion = 'Region';
       settingsHeaderNotifications = 'Benachrichtigungen';
       settingsRainWarning = 'Regenwarnung';
-      settingsTimeOfRainWarning = 'Zeitpunkt Regenwarnung';
+      settingsTimeOfRainWarning = 'Zeitpunkt';
       settingsTimeOfRainWarningSubtitle = ' Minuten vor dem Regen';
         //choose language dialog
         chooseLanguageDialogHeader = 'Sprache auswählen';
@@ -95,7 +95,7 @@ class UIText{
       settingsRegion = 'Región';
       settingsHeaderNotifications = 'Notificaciones';
       settingsRainWarning = 'Advertencia de lluvia';
-      settingsTimeOfRainWarning = 'La hora de la advertencia de la lluvia';
+      settingsTimeOfRainWarning = 'Fecha';
       settingsTimeOfRainWarningSubtitle = ' minutos antes de la lluvia';
         //choose language dialog
         chooseLanguageDialogHeader = 'Seleccione el idioma';
@@ -127,7 +127,7 @@ class UIText{
       settingsRegion = 'Region';
       settingsHeaderNotifications = 'Notifications';
       settingsRainWarning = 'Rainwarning';
-      settingsTimeOfRainWarning = 'Time of rainwarning';
+      settingsTimeOfRainWarning = 'Warningtime';
       settingsTimeOfRainWarningSubtitle = ' minutes before the rain';
         //choose language dialog
         chooseLanguageDialogHeader = 'Choose Language';

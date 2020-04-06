@@ -1,20 +1,10 @@
 import 'package:deep_rain/global/PushNotifications.dart';
 import 'package:deep_rain/global/UIText.dart';
-import 'package:deep_rain/main.dart';
-import 'package:deep_rain/services/SliderService.dart';
 import 'package:deep_rain/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:map_overlay/google/options.dart';
-import 'package:map_overlay/google/overlay.dart';
-import 'package:map_overlay/google/widgetContainer.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:shared_preferences_settings/shared_preferences_settings.dart';
+import 'dart:io' show Platform;
 
 class Settings extends StatefulWidget {
   @override
@@ -120,7 +110,7 @@ class _LoadingState extends State<Settings> {
               ),
               SettingsTile(
                 title: _uiText.settingsTimeOfRainWarning,
-                subtitle: _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + _uiText.settingsTimeOfRainWarningSubtitle,
+                subtitle: Platform.isAndroid ? _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + _uiText.settingsTimeOfRainWarningSubtitle : _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + 'min.',
                 leading: Icon(Icons.av_timer),
                 onTap: () async{
                   return await showDialog(
