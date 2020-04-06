@@ -155,10 +155,5 @@ class Trainer(object):
         with open(os.path.join(self.pathToModel,self.nameOfModel+'history.json'), 'w') as f:
             json.dump(self.history, f)
 
-        self.model.save_weights(os.path.join(self.pathToModel,self.nameOfModel+".h5"))
-
-
-
-
-
-
+        #self.model.save_weights(os.path.join(self.pathToModel,self.nameOfModel+".h5"))
+        self.model.save(os.path.join(self.pathToModel,self.nameOfModel+".h5"))

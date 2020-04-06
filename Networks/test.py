@@ -11,11 +11,7 @@ from tensorflow.keras.optimizers import Adam
 import os
 import tensorflow.keras as tfk
 import tensorflow.keras.layers as tfkl
-try:
-    from Utils.connection_cfg import *
-except Exception as e:
-    PSWD = None
-    USRN = None
+
 
 DatasetFolder = "./Data/RAW"
 PathToData = os.path.join(DatasetFolder,"MonthPNGData")
@@ -105,6 +101,22 @@ def LSTM_POISSON():
 
     t.fit( epochs = 2 )
 
-LSTM_POISSON()
+
+def LSTM_Meets_Unet_MIXED():
+    def NLL(y_true, y_hat):
+        return -y_hat.log_prob(y_true[:,:])
+    dimension = (64,64)
+    t = Trainer(LSTM_Meets_Unet_Poisson,
+                    NLL,
+                    provideData(batch_size=25,dimension=dimension),
+                    batch_size = 25,
+                    optimizer=optimizer,
+                    dimension = dimension,
+                    channels = channels,
+                    metrics=["mse","accuracy"])
+
+    t.fit( epochs = 2 )
+#LSTM_POISSON()
 #Poisson()
+#LSTM_Meets_Unet_MIXED()
 

@@ -3,6 +3,7 @@ from tensorflow.keras.layers import *
 from tensorflow.keras.optimizers import Adam
 import tensorflow as tf
 import tensorflow_probability as tfp
+tfd = tfp.distributions
 
 def UNet64(input_shape,
            n_predictions=1,
@@ -143,7 +144,7 @@ def UNet64_Bernoulli(input_shape,
     model = Model(inputs=inputs, outputs=output)
     return model
 
-def UNet64_Poisson(input_shape,
+def UNet64_zeroInflatedPoisson(input_shape,
            n_predictions=1,
            simpleclassification=None,
            flatten_output=False,
@@ -151,7 +152,16 @@ def UNet64_Poisson(input_shape,
            activation_output="relu"):
 
 
-    print("OUT",type(n_predictions),n_predictions)
+    def zeroInflatedPoisson(output):
+        rate = tf.math.exp(output[0,:,:,0]) #A 
+        s = tf.math.sigmoid(output[0,:,:,1])
+        components = [tfd.Deterministic(loc=tf.zeros_like(rate)), #E
+         tfd.Poisson(rate=rate) #F 
+         ]
+        mixture = tfd.Mixture(
+              cat=tfd.Categorical(probs=tf.stack([1-s, s],axis=-1)),#D
+              components=components)
+        return mixture
 
     
     inputs = Input(shape=input_shape)
@@ -193,11 +203,11 @@ def UNet64_Poisson(input_shape,
     up01 = concatenate([conv01, up01], axis=3)  # 10+80 x 64x64
     print("7)", up01.shape, "90 x 64x64")
 
-    output = Conv2D(1, (1, 1), activation=tf.exp)(up01)  # 1 x 64x64
+    output = Conv2D(2, (1, 1), activation=tf.exp)(up01)  # 1 x 64x64
     #output = Flatten()(output)
     
     #output = tfp.layers.IndependentPoisson(1)(output)
-    output = tfp.layers.DistributionLambda(tfp.distributions.Poisson)(output)
+    output = tfp.layers.DistributionLambda(zeroInflatedPoisson)(output)
     #output = tfp.layers.IndependentPoisson(1)(output)
 
     model = Model(inputs=inputs, outputs=output)

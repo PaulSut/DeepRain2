@@ -64,24 +64,32 @@ class Binarize(object):
 class Flatten(object):
     """docstring for Flatten"""
     def __init__(self):
-        super(Flatten, self).__init__()
-        
+        super(Flatten, self).__init__()       
 
     def __call__(self,img):
         img = img.flatten()
         return img      
 
+########################################################################
+###                     PRETRANSFORMATIONS                           ###
+########################################################################
+
+
+
 class cutOut(object):
     """docstring for cutOut"""
-    def __init__(self):
+    def __init__(self,slices):
         super(cutOut, self).__init__()
-    
+        #assert type(slices) is slice, "Parameter slices needs to be type of slice!"
+        self.idx = slices
+        self.slices = [slice(slices[0],slices[1]),slice(slices[2],slices[3])]
+
     def __call__(self,img):
-        print("CALL")
-        return img
+        return img[self.slices]
 
     def __str__(self):
-        return "dummy"
+        savefolder=str(self.idx[0])+"x"+str(self.idx[1])+"_"+str(self.idx[0])+"x"+str(self.idx[1])
+        return savefolder
         
 
 
@@ -110,13 +118,18 @@ class resize(object):
         return savefolder
     
 
+########################################################################
+###                             WORKER                              ###
+########################################################################
 
-def fProcess(listOfFiles,savedir,transformation):
+
+def fProcess(listOfFiles,savedir,transformations):
 
     while listOfFiles:
         file = listOfFiles.pop()
 
         filename = file.split('/')[-1]
+
         pathToWrite = os.path.join(savedir,filename)
 
         if os.path.exists(pathToWrite):
@@ -124,7 +137,10 @@ def fProcess(listOfFiles,savedir,transformation):
             continue
 
         img = np.array(Image.open(file))
-        img = transformation(img)
+
+        for transformation in transformations:
+            img = transformation(img)
+
         img = Image.fromarray(img)
         img.save(pathToWrite)
 

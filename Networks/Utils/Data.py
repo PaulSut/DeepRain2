@@ -9,10 +9,46 @@ from .transform import transformImages,resize
 import cv2
 from Utils.colors import *
 from tensorflow.python.keras.utils.data_utils import Sequence
+from Utils.loadset import getDataSet
+
+
 CSVFILE = "./.listOfFiles.csv"
 WRKDIR = "./Data"
 TRAINSETFOLDER=os.path.join(WRKDIR,"train")
 VALSETFOLDER=os.path.join(WRKDIR,"val")
+
+DatasetFolder = "./Data/RAW"
+PathToData = os.path.join(DatasetFolder,"MonthPNGData")
+
+
+def provideData(dimension,
+                batch_size,
+                channels,
+                transform=None,
+                preTransformation=None,
+                year = [2017],
+                onlyUseYears = None,
+                DatasetFolder=DatasetFolder):
+
+    """
+        DatasetFolder       : Download Data to this Folder an use it as working directory
+        preTransformation   : Transformation to perform on Data BEFORE loading it
+        transform           : Transformation to perform on a single Image before hand it to the NN
+        onlyUseYears        : List of years to use in Dataset
+
+    """
+
+    getDataSet(DatasetFolder,year=[2017])
+    train,test = dataWrapper(PathToData,
+                            dimension=dimension,
+                            channels=channels,
+                            batch_size=batch_size,
+                            overwritecsv=True,
+                            onlyUseYears=onlyUseYears,
+                            transform=transform,
+                            preTransformation=preTransformation)
+    
+    return train,test
 
 def dataWrapper(path,
                 dimension,
@@ -219,7 +255,7 @@ class Dataset(Sequence):
 
 
         if preTransformation is None:
-            self.preTransformation=resize(self.dim)
+            self.preTransformation=[resize(self.dim)]
         else:
             self.preTransformation=preTransformation
 
@@ -236,8 +272,16 @@ class Dataset(Sequence):
             dataframe.to_csv(os.path.join(self.workingdir,saveListOfFiles),index=False)
             self.listOfFiles = dataframe
 
+        if type(self.preTransformation) is list:
+            pathName = ""
+            for i in range(0,len(self.preTransformation)-1):
+                transObj = self.preTransformation[i]
+                pathName += str(transObj)
+            pathName += str(self.preTransformation[-1])
+            savefolder = pathName
 
-        savefolder = str(self.preTransformation)
+        else:
+            savefolder = str(self.preTransformation)
 
         self.listOfFiles = list(pd.read_csv(os.path.join(self.workingdir,saveListOfFiles))["colummn"])
 
@@ -261,7 +305,7 @@ class Dataset(Sequence):
                 print(CYAN+"But length does not match again.... just delete the folders bruh"+RESET)
 
         self.listOfFiles = self.new_listOfFiles
-        #self.listOfFiles = self.new_listOfFiles[:200]
+        self.listOfFiles = self.new_listOfFiles[416:436]
 
         self.indizes = np.arange(len(self))
 
@@ -339,7 +383,7 @@ class Dataset(Sequence):
 
         X = np.transpose(X,(0,2,3,1))
         if self.transform is not None:
-            return X/255.0,Y/1.0
+            return X/255.0,Y/255.0
         if not self.flatten:
             Y = np.transpose(Y,(0,2,3,1))
 

@@ -3,10 +3,35 @@ import tarfile
 import getpass
 import paramiko
 import os
-from Utils.Data import getListOfFiles
+try:
+    from Utils.connection_cfg import *
+except Exception as e:
+    PSWD = None
+    USRN = None
+
 HOST = "deeprain.ddns.net"
 PORT = 22
 DOWNLOAD_PATH = "/home/bananapi/Dataset/DeepRain"
+
+def getListOfFiles(path):
+    """
+    
+        stolen from :
+        https://thispointer.com/python-how-to-get-list-of-files-in-directory-and-sub-directories/
+
+    """
+
+
+    directory_entries = os.listdir(path)
+    files = []
+
+    for entry in directory_entries:
+        fullPath = os.path.join(path,entry)
+        if os.path.isdir(fullPath):
+            files = files + getListOfFiles(fullPath)
+        else:
+            files.append(fullPath)
+    return files
 
 def printProgress(transferred, toBeTransferred):
 
@@ -50,7 +75,7 @@ def extract(root_dir,tarfilename):
 
     os.remove(root_dir+"/"+tarfilename)
 
-def getDataSet(working_dir,year=None,username=None,pswd=None):
+def getDataSet(working_dir,year=None,username=USRN,pswd=PSWD):
     prefix = "YW2017.002_"
     suffix = ".tar.gz"
     start = 2008

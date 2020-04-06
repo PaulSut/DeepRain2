@@ -25,7 +25,6 @@ networks = {"CnnLSTM":CnnLSTM,
             "LSTM_Meets_Unet":LSTM_Meets_Unet,
             "UNet64":UNet64,
             "unet":unet,
-            "UNet64_Poisson":UNet64_Poisson,
             "UNet64_Bernoulli":UNet64_Bernoulli
 }
 
@@ -208,7 +207,7 @@ class Predictor(object):
             
 
 
-PathToData = "/home/simon/MonthPNGData/MonthPNGData"
+#PathToData = "/home/simon/MonthPNGData/MonthPNGData"
 
-pred=Predictor(modelPath="./model_data",PathToData = PathToData)
-pred.predict()
+#pred=Predictor(modelPath="./model_data",PathToData = PathToData)
+#pred.predict()
