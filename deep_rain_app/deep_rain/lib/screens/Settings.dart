@@ -110,7 +110,7 @@ class _LoadingState extends State<Settings> {
               ),
               SettingsTile(
                 title: _uiText.settingsTimeOfRainWarning,
-                subtitle: Platform.isAndroid ? _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + _uiText.settingsTimeOfRainWarningSubtitle : null,
+                subtitle: Platform.isAndroid ? _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + _uiText.settingsTimeOfRainWarningSubtitle : _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + 'min.',
                 leading: Icon(Icons.av_timer),
                 onTap: () async{
                   return await showDialog(
