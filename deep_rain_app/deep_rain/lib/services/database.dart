@@ -68,7 +68,26 @@ class DatabaseService{
     _pushNotifications.setAppLastDeviceTokenDocument('DeviceTokens_' + _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + '_min');
     final CollectionReference ForecastCollection = Firestore.instance.collection('DeviceTokens_' + _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + '_min');
     await ForecastCollection.document(_pushNotifications.getDeviceToken()).setData({'token' : _pushNotifications.getDeviceToken()});
+  }
 
+  void deactivatePushNotification() async{
+    PushNotifications _pushNotifications = PushNotifications();
+    //Check if the default time of pushnotification is already changed
+    if(_pushNotifications.getAppLastDeviceTokenDocument() != null){
+      //Delete the old setting of pushnotificationtime
+      Firestore.instance.collection(_pushNotifications.getAppLastDeviceTokenDocument()).document(_pushNotifications.getDeviceToken()).delete();
+    }
+  }
+
+  void activatePushNotification() async{
+    PushNotifications _pushNotifications = PushNotifications();
+    //Check if the default time of pushnotification is already changed
+    if(_pushNotifications.getAppLastDeviceTokenDocument() != null){
+      //Set the setting of pushnotificationtime
+      _pushNotifications.setAppLastDeviceTokenDocument('DeviceTokens_' + _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + '_min');
+      final CollectionReference ForecastCollection = Firestore.instance.collection('DeviceTokens_' + _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + '_min');
+      await ForecastCollection.document(_pushNotifications.getDeviceToken()).setData({'token' : _pushNotifications.getDeviceToken()});
+    }
   }
 
 }
