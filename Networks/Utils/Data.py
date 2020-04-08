@@ -305,7 +305,7 @@ class Dataset(Sequence):
                 print(CYAN+"But length does not match again.... just delete the folders bruh"+RESET)
 
         self.listOfFiles = self.new_listOfFiles
-        self.listOfFiles = self.new_listOfFiles[416:436]
+        #self.listOfFiles = self.new_listOfFiles[416:616]
 
         self.indizes = np.arange(len(self))
 

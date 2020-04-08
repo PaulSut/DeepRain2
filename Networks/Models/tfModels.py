@@ -10,10 +10,10 @@ def UNet64(input_shape,
            simpleclassification=None,
            flatten_output=False,
            activation_hidden="relu",
-           activation_output="relu"):
+           activation_output="sigmoid"):
 
     print("OUT",type(n_predictions),n_predictions)
-
+    print('input shape:', input_shape)
     
     inputs = Input(shape=input_shape)
 

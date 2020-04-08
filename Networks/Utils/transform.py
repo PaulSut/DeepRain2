@@ -12,7 +12,6 @@ class fromCategorical(object):
     def __init__(self, conditions):
         super(fromCategorical, self).__init__()
         self.conditions = conditions
-        
 
 class ToCategorical(object):
     """
@@ -30,7 +29,7 @@ class ToCategorical(object):
         self.conditions = conditions
         self.numClasses = len(self.conditions) -1
 
-    def __call__(self,array):
+    def __call__(self, array):
         newVector = np.zeros((*array.shape,self.numClasses))
 
         for i in range(1,self.numClasses):
@@ -46,6 +45,9 @@ class ToCategorical(object):
             if i.max() < 1:
                 print(i)
                 exit(-1)
+
+
+
         return newVector.flatten()
 
 class Binarize(object):
@@ -59,6 +61,8 @@ class Binarize(object):
     def __call__(self,img):
         img[np.where(img > self.threshold)] = self.value
         img[np.where(img <= self.threshold)] = 0
+
+        #print('\nUnique Values X: ', np.unique(img, return_counts=True))
         return img
 
 class Flatten(object):
@@ -131,7 +135,6 @@ def fProcess(listOfFiles,savedir,transformations):
         filename = file.split('/')[-1]
 
         pathToWrite = os.path.join(savedir,filename)
-
         if os.path.exists(pathToWrite):
             print("File ",pathToWrite," exists",len(listOfFiles))
             continue

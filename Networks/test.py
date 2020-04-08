@@ -3,11 +3,13 @@ from Models.tfModels import *
 from trainer import Trainer
 from Utils.loss import SSIM
 from Models.Unet import unet
-#from keras.optimizers import *
+from tensorflow.keras.optimizers import *
 from Models.CnnLSTM import *
 from Utils.loadset import getDataSet
 from Utils.Data import dataWrapper
 from tensorflow.keras.optimizers import Adam
+from Utils.transform import *
+from keras.losses import *
 import os
 import tensorflow.keras as tfk
 import tensorflow.keras.layers as tfkl
@@ -16,9 +18,9 @@ import tensorflow.keras.layers as tfkl
 DatasetFolder = "./Data/RAW"
 PathToData = os.path.join(DatasetFolder,"MonthPNGData")
 
-dimension = (256,192)
-dimension = (64,64)
-#dimension = (272,224)
+#dimension = (256,192)
+#dimension = (64,64)
+dimension = (272,224)
 channels  = 5
 optimizer = Adam( lr = 1e-3 )
 pathToData = "/home/simon/MonthPNGData/MonthPNGData"
@@ -27,7 +29,7 @@ pathToData = "/home/simon/MonthPNGData/MonthPNGData"
 
 def provideData(flatten=False,dimension=dimension,batch_size=10,transform=None,preTransformation=None):
 
-    getDataSet(DatasetFolder,year=[2017],username=USRN,pswd=PSWD)
+    getDataSet(DatasetFolder,year=[2017])
     train,test = dataWrapper(PathToData,
                             dimension=dimension,
                             channels=channels,
@@ -40,19 +42,39 @@ def provideData(flatten=False,dimension=dimension,batch_size=10,transform=None,p
     
     return train,test
 
-"""
-t = Trainer(LSTM_Meets_Unet_Upconv,
-                SSIM(),
-                pathToData,
-                batch_size = 10,
+    """
+    t = Trainer(LSTM_Meets_Unet_Upconv,
+                    SSIM(),
+                    pathToData,
+                    batch_size = 10,
+                    optimizer=optimizer,
+                    dimension = dimension,
+                    channels = channels)
+    
+    t.fit( epochs = 3 )
+    
+    
+    """
+def small_uet():
+    dimension = (272, 224)
+    channels = 5
+    optimizer = Adam(lr = 1e-3)
+    # optimizer = Adadelta()
+    # optimizer = RMSprop(learning_rate=1e-3)
+
+    t = Trainer(UNet64,
+                lossfunction= sparse_categorical_crossentropy,
+                pathToData= provideData(batch_size=8, transform=[Binarize(threshold=0, value=1)]),
+                batch_size=8,
                 optimizer=optimizer,
-                dimension = dimension,
-                channels = channels)
+                dimension=dimension,
+                channels=channels,
+                load=False,
+                metrics=['sparse_categorical_crossentropy', 'mse'],
+               )
 
-t.fit( epochs = 3 )
+    t.fit(epochs=2)
 
-
-"""
 def NLL(y_true, y_hat):
     return -y_hat.log_prob(y_true)
 negative_log_likelihood = lambda x, rv_x: -rv_x.log_prob(x)
@@ -120,3 +142,4 @@ def LSTM_Meets_Unet_MIXED():
 #Poisson()
 #LSTM_Meets_Unet_MIXED()
 
+small_uet()
