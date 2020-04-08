@@ -1,18 +1,10 @@
 import 'dart:async';
 
+import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:deep_rain/main.dart';
 import 'package:flutter/cupertino.dart';
 
-String AppLanguage = 'Deutsch';
-
 class UIText{
-  setLanguage(String Language){
-    AppLanguage = Language;
-  }
-  String getLanguage(){
-    return AppLanguage;
-  }
-
   //ForecastList
   String forecastListAppTitle;
   String forecastListRainIntenseNoRain;
@@ -44,7 +36,8 @@ class UIText{
 
 
   UIText(){
-    if(AppLanguage == 'Deutsch'){
+    GlobalValues _globalValues = GlobalValues();
+    if(_globalValues.getAppLanguage() == 'Deutsch'){
       //ForecastList
       forecastListAppTitle = 'Regenvorhersage';
       forecastListRainIntenseNoRain = 'Kein Regen';
@@ -76,7 +69,7 @@ class UIText{
 
 
     }
-    else if(AppLanguage == 'Español'){
+    else if(_globalValues.getAppLanguage() == 'Español'){
       //ForecastList
       forecastListAppTitle = 'Previsión de lluvia';
       forecastListRainIntenseNoRain = 'no llueve';
@@ -108,7 +101,7 @@ class UIText{
 
 
     }
-    else if(AppLanguage == 'English'){
+    else if(_globalValues.getAppLanguage() == 'English'){
       //ForecastList
       forecastListAppTitle = 'Rainforecast';
       forecastListRainIntenseNoRain = 'No rain';

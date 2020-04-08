@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deep_rain/global/PushNotifications.dart';
+import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:deep_rain/global/UIText.dart';
 import 'package:deep_rain/screens/ForecastList.dart';
 import 'package:deep_rain/screens/Settings.dart';
@@ -82,13 +82,13 @@ class MainAppState extends State<MainApp> {
   }
 
   final FirebaseMessaging _fcm = FirebaseMessaging();
-  PushNotifications _pushNotifications = PushNotifications();
+  GlobalValues _globalValues = GlobalValues();
 
   pushDeviceTokenToDB() async {
     final CollectionReference ForecastCollection = Firestore.instance.collection('DeviceTokens');
     await _fcm.getToken().then((token) async{
       await ForecastCollection.document(token).setData({'token' : token});
-      _pushNotifications.setDeviceToken(token);
+      _globalValues.setDeviceToken(token);
     });
   }
 }

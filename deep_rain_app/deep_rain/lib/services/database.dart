@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deep_rain/DataObjects/DataHolder.dart';
 import 'package:deep_rain/DataObjects/ForecastListItem.dart';
-import 'package:deep_rain/global/PushNotifications.dart';
+import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -56,37 +56,39 @@ class DatabaseService{
   }
   
   void updatePushNotificationTime() async{
-    PushNotifications _pushNotifications = PushNotifications();
+    GlobalValues _globalValues = GlobalValues();
 
     //Check if the default time of pushnotification is already changed
-    if(_pushNotifications.getAppLastDeviceTokenDocument() != null){
+    if(_globalValues.getAppLastDeviceTokenDocument() != null){
       //Delete the old setting of pushnotificationtime
-      Firestore.instance.collection(_pushNotifications.getAppLastDeviceTokenDocument()).document(_pushNotifications.getDeviceToken()).delete();
+      Firestore.instance.collection(_globalValues.getAppLastDeviceTokenDocument()).document(_globalValues.getDeviceToken()).delete();
     }
 
     //Set the new setting of pushnotificationtime
-    _pushNotifications.setAppLastDeviceTokenDocument('DeviceTokens_' + _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + '_min');
-    final CollectionReference ForecastCollection = Firestore.instance.collection('DeviceTokens_' + _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + '_min');
-    await ForecastCollection.document(_pushNotifications.getDeviceToken()).setData({'token' : _pushNotifications.getDeviceToken()});
+    _globalValues.setAppLastDeviceTokenDocument('DeviceTokens_' + _globalValues.getTimeBeforeWarning().inMinutes.toString() + '_min');
+    if(_globalValues.getAppSwitchRainWarning()){
+      final CollectionReference ForecastCollection = Firestore.instance.collection('DeviceTokens_' + _globalValues.getTimeBeforeWarning().inMinutes.toString() + '_min');
+      await ForecastCollection.document(_globalValues.getDeviceToken()).setData({'token' : _globalValues.getDeviceToken()});
+    }
   }
 
   void deactivatePushNotification() async{
-    PushNotifications _pushNotifications = PushNotifications();
+    GlobalValues _globalValues = GlobalValues();
     //Check if the default time of pushnotification is already changed
-    if(_pushNotifications.getAppLastDeviceTokenDocument() != null){
+    if(_globalValues.getAppLastDeviceTokenDocument() != null){
       //Delete the old setting of pushnotificationtime
-      Firestore.instance.collection(_pushNotifications.getAppLastDeviceTokenDocument()).document(_pushNotifications.getDeviceToken()).delete();
+      Firestore.instance.collection(_globalValues.getAppLastDeviceTokenDocument()).document(_globalValues.getDeviceToken()).delete();
     }
   }
 
   void activatePushNotification() async{
-    PushNotifications _pushNotifications = PushNotifications();
+    GlobalValues _globalValues = GlobalValues();
     //Check if the default time of pushnotification is already changed
-    if(_pushNotifications.getAppLastDeviceTokenDocument() != null){
+    if(_globalValues.getAppLastDeviceTokenDocument() != null){
       //Set the setting of pushnotificationtime
-      _pushNotifications.setAppLastDeviceTokenDocument('DeviceTokens_' + _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + '_min');
-      final CollectionReference ForecastCollection = Firestore.instance.collection('DeviceTokens_' + _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + '_min');
-      await ForecastCollection.document(_pushNotifications.getDeviceToken()).setData({'token' : _pushNotifications.getDeviceToken()});
+      _globalValues.setAppLastDeviceTokenDocument('DeviceTokens_' + _globalValues.getTimeBeforeWarning().inMinutes.toString() + '_min');
+      final CollectionReference ForecastCollection = Firestore.instance.collection('DeviceTokens_' + _globalValues.getTimeBeforeWarning().inMinutes.toString() + '_min');
+      await ForecastCollection.document(_globalValues.getDeviceToken()).setData({'token' : _globalValues.getDeviceToken()});
     }
   }
 

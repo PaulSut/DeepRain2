@@ -1,4 +1,4 @@
-import 'package:deep_rain/global/PushNotifications.dart';
+import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:deep_rain/global/UIText.dart';
 import 'package:deep_rain/services/database.dart';
 import 'package:flutter/material.dart';
@@ -13,19 +13,17 @@ class Settings extends StatefulWidget {
 
 class _LoadingState extends State<Settings> {
 
-  bool switchRegenwarnungen = true;
-
   UIText _uiText = UIText();
-  PushNotifications _pushNotifications = PushNotifications();
+  GlobalValues _globalValues = GlobalValues();
 
 
   @override
   Widget build(BuildContext context) {
 
-    Duration _duration = _pushNotifications.getTimeBeforeWarning();
+    Duration _duration = _globalValues.getTimeBeforeWarning();
     if(_duration == null){
       _duration = Duration(hours: 0, minutes: 20);
-      _pushNotifications.setTimeBeforeWarning(_duration);
+      _globalValues.setTimeBeforeWarning(_duration);
     }
 
     return Scaffold(
@@ -50,9 +48,9 @@ class _LoadingState extends State<Settings> {
                           content: StatefulBuilder(
                             builder: (BuildContext context, StateSetter setState){
                               return DropdownButton<String>(
-                              value: _uiText.getLanguage(),
+                              value: _globalValues.getAppLanguage(),
                               onChanged: (String newValue){
-                                _uiText.setLanguage(newValue);
+                                _globalValues.setAppLanguage(newValue);
                                 setState(() {});
                               },
                               items: <String> ['Deutsch', 'English', 'Español'].map<DropdownMenuItem<String>>((String value){
@@ -101,7 +99,7 @@ class _LoadingState extends State<Settings> {
               SettingsTile.switchTile(
                 title: _uiText.settingsRainWarning,
                 leading: Icon(Icons.priority_high),
-                switchValue: switchRegenwarnungen,
+                switchValue: _globalValues.getAppSwitchRainWarning(),
                 onToggle: (bool value) {
                   setState(() {
                     if(value == true){
@@ -111,13 +109,13 @@ class _LoadingState extends State<Settings> {
                       DatabaseService _db = DatabaseService();
                       _db.deactivatePushNotification();
                     }
-                    switchRegenwarnungen = !switchRegenwarnungen;
+                    _globalValues.setAppSwitchRainWarning(!_globalValues.getAppSwitchRainWarning());
                   });
                 },
               ),
               SettingsTile(
                 title: _uiText.settingsTimeOfRainWarning,
-                subtitle: Platform.isAndroid ? _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + _uiText.settingsTimeOfRainWarningSubtitle : _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + 'min.',
+                subtitle: Platform.isAndroid ? _globalValues.getTimeBeforeWarning().inMinutes.toString() + _uiText.settingsTimeOfRainWarningSubtitle : _globalValues.getTimeBeforeWarning().inMinutes.toString() + 'min.',
                 leading: Icon(Icons.av_timer),
                 onTap: () async{
                   return await showDialog(
@@ -128,10 +126,10 @@ class _LoadingState extends State<Settings> {
                           content: StatefulBuilder(
                             builder: (BuildContext context, StateSetter setState){
                               return DurationPicker(
-                                    duration: _pushNotifications.getTimeBeforeWarning(),
+                                    duration: _globalValues.getTimeBeforeWarning(),
                                     onChange: (Duration val) {
                                       if(val.inMinutes<60){
-                                        _pushNotifications.setTimeBeforeWarning(val);
+                                        _globalValues.setTimeBeforeWarning(val);
                                         setState((){});
                                       }
                                     },
