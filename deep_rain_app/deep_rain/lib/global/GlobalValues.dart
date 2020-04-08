@@ -4,13 +4,11 @@ Duration AppTimeBeforeWarning;
 String AppDeviceToken;
 String AppLastDeviceTokenDocument;
 bool AppSwitchRainWarning;
+String AppLanguage;
 
-class PushNotifications{
+class GlobalValues{
 
-  PushNotifications(){
-    if(AppSwitchRainWarning == null){
-      AppSwitchRainWarning = true;
-    }
+  GlobalValues(){
   }
 
   setTimeBeforeWarning(Duration TimeBeforeWarning) async{
@@ -51,7 +49,22 @@ class PushNotifications{
   }
 
   getAppSwitchRainWarning(){
-    return AppSwitchRainWarning;
+    if(AppSwitchRainWarning != null){
+      return AppSwitchRainWarning;
+    }
+    return true;
+  }
+
+  setAppLanguage(String Language) async {
+    AppLanguage = Language;
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('AppLanguage', AppLanguage);
+  }
+  String getAppLanguage(){
+    if(AppLanguage != null){
+      return AppLanguage;
+    }
+    return "Deutsch";
   }
 
   loadDataFromSharedPreferences() async{
@@ -61,6 +74,7 @@ class PushNotifications{
     AppTimeBeforeWarning = Duration(minutes: prefs.getInt('AppTimeBeforeWarning'));
     AppDeviceToken = prefs.getString('AppDeviceToken');
     AppLastDeviceTokenDocument = prefs.getString('AppLastDeviceTokenDocument');
+    AppLanguage = prefs.getString('AppLanguage');
 
   }
 }
