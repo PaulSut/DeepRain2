@@ -40,7 +40,6 @@ class MainAppState extends State<MainApp> {
   int _selectedTab = 0;
   final _pageOptions = [
     ForecastList(),
-    //ImagesScreen(),
     ForecastMap(),
     Settings(),
   ];
