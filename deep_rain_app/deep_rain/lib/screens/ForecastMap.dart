@@ -2,12 +2,12 @@ import 'dart:typed_data';
 
 import 'package:deep_rain/DataObjects/DataHolder.dart';
 import 'package:deep_rain/global/UIText.dart';
-import 'package:deep_rain/screens/UpdateImageData.dart';
 import 'package:deep_rain/services/SliderService.dart';
-import 'package:deep_rain/services/database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:photo_view/photo_view.dart';
+import 'package:latlong/latlong.dart';
+import 'package:flutter_map/flutter_map.dart';
+
+import 'UpdateImageData.dart';
 
 
 class ForecastMap extends StatefulWidget {
@@ -23,29 +23,7 @@ class _ForecastMapState extends State<ForecastMap> {
   double rating = 0;
   int currentDivison = 1;
   int numberOfDivisions = 20;
-
   Uint8List imageFile;
-  DatabaseService dbInstance = new DatabaseService();
-  StorageReference photosReference = FirebaseStorage.instance.ref().child('photos');
-
-  //if the image is not already stored in the DataHolder, it will be downloaded from firebase
-  getImage(int division) {
-    division = division + 1;
-    if (!requestedIndexes.contains(division)) {
-      int MAX_SIZE = 7 * 1024 * 1024;
-      photosReference.child('$division.png').getData(MAX_SIZE).then((data) {
-        this.setState(() {
-          imageFile = data;
-        });
-        imageData.putIfAbsent(division, () {
-          return data;
-        });
-      }).catchError((onError) {
-        debugPrint(onError.toString());
-      });
-      requestedIndexes.add(division);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +36,7 @@ class _ForecastMapState extends State<ForecastMap> {
         imageFile = imageData[currentDivison];
       });
     }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(_uiText.forecastMapAppTitle),
@@ -73,48 +52,46 @@ class _ForecastMapState extends State<ForecastMap> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Container(
-          /*decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/$backgroundImage'),
-                  fit: BoxFit.cover,
-                )
-            ),*/
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                flex: 9,
-                child: Container(
-                  //child: imageFile == null ? Center(child: Text('Keine Daten')) : Image.memory(imageFile, fit: BoxFit.cover),
-                  child: new PhotoView(
+      body: Column(
+        children: [
+          Expanded(
+            flex: 9,
+            child: FlutterMap(
+              options: MapOptions(
+                center: LatLng(47.666947, 9.170982),
+                zoom: 12.0,
+              ),
+              layers: [
+                TileLayerOptions(
+                    urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    subdomains: ['a', 'b', 'c']
+                ),
+                OverlayImageLayerOptions(overlayImages: <OverlayImage>[
+                  OverlayImage(
+                    bounds: LatLngBounds(LatLng(54.469581, 5.457018), LatLng(47.321954, 13.781278)),
+                    opacity: 0.8,
                     imageProvider: imageFile == null ? AssetImage('assets/error.png') : Image.memory(imageFile).image,
-                    minScale: PhotoViewComputedScale.contained * 1.25,
-                    maxScale: 16.0,
                   ),
+                ],
                 ),
-              ),
-              /*Expanded(
-                  flex: 9,
-                  child: Text(''),
-                ),*/
-              Expanded(
-                flex: 1,
-                child: Slider(
-                  value: rating,
-                  onChanged: (newRating) {
-                    setState(() {
-                      rating = newRating;
-                      currentDivison = newRating ~/ (1 / numberOfDivisions);
-                    });
-                  },
-                  divisions: numberOfDivisions,
-                  label: sliderService.getTime(numberOfDivisions, rating),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+          Expanded(
+            flex: 1,
+            child: Slider(
+              value: rating,
+              onChanged: (newRating) {
+                setState(() {
+                  rating = newRating;
+                  currentDivison = newRating ~/ (1 / numberOfDivisions);
+                });
+              },
+              divisions: numberOfDivisions,
+              label: sliderService.getTime(numberOfDivisions, rating),
+            ),
+          ),
+        ],
       ),
     );
   }
