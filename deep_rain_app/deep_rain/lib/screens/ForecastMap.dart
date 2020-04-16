@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:deep_rain/DataObjects/DataHolder.dart';
+import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:deep_rain/global/UIText.dart';
 import 'package:deep_rain/services/SliderService.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class ForecastMap extends StatefulWidget {
 class _ForecastMapState extends State<ForecastMap> {
 
   UIText _uiText = UIText();
+  GlobalValues _globalValues = GlobalValues();
 
   SliderService sliderService = SliderService();
   double rating = 0;
@@ -58,7 +60,7 @@ class _ForecastMapState extends State<ForecastMap> {
             flex: 9,
             child: FlutterMap(
               options: MapOptions(
-                center: LatLng(47.666947, 9.170982),
+                center: _globalValues.getAppRegion(),
                 zoom: 12.0,
               ),
               layers: [

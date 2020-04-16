@@ -1,3 +1,4 @@
+import 'package:latlong/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Duration AppTimeBeforeWarning;
@@ -5,11 +6,10 @@ String AppDeviceToken;
 String AppLastDeviceTokenDocument;
 bool AppSwitchRainWarning;
 String AppLanguage;
+LatLng AppRegion;
+String AppRegionCity;
 
 class GlobalValues{
-
-  GlobalValues(){
-  }
 
   setTimeBeforeWarning(Duration TimeBeforeWarning) async{
     AppTimeBeforeWarning = TimeBeforeWarning;
@@ -65,6 +65,33 @@ class GlobalValues{
       return AppLanguage;
     }
     return "Deutsch";
+  }
+
+  setAppRegion(LatLng Region) async {
+    AppRegion = Region;
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setDouble('AppRegionLatitude', AppRegion.latitude);
+    prefs.setDouble('AppRegionLongitude', AppRegion.longitude);
+  }
+
+  LatLng getAppRegion(){
+    if(AppRegion != null){
+      return AppRegion;
+    }
+    return LatLng(47.666947, 9.170982);
+  }
+
+  setAppRegionCity(String City) async {
+    AppRegionCity = City;
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('AppRegionCity', AppRegionCity);
+  }
+
+  String getAppRegionCity(){
+    if(AppRegionCity != null){
+      return AppRegionCity;
+    }
+    return "Konstanz";
   }
 
   loadDataFromSharedPreferences() async{

@@ -28,7 +28,6 @@ dependencies:
   photo_view: ^0.9.1
   location: ^2.4.0
   latlong: ^0.6.1
-  google_maps_flutter: ^0.5.11
   map_overlay: ^0.0.1
   shared_preferences_settings: ^1.0.0+1
   app_settings: ^3.0.1
@@ -36,7 +35,7 @@ dependencies:
 
   firebase_auth: ^0.14.0+5
   cloud_firestore: ^0.12.9+4
-  provider: ^3.1.0
+  provider: any
   flutter_spinkit: ^4.0.0
   firebase_messaging: ^4.0.0+1
   firebase_core: ^0.4.0
@@ -44,6 +43,10 @@ dependencies:
   flutter_launcher_icons: "^0.7.3"
   flutter_duration_picker: ^1.0.4
   flutter_map: ^0.9.0
+  nominatim_location_picker: any
+  geocoder: ^0.2.1
+  search_map_place: ^0.3.0
+
 
 
 dev_dependencies:
