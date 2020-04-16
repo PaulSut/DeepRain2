@@ -5,6 +5,7 @@ import 'package:deep_rain/services/database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:latlong/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Loading extends StatefulWidget {
@@ -27,6 +28,8 @@ class _LoadingState extends State<Loading> {
     _globalValues.setDeviceToken(prefs.getString('AppDeviceToken'));
     _globalValues.setTimeBeforeWarning(Duration(minutes: prefs.getInt('AppTimeBeforeWarning')));
     _globalValues.setAppSwitchRainWarning(prefs.getBool('AppSwitchRainWarning'));
+    _globalValues.setAppRegionCity(prefs.getString('AppRegionCity'));
+    _globalValues.setAppRegion(new LatLng(prefs.getDouble('AppRegionLatitude'), prefs.getDouble('AppRegionLongitude')));
 
   }
 

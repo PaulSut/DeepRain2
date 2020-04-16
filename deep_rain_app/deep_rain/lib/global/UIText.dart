@@ -28,6 +28,9 @@ class UIText{
     //Choose Language Dialog
     String chooseLanguageDialogHeader;
     String chooseLanguageDialogOkButton;
+    //Choose Region Screen
+    String chooseRegionScreenSearchHint;
+    String chooseRegionScreenAwaitingForLocation;
 
   //Bottom Navigation
   String List;
@@ -61,6 +64,10 @@ class UIText{
         //choose language dialog
         chooseLanguageDialogHeader = 'Sprache auswählen';
         chooseLanguageDialogOkButton = 'Bestätigen';
+        //Choose Region Screen
+        chooseRegionScreenSearchHint = 'Stadt Suchen';
+        chooseRegionScreenAwaitingForLocation = 'Am suchen...';
+
 
       //Bottom Naviagation
       List = 'Liste';
@@ -93,6 +100,10 @@ class UIText{
         //choose language dialog
         chooseLanguageDialogHeader = 'Seleccione el idioma';
         chooseLanguageDialogOkButton = 'Confirme';
+        //Choose Region Screen
+        chooseRegionScreenSearchHint = 'Pesquisar';
+        chooseRegionScreenAwaitingForLocation = 'Procurando por sua localização';
+
 
       //Bottom Naviagation
       List = 'Lista';
@@ -125,6 +136,9 @@ class UIText{
         //choose language dialog
         chooseLanguageDialogHeader = 'Choose Language';
         chooseLanguageDialogOkButton = 'Ok';
+        //Choose Region Screen
+        chooseRegionScreenSearchHint = 'Pesquisar';
+        chooseRegionScreenAwaitingForLocation = 'Procurando por sua localização';
 
       //Bottom Naviagation
       List = 'List';

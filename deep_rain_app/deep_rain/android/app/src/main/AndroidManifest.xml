@@ -5,14 +5,21 @@
          In most cases you can leave this as-is, but you if you want to provide
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="deepRain"
         android:icon="@mipmap/launcher_icon">
 
-        <meta-data
-                android:name="com.google.android.geo.API_KEY"
-                android:value="AIzaSyA_6YMruWu_q1zLEXtDsdlHVTxjSYlBAL4"/>
+        <!--<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyBpAd_umUvKoScxYbdrc9XatlhdoYRumbQ"/>-->
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBpAd_umUvKoScxYbdrc9XatlhdoYRumbQ"/>
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyBpAd_umUvKoScxYbdrc9XatlhdoYRumbQ"/>
+
 
         <activity
             android:name=".MainActivity"

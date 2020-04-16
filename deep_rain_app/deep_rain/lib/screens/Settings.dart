@@ -3,7 +3,13 @@ import 'package:deep_rain/global/UIText.dart';
 import 'package:deep_rain/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
+import 'package:latlong/latlong.dart';
+import 'package:nominatim_location_picker/nominatim_location_picker.dart';
+import 'package:search_map_place/search_map_place.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:geocoder/geocoder.dart';
+
+
 import 'dart:io' show Platform;
 
 class Settings extends StatefulWidget {
@@ -16,6 +22,31 @@ class _LoadingState extends State<Settings> {
   UIText _uiText = UIText();
   GlobalValues _globalValues = GlobalValues();
 
+  String _cityName;
+
+  Future getLocationWithNominatim() async {
+    Map result = await showDialog(
+        context: context,
+        builder: (BuildContext ctx) {
+          return NominatimLocationPicker(
+            searchHint: _uiText.chooseRegionScreenSearchHint,
+            awaitingForLocation: _uiText.chooseRegionScreenAwaitingForLocation,
+          );
+        });
+    if (result != null) {
+      LatLng coordinatesInLatLng = result["latlng"];
+      Coordinates coordinates = new Coordinates(coordinatesInLatLng.latitude, coordinatesInLatLng.longitude);
+      _globalValues.setAppRegion(coordinatesInLatLng);
+
+      var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      var first = addresses.first;
+      _globalValues.setAppRegionCity(first.locality);
+      setState(() {});
+
+    } else {
+      return;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,10 +116,10 @@ class _LoadingState extends State<Settings> {
               ),
               SettingsTile(
                 title: _uiText.settingsRegion,
-                subtitle: 'Konstanz',
+                subtitle: _globalValues.getAppRegionCity(),
                 leading: Icon(Icons.location_on),
-                onTap: () {
-                  showAlertDialog(context, "Region", "Hier könnte man eine Region auswählen");
+                onTap: () async {
+                  getLocationWithNominatim();
                 },
               ),
             ],
