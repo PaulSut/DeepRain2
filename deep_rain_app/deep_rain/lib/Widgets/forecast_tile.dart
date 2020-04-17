@@ -2,6 +2,8 @@ import 'package:deep_rain/global/UIText.dart';
 import 'package:flutter/material.dart';
 import '../DataObjects/ForecastListItem.dart';
 
+//The elements which are in the forecast list. Depending on the data of the forecast a other text and icon color will be changed.
+
 class ForecastTile extends StatelessWidget {
 
   final ForecastListItem forecast;
@@ -9,6 +11,7 @@ class ForecastTile extends StatelessWidget {
 
   UIText _uiText = UIText();
 
+  //returns a string with the rain intense
   String getRainIntenseString(int rainIntense){
     if(rainIntense < 5){
       return _uiText.forecastListRainIntenseNoRain;
@@ -25,6 +28,7 @@ class ForecastTile extends StatelessWidget {
     return _uiText.forecastListRainIntenseError;
   }
 
+  //Return the image for the list entry depending on the rain intense
   AssetImage getIcon(int rainIntese){
     if(rainIntese < 5){
       return AssetImage('assets/ForecastList/tagundnacht.png');

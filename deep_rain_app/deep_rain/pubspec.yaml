@@ -53,6 +53,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   intl: ^0.15.8
+  test: any
+  pub: any
 
 flutter_icons:
   android: true

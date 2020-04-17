@@ -8,18 +8,24 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:latlong/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+//Is called as first screen at appstart. All forecast images get downloaded from firebase. All app settings from shared preferences will be set.
+
 class Loading extends StatefulWidget {
   @override
   _LoadingState createState() => _LoadingState();
 }
 
 class _LoadingState extends State<Loading> {
-  void setupForecastMap() async{
+  //Download images. Set settings.
+  void setupApp() async{
+
+    //The Images will be downloaded
     DatabaseService instance = DatabaseService();
     for(var i = 1; i <= 20; i++){
       await instance.getImage(i);
     }
 
+    // The local stored settings will be set again.
     final prefs = await SharedPreferences.getInstance();
     GlobalValues _globalValues = GlobalValues();
 
@@ -36,11 +42,12 @@ class _LoadingState extends State<Loading> {
   @override
   void initState(){
     super.initState();
-    setupForecastMap();
+    setupApp();
   }
 
   @override
   Widget build(BuildContext context) {
+    //Stay 2,5 seconds on the loadingscreen.
     Timer(
         Duration(seconds: 2, milliseconds: 500),
         () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainApp()))

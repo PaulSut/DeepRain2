@@ -5,13 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:latlong/latlong.dart';
 import 'package:nominatim_location_picker/nominatim_location_picker.dart';
-import 'package:search_map_place/search_map_place.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:geocoder/geocoder.dart';
-
-
 import 'dart:io' show Platform;
 
+//The screen for the settings. Every setting will be stored in the global values and shared preferences (local db).
+//Some of them will be uploaded to firebase.
 class Settings extends StatefulWidget {
   @override
   _LoadingState createState() => _LoadingState();
@@ -22,8 +21,8 @@ class _LoadingState extends State<Settings> {
   UIText _uiText = UIText();
   GlobalValues _globalValues = GlobalValues();
 
-  String _cityName;
-
+//Open a screen in which a city can be choosed. This city will always be zoomed in by default,
+// The push notifications will only be sended for this location.
   Future getLocationWithNominatim() async {
     Map result = await showDialog(
         context: context,
@@ -42,7 +41,6 @@ class _LoadingState extends State<Settings> {
       var first = addresses.first;
       _globalValues.setAppRegionCity(first.locality);
       setState(() {});
-
     } else {
       return;
     }
@@ -50,7 +48,7 @@ class _LoadingState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-
+    //If the user did not changed the time of warning, it will be set to 20 min by default.
     Duration _duration = _globalValues.getTimeBeforeWarning();
     if(_duration == null){
       _duration = Duration(hours: 0, minutes: 20);
@@ -197,32 +195,4 @@ class _LoadingState extends State<Settings> {
       ),
     );
   }
-
-  showAlertDialog(BuildContext context, String titel, String text) {
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(titel),
-      content: Text(text),
-      actions: [
-        okButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
 }

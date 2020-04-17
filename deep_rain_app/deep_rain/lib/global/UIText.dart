@@ -1,9 +1,8 @@
-import 'dart:async';
-
 import 'package:deep_rain/global/GlobalValues.dart';
-import 'package:deep_rain/main.dart';
-import 'package:flutter/cupertino.dart';
 
+/*
+All text elements which are shown in the ui are stored here. Depending on the choosed language, other text will appear.
+ */
 class UIText{
   //ForecastList
   String forecastListAppTitle;

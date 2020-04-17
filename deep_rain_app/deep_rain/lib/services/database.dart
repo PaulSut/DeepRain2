@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deep_rain/DataObjects/DataHolder.dart';
 import 'package:deep_rain/DataObjects/ForecastListItem.dart';
@@ -7,20 +6,16 @@ import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 
-class DatabaseService{
+/*
+The communication with the firesbase is handled in this class
+ */
 
+class DatabaseService{
   final String uid;
   DatabaseService({this.uid});
 
-  // collection reference
+  // collection reference for the forecast data
   final CollectionReference ForecastCollection = Firestore.instance.collection('forecast');
-
-  Future updateUserData(String time, String rainIntense) async{
-    return await ForecastCollection.document(uid).setData({
-      'time' : time,
-      'rainIntense' : rainIntense,
-    });
-  }
 
   // forecast list from snapshot
   List<ForecastListItem> _forecastListFromSnapshot(QuerySnapshot snapshot){
@@ -37,7 +32,7 @@ class DatabaseService{
     .map(_forecastListFromSnapshot);
   }
 
-//if the image is not already stored in the DataHolder, it will be downloaded from firebase
+  //if the image is not already stored in the DataHolder, it will be downloaded from firebase
   Uint8List getImage(int division){
     StorageReference photosReference = FirebaseStorage.instance.ref().child('photos');
 
@@ -54,7 +49,8 @@ class DatabaseService{
       });
     }
   }
-  
+
+  //If the user change the time of rain warning, this function will update the device token in the firebase.
   void updatePushNotificationTime() async{
     GlobalValues _globalValues = GlobalValues();
 
@@ -72,6 +68,7 @@ class DatabaseService{
     }
   }
 
+  //if the user deactivate the pushnotification
   void deactivatePushNotification() async{
     GlobalValues _globalValues = GlobalValues();
     //Check if the default time of pushnotification is already changed
@@ -81,6 +78,7 @@ class DatabaseService{
     }
   }
 
+  //if the user activate his pushnotification again
   void activatePushNotification() async{
     GlobalValues _globalValues = GlobalValues();
     //Check if the default time of pushnotification is already changed

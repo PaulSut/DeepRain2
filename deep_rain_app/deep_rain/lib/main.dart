@@ -3,12 +3,13 @@ import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:deep_rain/global/UIText.dart';
 import 'package:deep_rain/screens/ForecastList.dart';
 import 'package:deep_rain/screens/Settings.dart';
-import 'package:deep_rain/screens/loading.dart';
+import 'package:deep_rain/screens/Loading.dart';
 import 'package:deep_rain/services/push_notification_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_rain/screens/ForecastMap.dart';
 
+//First screen is the Loadingscreen, then in navigate to MainApp
 void main() => runApp(MaterialApp(
   initialRoute: '/',
   routes: {
@@ -17,7 +18,6 @@ void main() => runApp(MaterialApp(
   },
 ));
 
-//void main() => runApp(new MainApp());
 class MainApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -37,6 +37,7 @@ class MainAppState extends State<MainApp> {
     pushDeviceTokenToDB();
   }
 
+  //The screens for the bottomNavigiation
   int _selectedTab = 0;
   final _pageOptions = [
     ForecastList(),
@@ -80,6 +81,7 @@ class MainAppState extends State<MainApp> {
     );
   }
 
+  //Store devicetoken in database
   final FirebaseMessaging _fcm = FirebaseMessaging();
   GlobalValues _globalValues = GlobalValues();
 
