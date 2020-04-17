@@ -9,6 +9,8 @@ import 'package:settings_ui/settings_ui.dart';
 import 'package:geocoder/geocoder.dart';
 import 'dart:io' show Platform;
 
+import 'Impressum.dart';
+
 //The screen for the settings. Every setting will be stored in the global values and shared preferences (local db).
 //Some of them will be uploaded to firebase.
 class Settings extends StatefulWidget {
@@ -191,6 +193,21 @@ class _LoadingState extends State<Settings> {
               ),
             ],
           ),
+          SettingsSection(
+            title: _uiText.settingsHeaderMore,
+            tiles: [
+              SettingsTile(
+                title: _uiText.settingsImpressum,
+                leading: Icon(Icons.person_outline),
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Impressum()),
+                  );
+                },
+              )
+            ],
+          )
         ],
       ),
     );

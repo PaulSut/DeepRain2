@@ -30,6 +30,11 @@ class UIText{
     //Choose Region Screen
     String chooseRegionScreenSearchHint;
     String chooseRegionScreenAwaitingForLocation;
+  String settingsHeaderMore;
+  String settingsImpressum;
+
+  //Impressum
+  String impressumAppTitle;
 
   //Bottom Navigation
   String List;
@@ -66,6 +71,11 @@ class UIText{
         //Choose Region Screen
         chooseRegionScreenSearchHint = 'Stadt Suchen';
         chooseRegionScreenAwaitingForLocation = 'Am suchen...';
+      settingsHeaderMore = "Weiteres";
+      settingsImpressum = "Impressum";
+
+      //Impressum
+      impressumAppTitle = "Impressum";
 
 
       //Bottom Naviagation
@@ -102,6 +112,12 @@ class UIText{
         //Choose Region Screen
         chooseRegionScreenSearchHint = 'Pesquisar';
         chooseRegionScreenAwaitingForLocation = 'Procurando por sua localização';
+      settingsHeaderMore = "More";
+      settingsImpressum = "Impressum";
+
+      //Impressum
+      impressumAppTitle = "Impressum";
+
 
 
       //Bottom Naviagation
@@ -138,6 +154,11 @@ class UIText{
         //Choose Region Screen
         chooseRegionScreenSearchHint = 'Pesquisar';
         chooseRegionScreenAwaitingForLocation = 'Procurando por sua localização';
+      settingsHeaderMore = "Otro";
+      settingsImpressum = "Impressum";
+
+      //Impressum
+      impressumAppTitle = "Impressum";
 
       //Bottom Naviagation
       List = 'List';

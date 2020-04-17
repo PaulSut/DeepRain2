@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:latlong/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 //Is called as first screen at appstart. All forecast images get downloaded from firebase. All app settings from shared preferences will be set.
 
@@ -49,17 +50,25 @@ class _LoadingState extends State<Loading> {
   Widget build(BuildContext context) {
     //Stay 2,5 seconds on the loadingscreen.
     Timer(
-        Duration(seconds: 2, milliseconds: 500),
+        Duration(seconds: 3, milliseconds: 500),
         () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainApp()))
     );
 
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       body: Center(
-        child: SpinKitRotatingPlain(
+        child: TypewriterAnimatedTextKit(
+            totalRepeatCount: 4,
+            pause: Duration(milliseconds:  1000),
+            text: ["deepRain", "stay dry", "HTWG Konstanz"],
+            textStyle: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
+            displayFullTextOnTap: true,
+            stopPauseOnTap: true
+        ),
+        /*SpinKitRotatingPlain(
           color: Colors.white,
           size: 50.0,
-        ),
+        ),*/
       ),
     );
   }
