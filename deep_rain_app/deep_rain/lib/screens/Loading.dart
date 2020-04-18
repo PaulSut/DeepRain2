@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:deep_rain/main.dart';
-import 'package:deep_rain/services/database.dart';
+import 'package:deep_rain/services/Database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:latlong/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';

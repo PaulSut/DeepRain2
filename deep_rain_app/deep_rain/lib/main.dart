@@ -4,7 +4,7 @@ import 'package:deep_rain/global/UIText.dart';
 import 'package:deep_rain/screens/ForecastList.dart';
 import 'package:deep_rain/screens/Settings.dart';
 import 'package:deep_rain/screens/Loading.dart';
-import 'package:deep_rain/services/push_notification_service.dart';
+import 'package:deep_rain/services/PushNotification.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_rain/screens/ForecastMap.dart';

@@ -1,6 +1,6 @@
 import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:deep_rain/global/UIText.dart';
-import 'package:deep_rain/services/database.dart';
+import 'package:deep_rain/services/Database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:latlong/latlong.dart';
