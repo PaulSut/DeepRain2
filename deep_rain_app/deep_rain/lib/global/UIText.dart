@@ -1,18 +1,9 @@
-import 'dart:async';
+import 'package:deep_rain/global/GlobalValues.dart';
 
-import 'package:deep_rain/main.dart';
-import 'package:flutter/cupertino.dart';
-
-String AppLanguage = 'Deutsch';
-
+/*
+All text elements which are shown in the ui are stored here. Depending on the choosed language, other text will appear.
+ */
 class UIText{
-  setLanguage(String Language){
-    AppLanguage = Language;
-  }
-  String getLanguage(){
-    return AppLanguage;
-  }
-
   //ForecastList
   String forecastListAppTitle;
   String forecastListRainIntenseNoRain;
@@ -36,6 +27,14 @@ class UIText{
     //Choose Language Dialog
     String chooseLanguageDialogHeader;
     String chooseLanguageDialogOkButton;
+    //Choose Region Screen
+    String chooseRegionScreenSearchHint;
+    String chooseRegionScreenAwaitingForLocation;
+  String settingsHeaderMore;
+  String settingsImpressum;
+
+  //Impressum
+  String impressumAppTitle;
 
   //Bottom Navigation
   String List;
@@ -44,7 +43,8 @@ class UIText{
 
 
   UIText(){
-    if(AppLanguage == 'Deutsch'){
+    GlobalValues _globalValues = GlobalValues();
+    if(_globalValues.getAppLanguage() == 'Deutsch'){
       //ForecastList
       forecastListAppTitle = 'Regenvorhersage';
       forecastListRainIntenseNoRain = 'Kein Regen';
@@ -68,6 +68,15 @@ class UIText{
         //choose language dialog
         chooseLanguageDialogHeader = 'Sprache auswählen';
         chooseLanguageDialogOkButton = 'Bestätigen';
+        //Choose Region Screen
+        chooseRegionScreenSearchHint = 'Stadt Suchen';
+        chooseRegionScreenAwaitingForLocation = 'Am suchen...';
+      settingsHeaderMore = "Weiteres";
+      settingsImpressum = "Impressum";
+
+      //Impressum
+      impressumAppTitle = "Impressum";
+
 
       //Bottom Naviagation
       List = 'Liste';
@@ -76,7 +85,7 @@ class UIText{
 
 
     }
-    else if(AppLanguage == 'Español'){
+    else if(_globalValues.getAppLanguage() == 'Español'){
       //ForecastList
       forecastListAppTitle = 'Previsión de lluvia';
       forecastListRainIntenseNoRain = 'no llueve';
@@ -100,6 +109,16 @@ class UIText{
         //choose language dialog
         chooseLanguageDialogHeader = 'Seleccione el idioma';
         chooseLanguageDialogOkButton = 'Confirme';
+        //Choose Region Screen
+        chooseRegionScreenSearchHint = 'Pesquisar';
+        chooseRegionScreenAwaitingForLocation = 'Procurando por sua localização';
+      settingsHeaderMore = "More";
+      settingsImpressum = "Impressum";
+
+      //Impressum
+      impressumAppTitle = "Impressum";
+
+
 
       //Bottom Naviagation
       List = 'Lista';
@@ -108,7 +127,7 @@ class UIText{
 
 
     }
-    else if(AppLanguage == 'English'){
+    else if(_globalValues.getAppLanguage() == 'English'){
       //ForecastList
       forecastListAppTitle = 'Rainforecast';
       forecastListRainIntenseNoRain = 'No rain';
@@ -132,6 +151,14 @@ class UIText{
         //choose language dialog
         chooseLanguageDialogHeader = 'Choose Language';
         chooseLanguageDialogOkButton = 'Ok';
+        //Choose Region Screen
+        chooseRegionScreenSearchHint = 'Pesquisar';
+        chooseRegionScreenAwaitingForLocation = 'Procurando por sua localização';
+      settingsHeaderMore = "Otro";
+      settingsImpressum = "Impressum";
+
+      //Impressum
+      impressumAppTitle = "Impressum";
 
       //Bottom Naviagation
       List = 'List';

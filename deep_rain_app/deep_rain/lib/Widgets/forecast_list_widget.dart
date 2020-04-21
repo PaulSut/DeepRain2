@@ -3,6 +3,8 @@ import 'package:deep_rain/Widgets/forecast_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//The list for the forecast list screen. Get latest data from Provider.
+
 class ForecastListWidget extends StatefulWidget {
   @override
   _ForecastListWidgetState createState() => _ForecastListWidgetState();

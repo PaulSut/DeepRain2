@@ -1,14 +1,14 @@
 import 'package:deep_rain/DataObjects/ForecastListItem.dart';
 import 'package:deep_rain/global/UIText.dart';
-import 'package:deep_rain/global/UIText.dart';
+import 'package:deep_rain/services/Database.dart';
 import 'package:flutter/material.dart';
-import 'package:deep_rain/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:deep_rain/Widgets/forecast_list_widget.dart';
-import 'package:deep_rain/global/UIText.dart';
 
+/*
+This screen displays the forecast data as list. Cause of StreamProvider, always the latest data will be displayed.
+ */
 class ForecastList extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     UIText _uiText = UIText();

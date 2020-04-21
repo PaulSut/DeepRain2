@@ -1,11 +1,18 @@
-import 'package:deep_rain/global/PushNotifications.dart';
+import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:deep_rain/global/UIText.dart';
-import 'package:deep_rain/services/database.dart';
+import 'package:deep_rain/services/Database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
+import 'package:latlong/latlong.dart';
+import 'package:nominatim_location_picker/nominatim_location_picker.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:geocoder/geocoder.dart';
 import 'dart:io' show Platform;
 
+import 'Impressum.dart';
+
+//The screen for the settings. Every setting will be stored in the global values and shared preferences (local db).
+//Some of them will be uploaded to firebase.
 class Settings extends StatefulWidget {
   @override
   _LoadingState createState() => _LoadingState();
@@ -13,19 +20,41 @@ class Settings extends StatefulWidget {
 
 class _LoadingState extends State<Settings> {
 
-  bool switchRegenwarnungen = true;
-
   UIText _uiText = UIText();
-  PushNotifications _pushNotifications = PushNotifications();
+  GlobalValues _globalValues = GlobalValues();
 
+//Open a screen in which a city can be choosed. This city will always be zoomed in by default,
+// The push notifications will only be sended for this location.
+  Future getLocationWithNominatim() async {
+    Map result = await showDialog(
+        context: context,
+        builder: (BuildContext ctx) {
+          return NominatimLocationPicker(
+            searchHint: _uiText.chooseRegionScreenSearchHint,
+            awaitingForLocation: _uiText.chooseRegionScreenAwaitingForLocation,
+          );
+        });
+    if (result != null) {
+      LatLng coordinatesInLatLng = result["latlng"];
+      Coordinates coordinates = new Coordinates(coordinatesInLatLng.latitude, coordinatesInLatLng.longitude);
+      _globalValues.setAppRegion(coordinatesInLatLng);
+
+      var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      var first = addresses.first;
+      _globalValues.setAppRegionCity(first.locality);
+      setState(() {});
+    } else {
+      return;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    Duration _duration = _pushNotifications.getTimeBeforeWarning();
+    //If the user did not changed the time of warning, it will be set to 20 min by default.
+    Duration _duration = _globalValues.getTimeBeforeWarning();
     if(_duration == null){
       _duration = Duration(hours: 0, minutes: 20);
-      _pushNotifications.setTimeBeforeWarning(_duration);
+      _globalValues.setTimeBeforeWarning(_duration);
     }
 
     return Scaffold(
@@ -50,9 +79,9 @@ class _LoadingState extends State<Settings> {
                           content: StatefulBuilder(
                             builder: (BuildContext context, StateSetter setState){
                               return DropdownButton<String>(
-                              value: _uiText.getLanguage(),
+                              value: _globalValues.getAppLanguage(),
                               onChanged: (String newValue){
-                                _uiText.setLanguage(newValue);
+                                _globalValues.setAppLanguage(newValue);
                                 setState(() {});
                               },
                               items: <String> ['Deutsch', 'English', 'Español'].map<DropdownMenuItem<String>>((String value){
@@ -87,10 +116,10 @@ class _LoadingState extends State<Settings> {
               ),
               SettingsTile(
                 title: _uiText.settingsRegion,
-                subtitle: 'Konstanz',
+                subtitle: _globalValues.getAppRegionCity(),
                 leading: Icon(Icons.location_on),
-                onTap: () {
-                  showAlertDialog(context, "Region", "Hier könnte man eine Region auswählen");
+                onTap: () async {
+                  getLocationWithNominatim();
                 },
               ),
             ],
@@ -101,7 +130,7 @@ class _LoadingState extends State<Settings> {
               SettingsTile.switchTile(
                 title: _uiText.settingsRainWarning,
                 leading: Icon(Icons.priority_high),
-                switchValue: switchRegenwarnungen,
+                switchValue: _globalValues.getAppSwitchRainWarning(),
                 onToggle: (bool value) {
                   setState(() {
                     if(value == true){
@@ -111,13 +140,13 @@ class _LoadingState extends State<Settings> {
                       DatabaseService _db = DatabaseService();
                       _db.deactivatePushNotification();
                     }
-                    switchRegenwarnungen = !switchRegenwarnungen;
+                    _globalValues.setAppSwitchRainWarning(!_globalValues.getAppSwitchRainWarning());
                   });
                 },
               ),
               SettingsTile(
                 title: _uiText.settingsTimeOfRainWarning,
-                subtitle: Platform.isAndroid ? _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + _uiText.settingsTimeOfRainWarningSubtitle : _pushNotifications.getTimeBeforeWarning().inMinutes.toString() + 'min.',
+                subtitle: Platform.isAndroid ? _globalValues.getTimeBeforeWarning().inMinutes.toString() + _uiText.settingsTimeOfRainWarningSubtitle : _globalValues.getTimeBeforeWarning().inMinutes.toString() + 'min.',
                 leading: Icon(Icons.av_timer),
                 onTap: () async{
                   return await showDialog(
@@ -128,10 +157,10 @@ class _LoadingState extends State<Settings> {
                           content: StatefulBuilder(
                             builder: (BuildContext context, StateSetter setState){
                               return DurationPicker(
-                                    duration: _pushNotifications.getTimeBeforeWarning(),
+                                    duration: _globalValues.getTimeBeforeWarning(),
                                     onChange: (Duration val) {
                                       if(val.inMinutes<60){
-                                        _pushNotifications.setTimeBeforeWarning(val);
+                                        _globalValues.setTimeBeforeWarning(val);
                                         setState((){});
                                       }
                                     },
@@ -164,36 +193,23 @@ class _LoadingState extends State<Settings> {
               ),
             ],
           ),
+          SettingsSection(
+            title: _uiText.settingsHeaderMore,
+            tiles: [
+              SettingsTile(
+                title: _uiText.settingsImpressum,
+                leading: Icon(Icons.person_outline),
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Impressum()),
+                  );
+                },
+              )
+            ],
+          )
         ],
       ),
     );
   }
-
-  showAlertDialog(BuildContext context, String titel, String text) {
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(titel),
-      content: Text(text),
-      actions: [
-        okButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
 }

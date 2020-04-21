@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deep_rain/global/PushNotifications.dart';
+import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:deep_rain/global/UIText.dart';
 import 'package:deep_rain/screens/ForecastList.dart';
 import 'package:deep_rain/screens/Settings.dart';
-import 'package:deep_rain/screens/loading.dart';
-import 'package:deep_rain/services/push_notification_service.dart';
+import 'package:deep_rain/screens/Loading.dart';
+import 'package:deep_rain/services/PushNotification.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:deep_rain/screens/ForecastMap.dart';
 
+//First screen is the Loadingscreen, then in navigate to MainApp
 void main() => runApp(MaterialApp(
   initialRoute: '/',
   routes: {
@@ -17,7 +18,6 @@ void main() => runApp(MaterialApp(
   },
 ));
 
-//void main() => runApp(new MainApp());
 class MainApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -37,10 +37,10 @@ class MainAppState extends State<MainApp> {
     pushDeviceTokenToDB();
   }
 
+  //The screens for the bottomNavigiation
   int _selectedTab = 0;
   final _pageOptions = [
     ForecastList(),
-    //ImagesScreen(),
     ForecastMap(),
     Settings(),
   ];
@@ -81,14 +81,15 @@ class MainAppState extends State<MainApp> {
     );
   }
 
+  //Store devicetoken in database
   final FirebaseMessaging _fcm = FirebaseMessaging();
-  PushNotifications _pushNotifications = PushNotifications();
+  GlobalValues _globalValues = GlobalValues();
 
   pushDeviceTokenToDB() async {
     final CollectionReference ForecastCollection = Firestore.instance.collection('DeviceTokens');
     await _fcm.getToken().then((token) async{
       await ForecastCollection.document(token).setData({'token' : token});
-      _pushNotifications.setDeviceToken(token);
+      _globalValues.setDeviceToken(token);
     });
   }
 }

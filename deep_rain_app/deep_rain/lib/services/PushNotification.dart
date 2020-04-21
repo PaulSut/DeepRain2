@@ -1,15 +1,15 @@
-import 'package:deep_rain/screens/ForecastMap.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:io';
-import 'package:flutter/material.dart';
 
+/*
+Handle the pushnotifications
+ */
 class PushNotificationService{
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
   Future initialise() async{
-
     _fcm.getToken().then((String token) => {
-      print('Das ist ein Token: $token')
+      //There is a token! (Devicetoken)
     });
 
     if(Platform.isIOS){
@@ -29,16 +29,5 @@ class PushNotificationService{
         print('onLaunch: $message');
       }
     );
-  }
-
-  void _serialiseAndNavigate(Map<String, dynamic> message){
-    var notificationData = message['data'];
-    var view = notificationData['view'];
-
-    if(view != null){
-      if(view == 'eins'){
-        //Hier muss navigiert werden
-      }
-    }
   }
 }
