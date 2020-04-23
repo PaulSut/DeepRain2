@@ -30,11 +30,6 @@ class MainAppState extends State<MainApp> {
     _uiText = UIText();
     final PushNotificationService _pushNotificationService = PushNotificationService();
     _pushNotificationService.initialise();
-
-    //The Devicetoken is needed to send Pushnotifications.
-    //If the device token of the current Device already exists in the DataBase, it will be overwritten.
-    //If not, it will be added.
-    pushDeviceTokenToDB();
   }
 
   //The screens for the bottomNavigiation
@@ -79,17 +74,5 @@ class MainAppState extends State<MainApp> {
         ),
       ),
     );
-  }
-
-  //Store devicetoken in database
-  final FirebaseMessaging _fcm = FirebaseMessaging();
-  GlobalValues _globalValues = GlobalValues();
-
-  pushDeviceTokenToDB() async {
-    final CollectionReference ForecastCollection = Firestore.instance.collection('DeviceTokens');
-    await _fcm.getToken().then((token) async{
-      await ForecastCollection.document(token).setData({'token' : token});
-      _globalValues.setDeviceToken(token);
-    });
   }
 }

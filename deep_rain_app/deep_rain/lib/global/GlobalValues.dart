@@ -10,6 +10,7 @@ On Appstart the global values will be set from the data which is stored in share
 Duration AppTimeBeforeWarning;
 String AppDeviceToken;
 String AppLastDeviceTokenDocument;
+String AppLastRegionDocument;
 bool AppSwitchRainWarning;
 String AppLanguage;
 LatLng AppRegion;
@@ -46,6 +47,17 @@ class GlobalValues{
   }
   String getAppLastDeviceTokenDocument(){
     return AppLastDeviceTokenDocument;
+  }
+
+  //If the region changes, the old region need to be deleted and stored in a other collection.
+  //The document which need to be replaced is stored here.
+  setAppLastRegionDocument(String LastRegionDocument) async{
+    AppLastRegionDocument = LastRegionDocument;
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('AppLastRegionDocument', LastRegionDocument);
+  }
+  String getAppLastRegionDocument(){
+    return AppLastRegionDocument;
   }
 
   //Variable which store if push notification is activated or deactivated

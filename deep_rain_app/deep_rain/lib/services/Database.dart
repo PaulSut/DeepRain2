@@ -57,14 +57,11 @@ class DatabaseService{
     //Check if the default time of pushnotification is already changed
     if(_globalValues.getAppLastDeviceTokenDocument() != null){
       //Delete the old setting of pushnotificationtime
-      Firestore.instance.collection(_globalValues.getAppLastDeviceTokenDocument()).document(_globalValues.getDeviceToken()).delete();
+      deactivatePushNotification();
     }
-
     //Set the new setting of pushnotificationtime
-    _globalValues.setAppLastDeviceTokenDocument('DeviceTokens_' + _globalValues.getTimeBeforeWarning().inMinutes.toString() + '_min');
     if(_globalValues.getAppSwitchRainWarning()){
-      final CollectionReference ForecastCollection = Firestore.instance.collection('DeviceTokens_' + _globalValues.getTimeBeforeWarning().inMinutes.toString() + '_min');
-      await ForecastCollection.document(_globalValues.getDeviceToken()).setData({'token' : _globalValues.getDeviceToken()});
+      activatePushNotification();
     }
   }
 
@@ -74,7 +71,7 @@ class DatabaseService{
     //Check if the default time of pushnotification is already changed
     if(_globalValues.getAppLastDeviceTokenDocument() != null){
       //Delete the old setting of pushnotificationtime
-      Firestore.instance.collection(_globalValues.getAppLastDeviceTokenDocument()).document(_globalValues.getDeviceToken()).delete();
+      Firestore.instance.collection('TimeBeforeRaining').document(_globalValues.getAppLastDeviceTokenDocument()).collection('tokens').document(_globalValues.getDeviceToken()).delete();
     }
   }
 
@@ -83,11 +80,55 @@ class DatabaseService{
     GlobalValues _globalValues = GlobalValues();
     //Check if the default time of pushnotification is already changed
     if(_globalValues.getAppLastDeviceTokenDocument() != null){
-      //Set the setting of pushnotificationtime
-      _globalValues.setAppLastDeviceTokenDocument('DeviceTokens_' + _globalValues.getTimeBeforeWarning().inMinutes.toString() + '_min');
-      final CollectionReference ForecastCollection = Firestore.instance.collection('DeviceTokens_' + _globalValues.getTimeBeforeWarning().inMinutes.toString() + '_min');
-      await ForecastCollection.document(_globalValues.getDeviceToken()).setData({'token' : _globalValues.getDeviceToken()});
+      String timeBeforeWarningDocument = _globalValues.getTimeBeforeWarning().inMinutes.toString() + '_min';
+      String deviceToken = _globalValues.getDeviceToken();
+
+      //Store push notificationtime in firebase
+      final CollectionReference collectionReference = Firestore.instance.collection('TimeBeforeRaining');
+      collectionReference.document(timeBeforeWarningDocument).setData({'activateDocument' : 'isAcitivated'});
+      collectionReference.document(timeBeforeWarningDocument).collection('tokens').document(deviceToken).setData({'token' : deviceToken});
+
+      //need to be stored local to update or delete it later on
+      _globalValues.setAppLastDeviceTokenDocument(timeBeforeWarningDocument);
     }
   }
+
+  void updateRegion(){
+    GlobalValues _globalValues = GlobalValues();
+
+    //Check if the default region is already changed
+    if(_globalValues.getAppLastRegionDocument() != null){
+      //Delete the old setting of region
+      Firestore.instance.collection('Regions').document(_globalValues.getAppLastRegionDocument()).collection('tokens').document(_globalValues.getDeviceToken()).delete();
+     }
+    //Set the new setting of region
+    if(_globalValues.getAppLastRegionDocument() != null){
+      String newCity = _globalValues.getAppRegionCity();
+      String deviceToken = _globalValues.getDeviceToken();
+
+      //Store push region in firebase
+      final CollectionReference collectionReference = Firestore.instance.collection('Regions');
+      collectionReference.document(newCity).setData({'activateDocument' : 'isAcitivated'});
+      collectionReference.document(newCity).collection('tokens').document(deviceToken).setData({'token' : deviceToken});
+
+      //need to be stored local to update or delete it later on
+      _globalValues.setAppLastRegionDocument(newCity);
+    }
+  }
+  void storeRegion(){
+    GlobalValues _globalValues =  GlobalValues();
+    //Set the new setting of region
+    if(_globalValues.getAppLastRegionDocument() == null){
+      Firestore.instance.collection('Regions').document('Konstanz').collection('tokens').document(_globalValues.getDeviceToken()).setData({'token' : _globalValues.getDeviceToken()});
+      Firestore.instance.collection('Regions').document('Konstanz').setData({'activateDocument' : 'isAcitivated'});
+
+      //need to be stored local to update or delete it later on
+      _globalValues.setAppLastRegionDocument('Konstanz');
+    }else{
+      Firestore.instance.collection('Regions').document(_globalValues.getAppLastRegionDocument()).collection('tokens').document(_globalValues.getDeviceToken()).setData({'token' : _globalValues.getDeviceToken()});
+      Firestore.instance.collection('Regions').document(_globalValues.getAppLastRegionDocument()).setData({'activateDocument' : 'isAcitivated'});
+    }
+  }
+
 
 }
