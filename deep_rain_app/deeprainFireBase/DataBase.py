@@ -43,13 +43,19 @@ if __name__ == '__main__':
             'time': current_time
         })
 
+        docs = db.collection(u'Regions').stream()
+
+        for doc in docs:
+            print(u'{}'.format(doc.id))
+
         # send push notifications to devices.
         if(rainIntense > 90):
             doc_ref = db.collection('RainWarningPushNotification').document(str(documentID))
             doc_ref.set({
                 'title': 'Es gibt eine Regenwarnung!',
                 'body': 'Nehmen Sie besser Ihren Regenschirm mit, es wird in 30 Minuten regenen!',
-                'time_before_raining': '30'
+                'time_before_raining': '30',
+                'region' : docs[1].id
             })
 
         # increase the ID
