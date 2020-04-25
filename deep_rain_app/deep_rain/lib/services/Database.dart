@@ -101,7 +101,7 @@ class DatabaseService{
       //Delete the old setting of region
       Firestore.instance.collection('Regions').document(_globalValues.getAppLastRegionDocument()).collection('tokens').document(_globalValues.getDeviceToken()).delete();
 
-      //check if there are still some devicetokens in the old region. if not, delete the document. 
+      //check if there are still some devicetokens in the old region. if not, delete the document.
       QuerySnapshot querySnapshot = await Firestore.instance.collection("Regions").document(_globalValues.getAppLastRegionDocument()).collection('tokens').getDocuments();
       var list = querySnapshot.documents;
       if(list.length == 0){
@@ -116,7 +116,7 @@ class DatabaseService{
 
       //Store push region in firebase
       final CollectionReference collectionReference = Firestore.instance.collection('Regions');
-      collectionReference.document(newCity).setData({'activateDocument' : 'isAcitivated'});
+      collectionReference.document(newCity).setData({'Latitude' : _globalValues.getAppRegion().latitude, 'Longitude' : _globalValues.getAppRegion().longitude});
       collectionReference.document(newCity).collection('tokens').document(deviceToken).setData({'token' : deviceToken});
 
       //need to be stored local to update or delete it later on
@@ -128,13 +128,13 @@ class DatabaseService{
     //Set the new setting of region
     if(_globalValues.getAppLastRegionDocument() == null){
       Firestore.instance.collection('Regions').document('Konstanz').collection('tokens').document(_globalValues.getDeviceToken()).setData({'token' : _globalValues.getDeviceToken()});
-      Firestore.instance.collection('Regions').document('Konstanz').setData({'activateDocument' : 'isAcitivated'});
+      Firestore.instance.collection('Regions').document('Konstanz').setData({'Latitude' : _globalValues.getAppRegion().latitude, 'Longitude' : _globalValues.getAppRegion().longitude});
 
       //need to be stored local to update or delete it later on
       _globalValues.setAppLastRegionDocument('Konstanz');
     }else{
       Firestore.instance.collection('Regions').document(_globalValues.getAppLastRegionDocument()).collection('tokens').document(_globalValues.getDeviceToken()).setData({'token' : _globalValues.getDeviceToken()});
-      Firestore.instance.collection('Regions').document(_globalValues.getAppLastRegionDocument()).setData({'activateDocument' : 'isAcitivated'});
+      Firestore.instance.collection('Regions').document(_globalValues.getAppLastRegionDocument()).setData({'Latitude' : _globalValues.getAppRegion().latitude, 'Longitude' : _globalValues.getAppRegion().longitude});
     }
   }
 
