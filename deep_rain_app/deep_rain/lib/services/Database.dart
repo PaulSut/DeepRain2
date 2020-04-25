@@ -93,14 +93,22 @@ class DatabaseService{
     }
   }
 
-  void updateRegion(){
+  Future<void> updateRegion() async {
     GlobalValues _globalValues = GlobalValues();
 
     //Check if the default region is already changed
     if(_globalValues.getAppLastRegionDocument() != null){
       //Delete the old setting of region
       Firestore.instance.collection('Regions').document(_globalValues.getAppLastRegionDocument()).collection('tokens').document(_globalValues.getDeviceToken()).delete();
+
+      //check if there are still some devicetokens in the old region. if not, delete the document. 
+      QuerySnapshot querySnapshot = await Firestore.instance.collection("Regions").document(_globalValues.getAppLastRegionDocument()).collection('tokens').getDocuments();
+      var list = querySnapshot.documents;
+      if(list.length == 0){
+        Firestore.instance.collection('Regions').document(_globalValues.getAppLastRegionDocument()).delete();
+      }
      }
+
     //Set the new setting of region
     if(_globalValues.getAppLastRegionDocument() != null){
       String newCity = _globalValues.getAppRegionCity();

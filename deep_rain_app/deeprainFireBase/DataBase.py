@@ -28,24 +28,31 @@ if __name__ == '__main__':
         # the current time for firebase document ID
         now = datetime.now()
         current_time = now.strftime("%H:%M")
+
         # the unique id for the documents of database.
         documentID = 'deeprain_' + current_time + '_' + str(ID)
         IDList.append(documentID)
 
         # random dummy rainintense
         rainIntense = randrange(100)
+
+        #needed for pushnotification tests
         rainIntense = 94
 
-        # upload to firebase
+        # upload forecast to firebase
         doc_ref = db.collection('forecast').document(str(documentID))
         doc_ref.set({
             'rainIntense': rainIntense,
             'time': current_time
         })
 
-        docs = db.collection(u'Regions').stream()
+        # all regions where are users
+        regions = db.collection(u'Regions').stream()
+        regions = list(regions)
 
-        for doc in docs:
+        
+
+        for doc in regions:
             print(u'{}'.format(doc.id))
 
         # send push notifications to devices.
@@ -55,7 +62,7 @@ if __name__ == '__main__':
                 'title': 'Es gibt eine Regenwarnung!',
                 'body': 'Nehmen Sie besser Ihren Regenschirm mit, es wird in 30 Minuten regenen!',
                 'time_before_raining': '30',
-                'region' : docs[1].id
+                'region' : str(regions[0].id)
             })
 
         # increase the ID
