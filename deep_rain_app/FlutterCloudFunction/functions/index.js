@@ -10,15 +10,39 @@ exports.pushNotificationTrigger = functions.firestore.document('RainWarningPushN
         console.log('No Device');
         return;
     }
-    var tokens = [];
+
+    //the data from the document in RainWarningPushNotification (which the server pushed to trigger a push notification)
     newData = snapshot.data();
 
-    var timeBeforeRaining = newData.time_before_raining;
-    var deviceTokens = await admin.firestore().collection('DeviceTokens_'+timeBeforeRaining.toString()+'_min').get();
+    //get all device tokens for the region where it is rainy
+    const snap_region = await admin.firestore().collection('Regions/' + newData.region + '/tokens').get();
+    const tokens_in_region = [];
+    var index_region = 0;
+    snap_region.forEach(doc => {
+        tokens_in_region[index_region] = doc.data().token;
+        index_region = index_region + 1;
+    });
+    console.log('tokens in region: ' + tokens_in_region)
 
-    for(var token of deviceTokens.docs){
-        tokens.push(token.data().token);
+    //get all the device tokens for the time, it will rain.
+    var snap_time = await admin.firestore().collection('TimeBeforeRaining/' + newData.time_before_raining.toString()+'_min' + '/tokens').get();
+    const tokens_in_time = [];
+    var index_time = 0;
+    snap_time.forEach(doc => {
+        tokens_in_time[index_time] = doc.data().token;
+        index_time = index_time + 1;
+    });
+
+    //check which device token is in this region and in the time
+    //add it to tokens list, so it will get a push notification
+    var tokens = [];
+    for(var regionToken of tokens_in_region){
+        if(tokens_in_time.includes(regionToken)){
+            tokens.push(regionToken);
+        }
     }
+
+    //payload for the push notification
     var payload = {
         notification: {title: newData.title, body: newData.body, sound: 'default', icon: 'regenschirm.png'},
         data: {click_action: 'FLUTTER_NOTIFICATION_CLICK',message: 'Push Message'}
@@ -31,10 +55,4 @@ exports.pushNotificationTrigger = functions.firestore.document('RainWarningPushN
     }
 });
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
 
