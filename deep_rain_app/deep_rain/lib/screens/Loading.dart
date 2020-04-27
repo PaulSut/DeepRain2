@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ffi';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:deep_rain/main.dart';
 import 'package:deep_rain/services/Database.dart';
@@ -74,10 +75,10 @@ class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     //Stay 2,5 seconds on the loadingscreen.
-    Timer(
+    /*Timer(
         Duration(seconds: 3, milliseconds: 500),
         () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainApp()))
-    );
+    );*/
 
     return FutureBuilder(
       future: setupApp(),
@@ -85,18 +86,21 @@ class _LoadingState extends State<Loading> {
         return  Scaffold(
           backgroundColor: Colors.blueGrey,
           body: Center(
-            child: /*TypewriterAnimatedTextKit(
-              totalRepeatCount: 4,
+            child: TypewriterAnimatedTextKit(
+              totalRepeatCount: 1,
               pause: Duration(milliseconds:  1000),
               text: ["deepRain", "stay dry", "HTWG Konstanz"],
               textStyle: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
               displayFullTextOnTap: true,
-              stopPauseOnTap: true
-          ),*/
+              stopPauseOnTap: true,
+              onFinished:(){
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainApp()));
+          },
+          ),/*
             SpinKitRotatingPlain(
               color: Colors.white,
               size: 50.0,
-            ),
+            ),*/
           ),
         );
       },

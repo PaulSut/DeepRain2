@@ -46,7 +46,7 @@ dependencies:
   nominatim_location_picker: any
   geocoder: ^0.2.1
   search_map_place: ^0.3.0
-  # animated_text_kit: ^2.0.0
+  animated_text_kit: ^2.0.0
 
 
 
