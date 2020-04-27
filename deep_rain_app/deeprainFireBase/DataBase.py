@@ -25,9 +25,6 @@ if __name__ == '__main__':
     # Counter for the ID of Data
     ID = 0
 
-    # list with all stored ids
-    IDList = []
-
     #return the cordinates of the pixel by [x (lat), y (lng)]
     def return_pixel_from_coordinates(latitude, longitude):
         f = open('listLatitude.pckl', 'rb')
@@ -71,61 +68,70 @@ if __name__ == '__main__':
         return rain_intense;
 
     def upload_data_to_firbase(sc):
-        global ID
-        # the current time for firebase document ID
-        now = datetime.now()
-        current_time = now.strftime("%H:%M")
-
-        # the unique id for the documents of database.
-        documentID = 'deeprain_' + current_time + '_' + str(ID)
-        IDList.append(documentID)
-
-        # random dummy rainintense
-        rainIntense = randrange(100)
-
-        #needed for pushnotification tests
-        rainIntense = 94
-
-        #needed for test of real dataflow
-        rainIntense = return_rain_intense_from_forecast_by_latlng(47.66033, 9.17582)
-        print(rainIntense)
-
-        # upload forecast to firebase
-        doc_ref = db.collection('forecast').document(str(documentID))
-        doc_ref.set({
-            'rainIntense': rainIntense,
-            'time': current_time
-        })
-
         # all regions where are users
         regions = db.collection(u'Regions').stream()
         regions = list(regions)
 
-        for doc in regions:
-            print(u'{} => {}'.format(doc.id, doc.to_dict()))
+        # For each region where are users, (Device Tokens in the Regions/Region/tokens collection), a forecast need to be pushed
+        for region in regions:
+            global ID
+            # the current time for firebase document ID
+            now = datetime.now()
+            current_time = now.strftime("%H:%M")
 
-        # send push notifications to devices.
-        if(rainIntense > 90):
-            doc_ref = db.collection('RainWarningPushNotification').document(str(documentID))
+            # the unique id for the documents of database.
+            documentID = 'deeprain_' + current_time + '_' + str(ID)
+
+            # random dummy rainintense
+            rainIntense = randrange(100)
+
+            #needed for pushnotification tests
+            rainIntense = 94
+
+            #needed for test of real dataflow
+            #rainIntense = return_rain_intense_from_forecast_by_latlng(47.66033, 9.17582)
+            #print(rainIntense)
+
+            # upload forecast to firebase
+            #doc_ref = db.collection('forecast').document(str(documentID))
+            #doc_ref.set({
+            #    'rainIntense': rainIntense,
+            #    'time': current_time
+            #})
+
+            doc_ref = db.collection('Regions').document(region.id).collection('forecast').document(str(documentID))
             doc_ref.set({
-                'title': 'Es gibt eine Regenwarnung!',
-                'body': 'Nehmen Sie besser Ihren Regenschirm mit, es wird in 30 Minuten regenen!',
-                'time_before_raining': '30',
-                'region' : str(regions[0].id)
+                'rainIntense': rainIntense,
+                'time': current_time
             })
 
-        # increase the ID
-        ID = ID + 1
-        print('Upload erfolgeich. ID:' + str(ID) + '. rainIntense: ' + str(rainIntense) + '. time: ' + str(current_time))
+            for doc in regions:
+                print(u'{} => {}'.format(doc.id, doc.to_dict()))
 
-        # if there are 20 items in the db, alway remove the oldest one
-        if len(IDList) > 19:
-            # delete in firebase
-            db.collection("forecast").document(IDList[0]).delete()
-            # delete from local  id list
-            IDList.pop(0)
+            # send push notifications to devices.
+            if(rainIntense > 90):
+                doc_ref = db.collection('RainWarningPushNotification').document(str(documentID))
+                doc_ref.set({
+                    'title': 'Es gibt eine Regenwarnung!',
+                    'body': 'Nehmen Sie besser Ihren Regenschirm mit, es wird in 30 Minuten regenen!',
+                    'time_before_raining': '30',
+                    'region': region.id
+                })
 
-        s.enter(10, 1, upload_data_to_firbase, (sc,))
+            # increase the ID
+            ID = ID + 1
+            print('Upload erfolgeich. ID:' + str(ID) + '. rainIntense: ' + str(rainIntense) + '. time: ' + str(current_time))
+
+            # all regions where are users
+            forecasts = db.collection(u'Regions').document(region.id).collection('forecast').stream()
+            forecasts = list(forecasts)
+            number_of_forecasts = len(forecasts)
+            # if there are 20 items in the db, alway remove the oldest one
+            if number_of_forecasts > 19:
+                # delete in firebase
+                db.collection('Regions').document(region.id).collection('forecast').document(forecasts[0].id).delete()
+
+            s.enter(10, 1, upload_data_to_firbase, (sc,))
     s.enter(10, 1, upload_data_to_firbase, (s,))
     s.run()
 

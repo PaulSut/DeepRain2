@@ -13,9 +13,11 @@ The communication with the firesbase is handled in this class
 class DatabaseService{
   final String uid;
   DatabaseService({this.uid});
+  GlobalValues _globalValues = GlobalValues();
 
   // collection reference for the forecast data
-  final CollectionReference ForecastCollection = Firestore.instance.collection('forecast');
+  //final CollectionReference ForecastCollection = Firestore.instance.collection('forecast');
+  final CollectionReference ForecastCollection = Firestore.instance.collection('Regions').document(AppRegionCity).collection('forecast');
 
   // forecast list from snapshot
   List<ForecastListItem> _forecastListFromSnapshot(QuerySnapshot snapshot){
