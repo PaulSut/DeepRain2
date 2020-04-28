@@ -27,34 +27,31 @@ if __name__ == '__main__':
 
     #return the cordinates of the pixel by [x (lat), y (lng)]
     def return_pixel_from_coordinates(latitude, longitude):
-        f = open('listLatitude.pckl', 'rb')
+        #f = open('listLatitude.pckl', 'rb')
+        f = open('listLatitudeComplete.pckl', 'rb')
         listLatitude = pickle.load(f)
         f.close()
 
-        f = open('listLongitude.pckl', 'rb')
+        #f = open('listLongitude.pckl', 'rb')
+        f = open('listLongitudeComplete.pckl', 'rb')
         listLongitude = pickle.load(f)
         f.close()
 
-        minLat = 0;
-        lastLatValue = 0;
-        currentLatMin = 1000;
+        f = open('listCoordinates.pckl', 'rb')
+        listCoordinates = pickle.load(f)
+        f.close()
 
-        for var in range(1100):
-            lastLatValue = abs(listLatitude[var] - latitude)
-            if (lastLatValue < currentLatMin):
-                currentLatMin = lastLatValue;
-                minLat = var;
+        minValue = 100000
+        iteration_value = 0
+        for var in range(len(listLatitude)):
+            currentValue = abs(listLatitude[var] - latitude + listLongitude[var] - longitude)
+            if(currentValue < minValue):
+                minValue = currentValue
+                iteration_value = var
 
-        minLng = 0;
-        lastLngValue = 0;
-        currentLngMin = 1000;
-        for var in range(900):
-            lastLngValue = abs(listLongitude[var] - longitude)
-            if (lastLngValue < currentLngMin):
-                currentLngMin = lastLngValue;
-                minLng = var;
+        return listCoordinates[iteration_value]
 
-        return [minLat, minLng]
+    print(return_pixel_from_coordinates(47.66033, 9.17582))
 
     def return_rain_intense_from_forecast_by_latlng(latitude, longitude):
         #get the pixel coordinate for this long and latitude
@@ -86,7 +83,7 @@ if __name__ == '__main__':
             rainIntense = randrange(100)
 
             #needed for pushnotification tests
-            rainIntense = 94
+            #rainIntense = 94
 
             #needed for test of real dataflow
             #rainIntense = return_rain_intense_from_forecast_by_latlng(47.66033, 9.17582)
@@ -131,8 +128,8 @@ if __name__ == '__main__':
                 # delete in firebase
                 db.collection('Regions').document(region.id).collection('forecast').document(forecasts[0].id).delete()
 
-            s.enter(10, 1, upload_data_to_firbase, (sc,))
-    s.enter(10, 1, upload_data_to_firbase, (s,))
+            s.enter(300, 1, upload_data_to_firbase, (sc,))
+    s.enter(300, 1, upload_data_to_firbase, (s,))
     s.run()
 
 
