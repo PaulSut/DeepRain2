@@ -4,6 +4,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:deep_rain/main.dart';
 import 'package:deep_rain/services/Database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,11 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
+
   //Download images. Set settings.
   Future<bool> setupApp() async{
+
+    await FirebaseAuth.instance.signInAnonymously();
 
     //The Images will be downloaded
     DatabaseService instance = DatabaseService();
