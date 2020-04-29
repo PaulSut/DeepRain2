@@ -7,6 +7,7 @@ import time
 from random import randrange
 from datetime import datetime
 from PIL import Image
+import numpy as np
 
 #
 # creats example rain forecast data. upload this data to firebase. every 5 minutes one dataset.
@@ -41,17 +42,14 @@ if __name__ == '__main__':
         listCoordinates = pickle.load(f)
         f.close()
 
-        minValue = 100000
-        iteration_value = 0
-        for var in range(len(listLatitude)):
-            currentValue = abs(listLatitude[var] - latitude + listLongitude[var] - longitude)
-            if(currentValue < minValue):
-                minValue = currentValue
-                iteration_value = var
+        dist_to_pixel = []
+        for idx in range(len(listLatitude)):
+            dist_to_pixel.append(np.linalg.norm([longitude - listLongitude[idx], latitude - listLatitude[idx]]))
+        index_of_min_dist = dist_to_pixel.index(min(dist_to_pixel))
 
-        return listCoordinates[iteration_value]
+        return listCoordinates[index_of_min_dist]
 
-    print(return_pixel_from_coordinates(47.66033, 9.17582))
+    print(return_pixel_from_coordinates(8.774200, 47.856621))
 
     def return_rain_intense_from_forecast_by_latlng(latitude, longitude):
         #get the pixel coordinate for this long and latitude

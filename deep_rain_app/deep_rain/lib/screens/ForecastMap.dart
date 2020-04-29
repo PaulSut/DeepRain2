@@ -70,7 +70,7 @@ class _ForecastMapState extends State<ForecastMap> {
                 ),
                 OverlayImageLayerOptions(overlayImages: <OverlayImage>[
                   OverlayImage(
-                    bounds: LatLngBounds(LatLng(54.469581, 5.457018), LatLng(47.321954, 13.781278)),
+                    bounds: LatLngBounds(LatLng(47.856621, 8.774200), LatLng(47.330066658675364, 9.574703521358009)),
                     opacity: 0.8,
                     imageProvider: imageFile == null ? AssetImage('assets/error.png') : Image.memory(imageFile).image,
                   ),
