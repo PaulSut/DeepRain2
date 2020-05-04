@@ -1,0 +1,6 @@
+/NeuralNetworks/
+/historical_data/
+/forecast_grayscale/
+/forecast/
+/__pycache__/
+*.json
