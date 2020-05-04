@@ -4,3 +4,4 @@
 /forecast/
 /__pycache__/
 *.json
+/.idea/
