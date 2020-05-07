@@ -207,6 +207,9 @@ class Evaluation(object):
                 if four_categories:
                     four_categories_confusion+= self.four_categories_eval(prediction_array, actual_array)
 
+                #if weather_changes_two_categories:
+                #    self.weather_changes_two_categories_eval(previus)
+
 
 
             # save confusion matrices
@@ -214,9 +217,9 @@ class Evaluation(object):
                 self.save_confusion_matrix(rain_no_rain_confusion, path_to_current_eval_time_step, 'rain_no_rain')
 
             if four_categories:
-                self.save_confusion_matrix(four_categories_confusion, path_to_current_eval_time_step, 'four_categories_confusion')
+                self.save_confusion_matrix(four_categories_confusion, path_to_current_eval_time_step, 'four_categories')
 
-    def create_report(self, normalize=True, rain_no_rain=True):
+    def create_report(self, normalize=True, rain_no_rain=True, four_categories=True):
         print('Start to create the report')
         if normalize:
             file_ending = '_normalized'
@@ -249,6 +252,21 @@ class Evaluation(object):
                     os.path.join(path_to_current_eval_time_step, 'diagramms', 'rain_no_rain' + file_ending + '.html'),
                     full_html=False)
 
+            if four_categories:
+                data = pickle.load(
+                    open(os.path.join(path_to_current_eval_time_step, 'four_categories' + file_ending + '.p'), 'rb'))
+                fig = px.imshow(data,
+                                labels=dict(x="Actual Class", y="Predicted Class"),
+                                x=['No Rain', 'light rain intensity', 'medium rain intensity', 'strong rain intensity'],
+                                y=['No Rain', 'light rain intensity', 'medium rain intensity', 'strong rain intensity']
+                                )
+                fig.update_xaxes(side="top")
+                fig.update_layout(title=str((1 + prediction_time_step) * 5) + ' minute prediction', title_x=0.5)
+                fig.write_html(
+                    os.path.join(path_to_current_eval_time_step, 'diagramms', 'four_categories' + file_ending + '.html'),
+                    full_html=False)
+
+
         head = '''
             <p style="margin-bottom: 0in; line-height: 100%;" align="center"><span style="font-family: Calibri, sans-serif;"><span style="font-size: xx-large;">DeepRain Evaluation Report</span></span></p>
             <p style="margin-bottom: 0in; line-height: 100%;">&nbsp;</p>
@@ -262,30 +280,13 @@ class Evaluation(object):
         print('Create th final report')
         interactive_report = head
         if rain_no_rain:
+            interactive_report = self.add_rain_no_rain_report(interactive_report, file_ending)
+        if four_categories:
+            interactive_report = self.add_four_categories_report(interactive_report, file_ending)
 
-            cm = pickle.load( open(os.path.join(self.eval_model_dir, 'evaluation','5_minute_prediction', 'rain_no_rain' + '.p'), "rb"))
 
-            number_of_datapoints = int(cm.sum())
-            number_of_no_rain_datapoints = int(cm.T.sum(axis=1)[0])
-            number_of_rain_datapoints = int(cm.T.sum(axis=1)[1])
 
-            rain_no_rain_intro = f'''<p style="margin-bottom: 0in; line-height: 100%;" align="justify"><span style="font-family: Calibri, sans-serif;"><span style="font-size: xx-large;">Rain/ no rain evaluation</span></span></p>
-                                    <p style="margin-bottom: 0in; line-height: 100%;" align="justify">&nbsp;</p>
-                                    <p style="margin-bottom: 0in; line-height: 100%;" align="justify"><span style="font-family: Calibri, sans-serif;"><span style="font-size: small;">In the following section the model performance is evaluated by dividing the weather into two categories: rain/no rain. </span></span><span style="font-family: Calibri, sans-serif;"><span style="font-size: small;">Therefore {number_of_datapoints} data points were analyzed out of which {number_of_no_rain_datapoints} were of the class no rain and {number_of_rain_datapoints} were of the class rain</span></span></p>
-                                    <br>
-                                    <br>
-                                    <br>
-                                    '''
-            interactive_report += rain_no_rain_intro
-            for prediction_time_step in range(self.number_of_predictions):
-                path_to_current_eval_time_step_diagramms = os.path.join(self.eval_model_dir, 'evaluation',
-                                                                        str((
-                                                                                        1 + prediction_time_step) * 5) + '_minute_prediction')
-                graph = codecs.open(os.path.join(path_to_current_eval_time_step_diagramms, 'diagramms',
-                                                 'rain_no_rain' + file_ending + '.html'), 'r').read()
 
-                _interactive_block = self.report_block_template(graph_html=graph, interactive=True, caption='')
-                interactive_report += _interactive_block
 
         with open(os.path.join(self.eval_model_dir, 'evaluation', 'final_report' + file_ending + '.html'), "w") as file:
             file.write(interactive_report)
@@ -294,6 +295,65 @@ class Evaluation(object):
 
         #self.convert_html_to_pdf(static_report,
         #                         os.path.join(self.eval_model_dir, 'evaluation', 'final_report' + file_ending + '.pdf'))
+
+
+    def add_four_categories_report(self, interactive_report, file_ending):
+        cm = pickle.load(
+            open(os.path.join(self.eval_model_dir, 'evaluation', '5_minute_prediction', 'four_categories' + '.p'), "rb"))
+
+        number_of_datapoints = int(cm.sum())
+        number_of_no_rain_datapoints = int(cm.T.sum(axis=1)[0])
+        number_of_light_datapoints = int(cm.T.sum(axis=1)[1])
+        number_of_medium_datapoints = int(cm.T.sum(axis=1)[2])
+        number_of_strong_datapoints = int(cm.T.sum(axis=1)[3])
+
+        rain_no_rain_intro = f'''<p style="margin-bottom: 0in; line-height: 100%;" align="justify"><span style="font-family: Calibri, sans-serif;"><span style="font-size: xx-large;">Rain/ no rain evaluation</span></span></p>
+                                                    <p style="margin-bottom: 0in; line-height: 100%;" align="justify">&nbsp;</p>
+                                                    <p style="margin-bottom: 0in; line-height: 100%;" align="justify"><span style="font-family: Calibri, sans-serif;"><span style="font-size: small;">In the following section the model performance is evaluated by dividing the weather into two categories: rain/no rain. </span></span><span style="font-family: Calibri, sans-serif;"><span style="font-size: small;">Therefore {number_of_datapoints} data points were analyzed out of which {number_of_no_rain_datapoints} were of the class no rain, {number_of_light_datapoints} were of the class light rain intensity, {number_of_medium_datapoints} were of the class medium rain intensity and {number_of_strong_datapoints} were of the class strong rain intensity</span></span></p>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    '''
+        interactive_report += rain_no_rain_intro
+        for prediction_time_step in range(self.number_of_predictions):
+            path_to_current_eval_time_step_diagramms = os.path.join(self.eval_model_dir, 'evaluation',
+                                                                    str((
+                                                                                1 + prediction_time_step) * 5) + '_minute_prediction')
+            graph = codecs.open(os.path.join(path_to_current_eval_time_step_diagramms, 'diagramms',
+                                             'four_categories' + file_ending + '.html'), 'r').read()
+
+            _interactive_block = self.report_block_template(graph_html=graph, interactive=True, caption='')
+            interactive_report += _interactive_block
+
+        return interactive_report
+
+    def add_rain_no_rain_report(self, interactive_report, file_ending):
+        cm = pickle.load(
+            open(os.path.join(self.eval_model_dir, 'evaluation', '5_minute_prediction', 'rain_no_rain' + '.p'), "rb"))
+
+        number_of_datapoints = int(cm.sum())
+        number_of_no_rain_datapoints = int(cm.T.sum(axis=1)[0])
+        number_of_rain_datapoints = int(cm.T.sum(axis=1)[1])
+
+        rain_no_rain_intro = f'''<p style="margin-bottom: 0in; line-height: 100%;" align="justify"><span style="font-family: Calibri, sans-serif;"><span style="font-size: xx-large;">Rain/ no rain evaluation</span></span></p>
+                                            <p style="margin-bottom: 0in; line-height: 100%;" align="justify">&nbsp;</p>
+                                            <p style="margin-bottom: 0in; line-height: 100%;" align="justify"><span style="font-family: Calibri, sans-serif;"><span style="font-size: small;">In the following section the model performance is evaluated by dividing the weather into two categories: rain/no rain. </span></span><span style="font-family: Calibri, sans-serif;"><span style="font-size: small;">Therefore {number_of_datapoints} data points were analyzed out of which {number_of_no_rain_datapoints} were of the class no rain and {number_of_rain_datapoints} were of the class rain</span></span></p>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            '''
+        interactive_report += rain_no_rain_intro
+        for prediction_time_step in range(self.number_of_predictions):
+            path_to_current_eval_time_step_diagramms = os.path.join(self.eval_model_dir, 'evaluation',
+                                                                    str((
+                                                                                1 + prediction_time_step) * 5) + '_minute_prediction')
+            graph = codecs.open(os.path.join(path_to_current_eval_time_step_diagramms, 'diagramms',
+                                             'rain_no_rain' + file_ending + '.html'), 'r').read()
+
+            _interactive_block = self.report_block_template(graph_html=graph, interactive=True, caption='')
+            interactive_report += _interactive_block
+
+        return interactive_report
 
     def report_block_template(self, graph_html, interactive=True, caption=''):
         if interactive:
