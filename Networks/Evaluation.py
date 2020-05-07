@@ -21,7 +21,6 @@ import plotly.express as px
 class Evaluation(object):
 
     def __init__(self,
-                 model,
                  model_name,
                  Data,
                  batch_size,
@@ -29,6 +28,7 @@ class Evaluation(object):
                  dimension,
                  number_of_predictions,
                  time_steps,
+                 model=False,
                  transform_input=None,
                  transform_predictions=None,
                  flatten=False):
@@ -76,13 +76,19 @@ class Evaluation(object):
             weather_history = np.transpose(self.train[point_of_time][0], (0, 2, 3, 1))
             os.makedirs(os.path.join(self.path_to_predictions, str(point_of_time)))
             for prediction in range(self.number_of_predictions):
-                forecast = model.predict(weather_history)
+                if not self.model:
+                    # Baseline "Wheater does not change"
+                    forecast = weather_history[:, :, :, 4:]
+                    forecast = np.reshape(forecast, (self.dimension))
+                else:
+                    forecast = self.model.predict(weather_history)
 
                 if self.transform_predictions is not None:
                     for operation in self.transform_predictions:
                         forecast = operation(forecast)
                 else:
                     forecast *= 255
+
 
                 forecast_img = PIL.Image.fromarray(np.asanyarray(forecast, dtype=np.int8), mode='L')
                 forecast_img.save(os.path.join(self.path_to_predictions, str(point_of_time), str(prediction) + '.png'))
@@ -156,7 +162,7 @@ class Evaluation(object):
                 writer.append_data(frame)
         print('Done')
 
-    def evaluation(self, evaluation_time_steps=None, rain_no_rain=False):
+    def evaluation(self, evaluation_time_steps=None, rain_no_rain=False, four_categories =False):
         '''
         Evaluates the predictions
 
@@ -184,6 +190,7 @@ class Evaluation(object):
 
             # different confusion matrices
             rain_no_rain_confusion = np.zeros((2, 2))
+            four_categories_confusion = np.zeros((4, 4))
             for evaluation_step in range(evaluation_time_steps):
                 prediction_array = np.asanyarray(PIL.Image.open(
                     os.path.join(self.path_to_predictions, str(evaluation_step), str(prediction_time_step) + '.png'),
@@ -197,9 +204,17 @@ class Evaluation(object):
                 if rain_no_rain:
                     rain_no_rain_confusion += self.rain_no_rain_eval(prediction_array, actual_array)
 
+                if four_categories:
+                    four_categories_confusion+= self.four_categories_eval(prediction_array, actual_array)
+
+
+
             # save confusion matrices
             if rain_no_rain:
                 self.save_confusion_matrix(rain_no_rain_confusion, path_to_current_eval_time_step, 'rain_no_rain')
+
+            if four_categories:
+                self.save_confusion_matrix(four_categories_confusion, path_to_current_eval_time_step, 'four_categories_confusion')
 
     def create_report(self, normalize=True, rain_no_rain=True):
         print('Start to create the report')
@@ -337,6 +352,29 @@ class Evaluation(object):
 
         return confusion_matrix
 
+    def four_categories_eval(self, prediction_array, actual_array):
+        new_prediction_array = np.zeros(prediction_array.shape)
+        new_actual_array = np.zeros(actual_array.shape)
+
+        new_prediction_array[(prediction_array > 0) & (prediction_array <= 2)] = 1
+        new_prediction_array[(prediction_array > 2) & (prediction_array <= 10)] = 2
+        new_prediction_array[prediction_array > 10] = 3
+
+        new_actual_array[(actual_array > 0) & (actual_array <= 2)] = 1
+        new_actual_array[(actual_array > 2) & (actual_array <= 10)] = 2
+        new_actual_array[actual_array > 10] = 3
+
+        new_prediction_array = new_prediction_array.flatten()
+        new_actual_array = new_actual_array.flatten()
+
+        confusion_matrix = sklearn.metrics.confusion_matrix(new_actual_array, new_prediction_array)
+
+        return confusion_matrix
+
+
+
+
+
 
 DatasetFolder = "./Data/RAW"
 PathToData = os.path.join(DatasetFolder, "MonthPNGData")
@@ -362,7 +400,7 @@ def provideData(dimension, batch_size, channels, flatten=False, transform_input=
 PATH_TO_MODEL = '/home/paul/Documents/DeepRain/Simon_git/DeepRain2/Networks/Utils/model_data/UNet64_categorical_crossentropy/UNet64_categorical_crossentropy448x448x5.h5'
 DIMESNION = (448, 448)
 NUMBER_OF_PREDICTIONS = 6
-NUMBER_OF_TIMESTEPS = 2000
+NUMBER_OF_TIMESTEPS = 50
 CHANNELS = 5
 BATCH_SIZE = 1
 SCLICES = [100, 548, 200, 648]
@@ -371,10 +409,10 @@ cutOutFrame = cutOut(SCLICES)
 
 PRETRAINING_TRANSFORMATIONS = [cutOutFrame]
 
-model = load_model(PATH_TO_MODEL)
-
-evaluation = Evaluation(model,
-                        'Test_Modell',
+#model = load_model(PATH_TO_MODEL)
+'''
+evaluation = Evaluation('Baseline',
+                        model=False,
                         Data=provideData(batch_size=BATCH_SIZE, dimension=DIMESNION,
                                          preTransformation=PRETRAINING_TRANSFORMATIONS, transform_input=[Normalize()],
                                          transform_output=[ToCategorical([-10000, 0, 2, 10, 256])], channels=CHANNELS),
@@ -386,12 +424,29 @@ evaluation = Evaluation(model,
                         transform_predictions=[from_sparse_categorical()],
                         time_steps=NUMBER_OF_TIMESTEPS
                         )
+                        '''
+
+#Baseline:
+evaluation = Evaluation('Baseline',
+                        model=False,
+                        Data=provideData(batch_size=BATCH_SIZE, dimension=DIMESNION,
+                                         preTransformation=PRETRAINING_TRANSFORMATIONS, transform_input=[Normalize()],
+                                         transform_output=[], channels=CHANNELS),
+                        batch_size=BATCH_SIZE,
+                        channels=CHANNELS,
+                        dimension=DIMESNION,
+                        number_of_predictions=NUMBER_OF_PREDICTIONS,
+                        transform_input=[Normalize()],
+                        transform_predictions=None,
+                        time_steps=NUMBER_OF_TIMESTEPS
+                        )
+
 
 start = time.time()
 print("Start to measure Time")
 evaluation.make_predictions()
 evaluation.create_grayscale_gif()
-evaluation.evaluation(rain_no_rain=True)
+evaluation.evaluation(rain_no_rain=True, four_categories=True)
 evaluation.create_report()
 end = time.time()
 print("Stop to measure Time")

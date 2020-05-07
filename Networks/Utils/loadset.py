@@ -102,7 +102,7 @@ def getDataSet(working_dir,year=None,username=USRN,pswd=PSWD):
             year.remove(y)
 
     except Exception as e:
-        print("No Data Found\n")
+        print("No Data Found\n", e)
 
     if year is None:
         filenames = [prefix + str(i) + suffix for i in range(start,end+1)]

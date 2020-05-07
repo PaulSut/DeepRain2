@@ -265,7 +265,7 @@ def provideData(dimension, batch_size, channels, flatten=False, transform_input=
     return train, test
 
 
-PATH_TO_MODEL = '/home/paul/Documents/DeepRain/Simon_git/DeepRain2/Networks/Utils/model_data/UNet64_categorical_crossentropy/UNet64_categorical_crossentropy448x448x5.h5'
+PATH_TO_MODEL = '/clean_git/DeepRain2/Networks/Utils/model_data/UNet64_categorical_crossentropy/UNet64_categorical_crossentropy448x448x5.h5'
 DIMESNION = (448, 448)
 NUMBER_OF_PREDICTIONS = 6
 NUMBER_OF_TIMESTEPS = 500
