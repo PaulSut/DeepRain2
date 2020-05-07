@@ -89,7 +89,6 @@ class Evaluation(object):
                 else:
                     forecast *= 255
 
-
                 forecast_img = PIL.Image.fromarray(np.asanyarray(forecast, dtype=np.int8), mode='L')
                 forecast_img.save(os.path.join(self.path_to_predictions, str(point_of_time), str(prediction) + '.png'))
 
@@ -162,7 +161,8 @@ class Evaluation(object):
                 writer.append_data(frame)
         print('Done')
 
-    def evaluation(self, evaluation_time_steps=None, rain_no_rain=False, four_categories =False):
+    def evaluation(self, evaluation_time_steps=None, rain_no_rain=False, four_categories=False,
+                   weather_changes_two_categories=False):
         '''
         Evaluates the predictions
 
@@ -191,6 +191,8 @@ class Evaluation(object):
             # different confusion matrices
             rain_no_rain_confusion = np.zeros((2, 2))
             four_categories_confusion = np.zeros((4, 4))
+            weather_changes_two_cat_confusion = np.zeros((3, 3))
+            previous_predictions, previous_actual = np.asanyarray([]), np.asanyarray([])
             for evaluation_step in range(evaluation_time_steps):
                 prediction_array = np.asanyarray(PIL.Image.open(
                     os.path.join(self.path_to_predictions, str(evaluation_step), str(prediction_time_step) + '.png'),
@@ -205,12 +207,15 @@ class Evaluation(object):
                     rain_no_rain_confusion += self.rain_no_rain_eval(prediction_array, actual_array)
 
                 if four_categories:
-                    four_categories_confusion+= self.four_categories_eval(prediction_array, actual_array)
+                    four_categories_confusion += self.four_categories_eval(prediction_array, actual_array)
 
-                #if weather_changes_two_categories:
-                #    self.weather_changes_two_categories_eval(previus)
-
-
+                if weather_changes_two_categories:
+                    weather_changes_two_cat_confusion += self.weather_changes_two_categories_eval(previous_predictions,
+                                                                                                  prediction_array,
+                                                                                                  previous_actual,
+                                                                                                  actual_array)
+                previous_actual = np.asanyarray(actual_array)
+                previous_predictions = np.asanyarray(prediction_array)
 
             # save confusion matrices
             if rain_no_rain:
@@ -218,6 +223,10 @@ class Evaluation(object):
 
             if four_categories:
                 self.save_confusion_matrix(four_categories_confusion, path_to_current_eval_time_step, 'four_categories')
+
+            if weather_changes_two_categories:
+                self.save_confusion_matrix(weather_changes_two_cat_confusion, path_to_current_eval_time_step,
+                                           'waether_changes_two_categories')
 
     def create_report(self, normalize=True, rain_no_rain=True, four_categories=True):
         print('Start to create the report')
@@ -247,7 +256,7 @@ class Evaluation(object):
                                 y=['No Rain', 'Rain']
                                 )
                 fig.update_xaxes(side="top")
-                fig.update_layout(title=str((1 + prediction_time_step) * 5) + ' minute prediction',  title_x=0.5)
+                fig.update_layout(title=str((1 + prediction_time_step) * 5) + ' minute prediction', title_x=0.5)
                 fig.write_html(
                     os.path.join(path_to_current_eval_time_step, 'diagramms', 'rain_no_rain' + file_ending + '.html'),
                     full_html=False)
@@ -263,14 +272,14 @@ class Evaluation(object):
                 fig.update_xaxes(side="top")
                 fig.update_layout(title=str((1 + prediction_time_step) * 5) + ' minute prediction', title_x=0.5)
                 fig.write_html(
-                    os.path.join(path_to_current_eval_time_step, 'diagramms', 'four_categories' + file_ending + '.html'),
+                    os.path.join(path_to_current_eval_time_step, 'diagramms',
+                                 'four_categories' + file_ending + '.html'),
                     full_html=False)
-
 
         head = '''
             <p style="margin-bottom: 0in; line-height: 100%;" align="center"><span style="font-family: Calibri, sans-serif;"><span style="font-size: xx-large;">DeepRain Evaluation Report</span></span></p>
             <p style="margin-bottom: 0in; line-height: 100%;">&nbsp;</p>
-            <p style="margin-bottom: 0in; line-height: 100%;" align="center"><span style="font-family: Calibri, sans-serif;"><span style="font-size: xx-large;">'''+ self.model_name +'''</span></span></p>
+            <p style="margin-bottom: 0in; line-height: 100%;" align="center"><span style="font-family: Calibri, sans-serif;"><span style="font-size: xx-large;">''' + self.model_name + '''</span></span></p>
             <br>
             <br>
             <br>
@@ -284,22 +293,18 @@ class Evaluation(object):
         if four_categories:
             interactive_report = self.add_four_categories_report(interactive_report, file_ending)
 
-
-
-
-
         with open(os.path.join(self.eval_model_dir, 'evaluation', 'final_report' + file_ending + '.html'), "w") as file:
             file.write(interactive_report)
 
         print('Done.')
 
-        #self.convert_html_to_pdf(static_report,
+        # self.convert_html_to_pdf(static_report,
         #                         os.path.join(self.eval_model_dir, 'evaluation', 'final_report' + file_ending + '.pdf'))
-
 
     def add_four_categories_report(self, interactive_report, file_ending):
         cm = pickle.load(
-            open(os.path.join(self.eval_model_dir, 'evaluation', '5_minute_prediction', 'four_categories' + '.p'), "rb"))
+            open(os.path.join(self.eval_model_dir, 'evaluation', '5_minute_prediction', 'four_categories' + '.p'),
+                 "rb"))
 
         number_of_datapoints = int(cm.sum())
         number_of_no_rain_datapoints = int(cm.T.sum(axis=1)[0])
@@ -365,7 +370,7 @@ class Evaluation(object):
 
         report_block = ('' +
                         graph_block +
-                        caption  +  # Optional caption to include below the graph
+                        caption +  # Optional caption to include below the graph
                         '<br>' +  # Line break
                         '<br>' +
                         '<hr>')  # horizontal line
@@ -431,9 +436,43 @@ class Evaluation(object):
 
         return confusion_matrix
 
+    def weather_changes_two_categories_eval(self, previous_predictions, current_predictions, previous_actual,
+                                            current_actual):
 
+        if previous_actual.shape != self.dimension:
+            return np.zeros((3,3))
+        # create new arrays
+        new_previous_predictions_array = np.zeros(current_actual.shape)
+        new_current_prediction_array = np.zeros(current_actual.shape)
+        new_previous_actual = np.zeros(current_actual.shape)
+        new_current_actual_array = np.zeros(current_actual.shape)
 
+        # fill arrays with 1 for rain 0 no rain
+        new_previous_predictions_array[previous_predictions > 0] = 1
+        new_current_prediction_array[current_predictions > 0] = 1
+        new_previous_actual[previous_actual > 0] = 1
+        new_current_actual_array[current_actual > 0] = 1
 
+        '''
+        Weather stays as it is : 0 
+        starts to rain: 1
+        rain stops: 2
+        '''
+        prediction = np.zeros(current_actual.shape)
+        prediction = np.where((new_previous_predictions_array == 0) & (new_current_prediction_array == 1),
+                              1, prediction)
+        prediction = np.where((new_previous_predictions_array == 1) & (new_current_prediction_array == 0),
+                              2, prediction)
+
+        actual = np.zeros(current_actual.shape)
+        actual = np.where((new_previous_actual == 0) & (new_current_actual_array == 1), 1, actual)
+        actual = np.where((new_previous_actual == 1) & (new_current_actual_array == 0), 2, actual)
+
+        actual = actual.flatten()
+        prediction = prediction.flatten()
+        confusion_matrix = sklearn.metrics.confusion_matrix(actual, prediction)
+
+        return confusion_matrix
 
 
 DatasetFolder = "./Data/RAW"
@@ -469,7 +508,7 @@ cutOutFrame = cutOut(SCLICES)
 
 PRETRAINING_TRANSFORMATIONS = [cutOutFrame]
 
-#model = load_model(PATH_TO_MODEL)
+# model = load_model(PATH_TO_MODEL)
 '''
 evaluation = Evaluation('Baseline',
                         model=False,
@@ -486,7 +525,7 @@ evaluation = Evaluation('Baseline',
                         )
                         '''
 
-#Baseline:
+# Baseline:
 evaluation = Evaluation('Baseline',
                         model=False,
                         Data=provideData(batch_size=BATCH_SIZE, dimension=DIMESNION,
@@ -501,12 +540,11 @@ evaluation = Evaluation('Baseline',
                         time_steps=NUMBER_OF_TIMESTEPS
                         )
 
-
 start = time.time()
 print("Start to measure Time")
 evaluation.make_predictions()
-evaluation.create_grayscale_gif()
-evaluation.evaluation(rain_no_rain=True, four_categories=True)
+# evaluation.create_grayscale_gif()
+evaluation.evaluation(rain_no_rain=True, four_categories=True, weather_changes_two_categories=True)
 evaluation.create_report()
 end = time.time()
 print("Stop to measure Time")
