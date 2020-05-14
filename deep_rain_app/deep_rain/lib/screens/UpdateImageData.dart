@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:deep_rain/DataObjects/DataHolder.dart';
 import 'package:deep_rain/screens/ForecastMap.dart';
 import 'package:deep_rain/services/Database.dart';
@@ -30,19 +31,19 @@ class _UpdateImageDataState extends State<UpdateImageData> {
 
   @override
   Widget build(BuildContext context) {
-    Timer(
-        Duration(seconds: 2, milliseconds: 500),
-            () => Navigator.of(context).pop(MaterialPageRoute(builder: (BuildContext context) => ForecastMap()))
-    );
 
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       body: Center(
-        child: SpinKitRotatingPlain(
-          color: Colors.white,
-          size: 50.0,
-          itemBuilder: (BuildContext context, int index) {
-            return Text('Bilder werden runtergeladen...');
+        child: TypewriterAnimatedTextKit(
+          totalRepeatCount: 1,
+          pause: Duration(milliseconds:  500),
+          text: ["Vorhersage", "wird", "aktualisiert"],
+          textStyle: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
+          displayFullTextOnTap: true,
+          stopPauseOnTap: true,
+          onFinished:(){
+            Navigator.of(context).pop(MaterialPageRoute(builder: (BuildContext context) => ForecastMap()));
           },
         ),
       ),

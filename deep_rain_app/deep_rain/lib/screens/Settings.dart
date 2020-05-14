@@ -119,7 +119,10 @@ class _LoadingState extends State<Settings> {
                 subtitle: _globalValues.getAppRegionCity(),
                 leading: Icon(Icons.location_on),
                 onTap: () async {
-                  getLocationWithNominatim();
+                  getLocationWithNominatim().then((val){
+                    DatabaseService _dbService = DatabaseService();
+                    _dbService.updateRegion();
+                  });
                 },
               ),
             ],
@@ -178,7 +181,6 @@ class _LoadingState extends State<Settings> {
                               splashColor: Colors.blueAccent,
                               onPressed: (){
                                 Navigator.of(context).pop();
-
                               },
                               child: Text(_uiText.chooseLanguageDialogOkButton),
                             )
