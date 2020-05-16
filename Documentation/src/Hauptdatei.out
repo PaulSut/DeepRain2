@@ -1,0 +1,20 @@
+\BOOKMARK [1][-]{section*.3}{Abbildungsverzeichnis}{}% 1
+\BOOKMARK [1][-]{section*.4}{Abk\374rzungsverzeichnis}{}% 2
+\BOOKMARK [1][-]{section.1}{1 Gesamtsystem}{}% 3
+\BOOKMARK [1][-]{section.2}{2 Die Daten}{}% 4
+\BOOKMARK [1][-]{section.3}{3 Die Datenaufbereitung}{}% 5
+\BOOKMARK [1][-]{section.4}{4 Die neuronalen Netze}{}% 6
+\BOOKMARK [1][-]{section.5}{5 Die DeepRainApp und das Datenbankhandling}{}% 7
+\BOOKMARK [2][-]{subsection.5.1}{5.1 \334bersicht}{section.5}% 8
+\BOOKMARK [2][-]{subsection.5.2}{5.2 Firebase}{section.5}% 9
+\BOOKMARK [2][-]{subsection.5.3}{5.3 Datenbank und Cloudspeicher}{section.5}% 10
+\BOOKMARK [2][-]{subsection.5.4}{5.4 Server}{section.5}% 11
+\BOOKMARK [2][-]{subsection.5.5}{5.5 Die App}{section.5}% 12
+\BOOKMARK [3][-]{subsubsection.5.5.1}{5.5.1 Funktionen der App}{subsection.5.5}% 13
+\BOOKMARK [3][-]{subsubsection.5.5.2}{5.5.2 Screens der App}{subsection.5.5}% 14
+\BOOKMARK [3][-]{subsubsection.5.5.3}{5.5.3 Framework Entscheidung}{subsection.5.5}% 15
+\BOOKMARK [3][-]{subsubsection.5.5.4}{5.5.4 Technischer Aufbau von Flutter}{subsection.5.5}% 16
+\BOOKMARK [3][-]{subsubsection.5.5.5}{5.5.5 Projektstruktur}{subsection.5.5}% 17
+\BOOKMARK [3][-]{subsubsection.5.5.6}{5.5.6 Cloudfunktionen}{subsection.5.5}% 18
+\BOOKMARK [3][-]{subsubsection.5.5.7}{5.5.7 Push Benachrichtigungen}{subsection.5.5}% 19
+\BOOKMARK [3][-]{subsubsection.5.5.8}{5.5.8 Vorgehen bei Entwicklung}{subsection.5.5}% 20

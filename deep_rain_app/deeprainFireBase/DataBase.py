@@ -28,12 +28,11 @@ if __name__ == '__main__':
 
     #return the cordinates of the pixel by [x (lat), y (lng)]
     def return_pixel_from_coordinates(latitude, longitude):
-        #f = open('listLatitude.pckl', 'rb')
+
         f = open('listLatitudeComplete.pckl', 'rb')
         listLatitude = pickle.load(f)
         f.close()
 
-        #f = open('listLongitude.pckl', 'rb')
         f = open('listLongitudeComplete.pckl', 'rb')
         listLongitude = pickle.load(f)
         f.close()

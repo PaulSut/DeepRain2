@@ -1,0 +1,88 @@
+\subsection{Die App}\label{die app}
+
+\subsubsection{Funktionen der App}\label{funkionen der app}
+Die App soll die von den Netzen berechnete Vorhersagen visualisieren und dem Benutzer zur Verfügung stellen. Die Daten werden dabei sowohl in Tabellarischer als auch in Form einer Karte dargestellt. Dabei wird gewährleistet, dass immer die aktuellsten Daten zur Verfügung stehen. Außerdem wird der Benutzer benachrichtigt sobald es eine Regenwarnung gibt. Der Zeitpunkt der Regenwarnung kann eingestellt werden.
+
+\subsubsection{Screens der App}\label{screens der app}
+Im Wesentlichen besteht die App aus drei Screens. Einem Screen zum Anzeigen der Daten in Listenform, einem zu Anzeigen der Daten auf einer Karte und den Einstellungen. Die jeweiligen Screens können über die Bottomnavigation erreicht, somit ist es möglich von jedem Screen zu jedem Screen zu wechseln.   
+[Hier Jeweils ein Screenshot von jedem Screen, wenn die App endgültig fertig ist]  
+
+\subsubsection*{Regenvorhersage als List}
+Auf diesem Screen werden alle von den Netzen berechneten Regenvorhersagen angezeigt. Dabei wird in die drei Kategorien “Kein Regen”, “Leichter Regen” und “Starker Regen” unterschieden. Je höher die berechnete Regenintensität ist, je dunkler wird der Regenschirm welcher zu Beginn der Listeneinträge zu sehen ist.   
+
+\subsubsection*{Regenvorhersage als Karte}
+Auf diesem Screen werden die von den Netzen erzeugten PNGs visualisiert. Dafür werden die PNGs mit einer Karte hinterlegt auf der sich der User frei bewegen kann, um die aktuelle Regensituation an jedem beliebigen Ort zu überprüfen. Dabei wird standardmäßig der Kartenausschnitt von der Region angezeigt, die in den Einstellungen eingestellt wurde. Mit dem Slider kann der Zeitpunkt eingestellt werden, in dem die Regenvorhersage interessant ist. Mit dem Aktualisieren Button in der Actionbar können die neusten Bilder vom Server heruntergeladen werden. Im Normalfall werden die Bilder einmalig bei dem App Start heruntergeladen.  
+
+\subsubsection*{Einstellungen}
+Auf diesem Screen können alle relevanten Einstellungen gemacht werden. Dazu gehört z.B. die Sprache der Benutzeroberfläche. Außerdem kann die Region eingestellt werden. Die hier ausgewählte Region wird standardmäßig auf der Karte angezeigt und nur für diese Region werden Regenwarnungen gesendet. Unter der Benachrichtigung’s Kategorie können die Regenwarnungen Aktiviert werden sowie der Zeitpunkt der Regenwarnung eingestellt werden. Jede Aktion in dieser Kategorie löst eine Datenbankaktion aus. Wenn die Regenwarnung aktiviert wird, wird der Device Token von dem Gerät in die Datenbank hochgeladen, beim Deaktivieren wird der Device Token gelöscht. Wenn der Zeitpunkt der Regenwarnung verändert wird, wird der Device Token in der Datenbank von einer Kollektion in eine andere Kollektion verschoben.   
+Alle gemachten Einstellungen werden in sogenannten Shared Preferences gespeichert, damit sie auch nach App Start immer noch vorhanden sind. Die Shared Preferences sind eine Key-Value Datenbank die auf dem Gerät gespeichert wird. Bei App Start werden die Einstellungen aus den Shared Preferences gelesen und auf globale Variablen gespeichert. Diese Variablen sind dafür entscheidend, welche Einstellungen wiederhergestellt werden.  In der folgenden Abbildung kann der Datenfluss nachdem der Zeitpunkt der Regenwarnung verändert wurde nachvollzogen werden.   
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.8\textwidth,angle=0]{abb/sequence_diagram_change_settings}
+ \caption[Sequencediagram Einstellungen ändern]{Der Datenfluss beim ändern des Zeitpunktes der Regenwarnung}
+\label{fig:sequence_diagram_change_settings}
+\end{figure}
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.8\textwidth,angle=0]{abb/sequence_diagram_app_start}
+ \caption[Sequencediagram Appstart]{Datenfluss beim starten der App inklusive der Datenbankabfragen (Server und Lokale Datenbank)}
+\label{fig:sequence_diagram_app_start}
+\end{figure}
+
+\subsubsection{Framework Entscheidung}\label{framework entscheidung}
+Bei der Entwicklung einer App steht die Frage der zu bedienenden Plattformen an erster Stelle. Soll die App zum Beispiel nur unternehmensintern verwendet werden oder ist das Gerät auf dem sie verwendet wird eine Neuanschaffung kann es ausreichend sein nativ auf einer Plattform zu entwickeln. Soll jedoch, wie bei den meisten Apps, eine breite Zielgruppe angesprochen werden, ist es unerlässlich die App auf IOS und Android zur Verfügung zu stellen. Je nach dem auf welchen Betriebssystemen die App verwendet werden soll, muss eine komplett andere Framework wahl getroffen werden. So würde man, wenn man entweder nur für IOS oder Android entwickeln möchte, zu einer der nativen Lösungen greifen. Je nach Anforderungen kann auch, wenn beide Betriebssysteme bedient werden sollen, zu der nativen Lösung gegriffen werden. In dem Fall muss der komplette Code natürlich doppelt geschrieben werden. Daher wird normalerweise auf Frameworks zurück gegriffen welche beide Betriebssysteme bedienen. Einige bekannte Frameworks sind zum Beispiel Xamarin, React Native oder Flutter. Jedes dieser Frameworks ist zukunftsträchtig und wurde von großen Unternehmen auf den Markt gebracht. So steht Microsoft hinter Xamarin, Facebook hinter React Native und Google hinter Flutter. Je nach Framework Wahl kann von ca. 80-100 Prozent von dem kompletten Code für beide Betriebssysteme verwendet werden. Dafür sind Cross-Plattform Frameworks oft nicht so performant wie die nativen. Dies fällt besonders bei rechenaufwändigen Apps und Spielen ins Gewicht. Bei so einer leichten App wie DeepRain fällt dieser Nachteil nicht ins Gewicht. Außerdem hätten wir auch nicht genug Kapazitäten um zwei native und voneinander unabhängige Apps zu entwickeln. 
+Ein großer Vorteil von Flutter ist, dass 100 Prozent der Codebasis für Android und IOS übernommen werden können. Außerdem hat die Prominenz von Flutter in den letzten Jahren seit der Veröffentlichung stark zugenommen. In der folgenden Abbildung sind die Google Suchanfragen für den Begriff Flutter abgebildet.  Das in Kombination mit eigenem Interesse an dem Framework, ist der Grund dafür, dass die DeepRain App mit Flutter entwickelt wurde. 
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.8\textwidth,angle=0]{abb/flutter_google_trends}
+ \caption[Entwicklung von Flutter]{Entwicklung der Suchanfragen für den Begriff 'Flutter'}
+\label{fig:flutter_google_trends}
+\end{figure}
+
+\subsubsection{Technischer Aufbau von Flutter}
+Flutter Anwendungen werden in der Programmiersprache Dart geschrieben und können anschließend für IOS, Android, Windows, Linux, MacOs und als WebApp veröffentlicht werden. Dart bringt dabei im Vergleich zu Java Script den Vorteil mit, dass es objektorientiert ist, was vor allem in größeren Softwarearchitekturen zum tragen kommt. Auch alle Bibliotheken um Code asynchron auszuführen werden bereits von Dart mitgeliefert. 
+Die wohl größte Rolle für jeden Dart Entwickler spielen die sogenannten Widgets. Widgets sind einzelene Bausteine welche die UI repräsentieren. Jedes UI element ist dabei ein eigenes Widget. Dabei werden widgets oft ineinander geschachtelt, was es ermöglicht, komplexere UI’s zu entwerfen. Dabei werden Widgets in Stateless und Statefull Widgets unterschieden. Während ein Stateless Widget keine Daten und somit keinen Zustand speichern kann, ist das mit einem Stateful Widget möglich.
+
+Die Grundlage von Flutter sind Widgets. \\
+Wie funktioniert flutter?   \\
+Was ist der Unterschied zu anderen hybriden Frameworks?  \\ 
+Nur eine Codebasis \\
+Keine weiteren Frameworks nötig\\
+Alles dabei, UI, Widgets, Animationen\\
+
+\subsubsection{Projektstruktur}
+Welche Files gibt es? \\
+Welche Klassen gibt es? \\
+Wie arbeitet was zusammen? \\
+
+\subsubsection{Cloudfunktionen}
+Was ist eine Cloudfunktion? \\
+Was macht die Cloudfunktion? \\
+Wie funktioniert eine Cloudfunktion? \\
+
+\subsubsection{Push Benachrichtigungen}
+Zum Warnen der Benutzer, wenn es eine Regenvorhersage gibt werden Push Nachrichten verwendet. Der Zeitpunkt der Push Benachrichtigungen kann in der App eingestellt werden. So kann man sich zwischen 5 und 30 Minuten vor dem bevorstehenden Regen warnen lassen.  
+Um eine Push Benachrichtigung zu versenden speichert der Server ein Dokument in der Firebase welches alle für die Push Benachrichtigung relevanten Informationen enthält. Dazu gehört zum Beispiel Der Titel, der Text und wie lange es noch bis zu dem Regen braucht.   
+Es wurde eine Cloud Funktion in der Firebase hinterlegt, welche darauf reagiert, dass ein neues Dokument vom Server gespeichert wurde. Daraufhin liest die Cloud Funktion aus gesonderten Kollektionen die Device Tokens aus, für welche die Push Benachrichtigung gedacht ist.   
+Dafür wurden verschiedene Kollektionen angelegt in welchen die Device Tokens von jedem Gerät gespeichert wurden. Je nach dem zu welchem Zeitpunkt ein User die Regenwarnung erhalten möchte, wird sein Device Token in eine andere Kollektion gespeichert.   
+Die Cloud Funktion liest also aus dem Dokument vom Server, welches alle Informationen zu der Push Benachrichtigung enthält, aus, wie langes es noch bis zu Regen dauert. Daraufhin liest es aus der Kollektion für den jeweiligen Zeitpunkt alle Device Tokens aus die nun benachrichtigt werden müssen und schickt die Push Benachrichtigung raus.   
+Wenn der Benutzer den Zeitpunkt zu dem er benachrichtigt werden möchte verändert, wird sein Device Token aus der einen Kollektion gelöscht, und zu einer anderen hinzugefügt.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.8\textwidth,angle=0]{abb/funktionsweise_pushnachrichten_senden}
+ \caption[Funktionsweise von Pushbenachrichtigungen]{Funktionsweise des Prozesses zum senden von Push - Benachrichtigungen.}
+\label{fig:funktionsweise_pushnachrichten_senden}
+\end{figure}
+
+\subsubsection{Vorgehen bei Entwicklung}
+Da für die Entwicklung einer IOS App MacOS benötigt werden, wurde die komplette App unter Linux entwickelt und während dem Entwicklungsprozess nur auf Android Geräten getestet. Als die Grundfunktionalitäten verfügbar waren wurde die App mithilfe einer VirtualBox auf der MacOS installiert wurde auf einem IPhone installiert.\\   
+Softwaretests   \\
+Welche Tests und warum? \\   
+
+
+    
+
