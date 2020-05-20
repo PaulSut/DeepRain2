@@ -6,7 +6,6 @@ import keras
 import os
 from .transform import transformImages, resize
 import cv2
-import PIL
 from Utils.colors import *
 from tensorflow.python.keras.utils.data_utils import Sequence
 from Utils.loadset import getDataSet
@@ -26,7 +25,6 @@ def provideData(dimension,
                 transform_input=None,
                 transform_output=None,
                 preTransformation=None,
-                flatten=False,
                 year=[2017],
                 onlyUseYears=None,
                 DatasetFolder=DatasetFolder):
@@ -35,7 +33,6 @@ def provideData(dimension,
         preTransformation   : Transformation to perform on Data BEFORE loading it
         transform           : Transformation to perform on a single Image before hand it to the NN
         onlyUseYears        : List of years to use in Dataset
-
     """
 
     getDataSet(DatasetFolder, year=[2017])
@@ -44,7 +41,6 @@ def provideData(dimension,
                               channels=channels,
                               batch_size=batch_size,
                               overwritecsv=True,
-                              flatten=flatten,
                               onlyUseYears=onlyUseYears,
                               transform_input=transform_input,
                               transform_output=transform_output,
@@ -69,11 +65,10 @@ def dataWrapper(path,
                 transform_input=None,
                 transform_output=None, ):
     """
-    
+
         Returns two Data objects, which can be used for training.
         The first returned object is the trainingdata, second is
         testdata.
-
         path        : path to Data
         channels    : number of channels used as input
         batch_size  : self-explanatory
@@ -86,7 +81,6 @@ def dataWrapper(path,
         sortOut     : not used
         shuffle     : shuffle Data after epochs,
         onlyUseYears: [2016,2017] ... make sure to use years in list
-
     """
 
     data = prepareListOfFiles(path, sortOut=sortOut, overwritecsv=overwritecsv, onlyUseYears=onlyUseYears)
@@ -112,7 +106,6 @@ def dataWrapper(path,
                     batch_size=batch_size,
                     workingdir=TRAINSETFOLDER,
                     saveListOfFiles=trainsetCSV,
-                    timeToPred=5,
                     flatten=flatten,
                     shuffle=shuffle,
                     transform_input=transform_input,
@@ -125,7 +118,6 @@ def dataWrapper(path,
                   batch_size=batch_size,
                   workingdir=VALSETFOLDER,
                   saveListOfFiles=valsetCSV,
-                  timeToPred=5,
                   flatten=flatten,
                   shuffle=shuffle,
                   transform_input=transform_input,
@@ -176,10 +168,9 @@ def prepareListOfFiles(path, workingdir=WRKDIR, nameOfCsvFile=CSVFILE, sortOut=F
 
 def getListOfFiles(path):
     """
-    
+
         stolen from :
         https://thispointer.com/python-how-to-get-list-of-files-in-directory-and-sub-directories/
-
     """
 
     directory_entries = os.listdir(path)
@@ -211,26 +202,25 @@ class Dataset(Sequence):
     def __init__(self, path,
                  batch_size,
                  dim,
-                 n_channels=4,
+                 n_channels=5,
                  shuffle=True,
                  saveListOfFiles=CSVFILE,
                  workingdir=WRKDIR,
-                 timeToPred=30,
+                 timeToPred=5,
                  timeSteps=5,
                  sequenceExist=False,
                  flatten=False,
-                 sortOut=False,
-                 lstm=True,
+                 sortOut=True,
+                 lstm=False,
                  dtype=np.float32,
                  transform_input=None,
                  transform_output=None,
                  preTransformation=None):
 
         """
-        
+
             timeToPred    : minutes forecast, default is 30 minutes
             timeSteps     : time between images, default is 5 minutes
-
         """
         assert batch_size > 0, "batch_size needs to be greater than 0"
         assert timeSteps % 5 == 0, "timesteps % 5 needs to be 0"
@@ -261,7 +251,6 @@ class Dataset(Sequence):
 
         # index offset
         self.label_offset = self.n_channels + self.steps - 1
-        #print('Label Offset', self.label_offset)
 
         if not os.path.exists(self.workingdir):
             os.mkdir(self.workingdir)
@@ -306,45 +295,51 @@ class Dataset(Sequence):
                 print(CYAN + "But length does not match again.... just delete the folders bruh" + RESET)
 
         self.listOfFiles = self.new_listOfFiles
-        # self.listOfFiles = self.new_listOfFiles[416:716]
+        # self.listOfFiles = self.new_listOfFiles[416:436]
+        # self.listOfFiles = self.new_listOfFiles[1000:1500]
         len_list = len(self.new_listOfFiles)
-        self.listOfFiles = self.new_listOfFiles[int(5/12*len_list):int(6/12*len_list)]
+        self.listOfFiles = self.new_listOfFiles[int(5/12*len_list):int(7/12*len_list)]
 
-        self.indizes = np.arange(len(self))
+        # self.indizes = np.arange(len(self))
+        self.indizes = np.arange(len(self.listOfFiles) - self.label_offset)
+
+        def sortOut(listOfFiles):
+            y = []
+            for i in range(len(listOfFiles) - self.label_offset):
+                path = listOfFiles[i]
+                img = np.array(Image.open(path))
+                val, counts = np.unique(img, return_counts=True)
+                if counts[0]< int(img.shape[0]*img.shape[1]*0.90):
+                #if img.max() > 0:
+                    y.append(i)
+            return y
 
         if self.sortOut:
-            self.indizes = sortOutFiles(self.listOfFiles, self.indizes)
+            self.indizes = sortOut(self.listOfFiles)
 
     def __data_generation(self, index):
+   
         X = []
         Y = []
 
-        for i, id in enumerate(range((self.batch_size * index), (self.batch_size * index) + self.n_channels)):
+        for i, id in enumerate(range(index, index + self.n_channels)):
             img = np.array(Image.open(self.listOfFiles[id]))
-            #image = PIL.Image.fromarray(img)
-            #image.save('/home/paul/Documents/DeepRain/Simon_git/DeepRain2/Networks/testForDataPy/' + str(i) + '.png')
+
             if self.transform_input is not None:
 
                 for operation in self.transform_input:
                     img = operation(img)
-
+                    
             assert img.shape == self.dim, \
                 "[Error] (Data generation) Image shape {} does not match dimension {}".format(img.shape, self.dim)
+
             X.append(img)
 
-
         try:
-            # print(np.asanyarray(label).shape)
-            # print(np.unique(label, return_counts=True))
-            label = np.array(Image.open(self.listOfFiles[(self.batch_size * index) + self.label_offset]))
-            #image = PIL.Image.fromarray(label)
-            #image.save('/home/paul/Documents/DeepRain/Simon_git/DeepRain2/Networks/testForDataPy/' + 'label' + '.png')
-            #if np.any(label>130):
-            #    print(np.unique(label, return_counts=True))
-            #    exit(-1)
-            #label = label
+            label = np.array(Image.open(self.listOfFiles[index + self.label_offset]))
+
         except Exception as e:
-            print("\n\n Error in __data_generation", e, index, self.label_offset, len(self.listOfFiles))
+            print("\n\n", index, self.label_offset, len(self.listOfFiles))
             exit(-1)
 
         if self.transform_output is not None:
@@ -353,6 +348,9 @@ class Dataset(Sequence):
                 label = operation(label)
 
 
+        # Y.append(label.flatten())
+        # Y = label.flatten()
+        # Y = label
         Y.append(label)
 
         return np.array(X), np.array(Y)
@@ -363,8 +361,8 @@ class Dataset(Sequence):
             np.random.shuffle(self.indizes)
 
     def __len__(self):
-
-        return int(np.floor((len(self.listOfFiles) - self.label_offset) / self.batch_size))
+        # return int(np.floor((len(self.listOfFiles) - self.label_offset)/self.batch_size ))
+        return int(np.floor((len(self.indizes) - self.label_offset) / self.batch_size))
 
     def __getitem__(self, index):
 
@@ -373,27 +371,30 @@ class Dataset(Sequence):
 
         X = []
         Y = []
-        id_list = self.indizes[index:index + self.batch_size]
+
+        id_list = self.indizes[(index * self.batch_size):(index * self.batch_size) + self.batch_size]
 
         for idd in id_list:
             x, y = self.__data_generation(idd)
 
             X.append(x)
             Y.append(y)
-            # Y = y
 
         X = np.array(X)
         Y = np.array(Y)
 
-        # print(X.shape)
-        # X = np.transpose(X, (0, 2, 3, 1))
-        # Y = np.transpose(Y, (0, 2, 3, 1))
-        # print(X.shape)
-        # return X, Y
+        # print(X.shape,Y.shape)
+
+        X = np.transpose(X, (0, 2, 3, 1))
+        if self.lstm:
+            try:
+                X = np.reshape(X, X.shape+(1,))
+            except:
+                print('Error in __getitem__')
         if self.transform_input is not None or self.transform_output is not None:
             # print(X.shape)
             # print(Y.shape)
-            X = np.transpose(X, (0, 2, 3, 1))
+            #X = np.transpose(X, (0, 2, 3, 1))
             # X = np.reshape(X, (X.shape[0], X.shape[1], X.shape[2]*X.shape[3], X.shape[4] ))
             Y = np.reshape(Y, (Y.shape[0], self.dim[0], self.dim[1], 4))
             # X = dim
@@ -402,10 +403,9 @@ class Dataset(Sequence):
             # print(Y.shape)
             return X, Y
         if not self.flatten:
-            Y = np.transpose(Y, (0, 2, 3, 1))
-
+            pass
+            # Y = np.transpose(Y,(0,2,3,1))
         else:
-
             return X / 255, Y.flatten()
 
-        return X / 255.0, Y / 1.0
+        return X / 255.0, Y / 255.0

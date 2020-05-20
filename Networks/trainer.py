@@ -5,12 +5,13 @@ from Models.Unet import unet
 from Models.tfModels import UNet64
 from Utils.loss import SSIM
 from tensorflow.keras.optimizers import *
-#from keras import backend as K
+# from keras import backend as K
 import tensorflow as tf
 import keras
 import os
 import json
-#os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 print("Num GPUs Available:", len(
     tf.config.experimental.list_physical_devices('GPU')))
@@ -45,19 +46,20 @@ class Trainer(object):
             The only argument is the epochs to train
 
     """
+
     def __init__(self,
-                model,
-                lossfunction,
-                pathToData,
-                batch_size=5,
-                channels=5,
-                optimizer="adam",
-                dimension=(272,224),
-                metrics = [],
-                flatten = False,
-                pathToModel="./model_data",
-                load = True,
-                kwargs={}):
+                 model,
+                 lossfunction,
+                 pathToData,
+                 batch_size=5,
+                 channels=5,
+                 optimizer="adam",
+                 dimension=(272, 224),
+                 metrics=[],
+                 flatten=False,
+                 pathToModel="./model_data",
+                 load=True,
+                 kwargs={}):
 
         super(Trainer, self).__init__()
         self.nameOfModel = model.__name__
@@ -71,60 +73,56 @@ class Trainer(object):
         self.load = load
         self.initialEpoch = 0
         self.history = None
-        
 
         if type(self.pathToData) is tuple:
             self.train, self.test = self.pathToData
 
         else:
             self.train, self.test = dataWrapper(self.pathToData,
-                                            dimension=dimension,
-                                            channels=channels,
-                                            batch_size=batch_size,
-                                            flatten=flatten)
-
+                                                dimension=dimension,
+                                                channels=channels,
+                                                batch_size=batch_size,
+                                                flatten=flatten)
 
         if type(lossfunction) is str:
-            self.nameOfModel += "_"+lossfunction
+            self.nameOfModel += "_" + lossfunction
 
         else:
-            self.nameOfModel+="_"+lossfunction.__class__.__name__
+            self.nameOfModel += "_" + lossfunction.__class__.__name__
 
-        self.pathToModel = os.path.join(pathToModel,self.nameOfModel)
+        self.pathToModel = os.path.join(pathToModel, self.nameOfModel)
 
         if len(kwargs) > 0:
-            self.model = model((*dimension,channels),**kwargs)
+            self.model = model((*dimension, channels), **kwargs)
         else:
-            self.model = model((*dimension,channels))
+            self.model = model((*dimension, channels))
 
-        for i,d in enumerate((*dimension,channels)):
+        for i, d in enumerate((*dimension, channels)):
             self.nameOfModel += str(d)
-            if i < len((*dimension,channels)) - 1:
-                self.nameOfModel +="x"
-
+            if i < len((*dimension, channels)) - 1:
+                self.nameOfModel += "x"
 
         self.model.compile(loss=lossfunction, optimizer=optimizer, metrics=metrics)
         if self.load:
             try:
-                filename = os.path.join(self.pathToModel,self.nameOfModel+".h5")
+                filename = os.path.join(self.pathToModel, self.nameOfModel + ".h5")
                 self.model.load_weights(os.path.join(filename))
-                print("[Loaded file] ",filename)
+                print("[Loaded file] ", filename)
 
             except Exception as e:
-                print("[Load file failed] ",filename)
-
+                print("[Load file failed] ", filename)
 
             try:
-                historypath = os.path.join(self.pathToModel,self.nameOfModel+'history.json')
-                file = open(historypath,'r')
+                historypath = os.path.join(self.pathToModel, self.nameOfModel + 'history.json')
+                file = open(historypath, 'r')
                 json_str = file.read()
                 self.history = json.loads(json_str)
-                self.initialEpoch = len(self.history["loss"])        
+                self.initialEpoch = len(self.history["loss"])
                 print(self.initialEpoch)
-                print("[Loaded file] ",historypath)
+                print("[Loaded file] ", historypath)
 
             except Exception as e:
-                print("[Load file failed] ",historypath)
+                print("[Load file failed] ", historypath)
 
         if not os.path.exists(pathToModel):
             os.mkdir(pathToModel)
@@ -133,16 +131,23 @@ class Trainer(object):
             os.mkdir(self.pathToModel)
         self.model.summary()
 
-
-    def fit(self,epochs):
+    def fit(self, epochs):
+        filepath = os.path.join(self.pathToModel, self.nameOfModel+"-{epoch:02d}.hdf5")
+        training_callbacks = [
+            keras.callbacks.ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=False, mode='max'),
+            keras.callbacks.ReduceLROnPlateau( monitor='val_loss', factor=0.3, patience=2, verbose=1, mode='auto',
+                cooldown=0, min_lr=0,)
+            ]
         history = self.model.fit(self.train,
-                                      epochs=self.initialEpoch + epochs,
-                                      initial_epoch = self.initialEpoch,
-                                      workers=0,
-                                      use_multiprocessing=False,
-                                      validation_data=self.test,
-                                      verbose = 1,
-                                      shuffle=False)    # Shuffle needs to be False, cause of shuffle buffer
+                                 epochs=self.initialEpoch + epochs,
+                                 initial_epoch=self.initialEpoch,
+                                 workers=0,
+                                 use_multiprocessing=False,
+                                 validation_data=self.test,
+                                 verbose=1,
+                                 shuffle=False,
+                                 callbacks = training_callbacks
+                                 )  # Shuffle needs to be False, cause of shuffle buffer
         if self.history is None:
             self.history = history.history
         else:
@@ -152,8 +157,9 @@ class Trainer(object):
         for key in self.history:
             self.history[key] = list(np.array(self.history[key]).astype(float))
 
-        with open(os.path.join(self.pathToModel,self.nameOfModel+'history.json'), 'w') as f:
+        with open(os.path.join(self.pathToModel, self.nameOfModel + 'history.json'), 'w') as f:
             json.dump(self.history, f)
 
-        #self.model.save_weights(os.path.join(self.pathToModel,self.nameOfModel+".h5"))
-        self.model.save(os.path.join(self.pathToModel,self.nameOfModel+".h5"))
+        self.model.save_weights(os.path.join(self.pathToModel,self.nameOfModel+".h5"))
+        #self.model.save_weights(os.path.join(self.pathToModel, self.nameOfModel + '_weights.h5'))
+        #self.model.save(os.path.join(self.pathToModel, self.nameOfModel + '.tf'))

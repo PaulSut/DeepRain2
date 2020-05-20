@@ -16,6 +16,7 @@ import time
 # import plotly.plotly as py
 # from plotly.graph_objs import *
 import plotly.express as px
+import tensorflow as tf
 
 
 class Evaluation(object):
@@ -73,7 +74,7 @@ class Evaluation(object):
             actual_weather = PIL.Image.fromarray(actual_weather, mode='L')
             actual_weather.save(
                 os.path.join(self.EVAL_DIR, self.model_name, 'actual_weather', str(point_of_time) + '.png'))
-            weather_history = np.transpose(self.train[point_of_time][0], (0, 2, 3, 1))
+            weather_history = self.train[point_of_time][0]
             os.makedirs(os.path.join(self.path_to_predictions, str(point_of_time)))
             for prediction in range(self.number_of_predictions):
                 if not self.model:
@@ -88,6 +89,11 @@ class Evaluation(object):
                         forecast = operation(forecast)
                 else:
                     forecast *= 255
+                    forecast[forecast < 0] = 0
+                    forecast[forecast > 255] = 255
+                    forecast = np.reshape(forecast, self.dimension)
+
+                #print(np.unique(forecast, return_counts=True))
 
                 forecast_img = PIL.Image.fromarray(np.asanyarray(forecast, dtype=np.int8), mode='L')
                 forecast_img.save(os.path.join(self.path_to_predictions, str(point_of_time), str(prediction) + '.png'))
@@ -226,9 +232,10 @@ class Evaluation(object):
 
             if weather_changes_two_categories:
                 self.save_confusion_matrix(weather_changes_two_cat_confusion, path_to_current_eval_time_step,
-                                           'waether_changes_two_categories')
+                                           'weather_changes_two_categories')
 
-    def create_report(self, normalize=True, rain_no_rain=True, four_categories=True):
+    def create_report(self, normalize=True, rain_no_rain=True, four_categories=True,
+                      weather_changes_two_categories=True):
         print('Start to create the report')
         if normalize:
             file_ending = '_normalized'
@@ -255,8 +262,9 @@ class Evaluation(object):
                                 x=['No Rain', 'Rain'],
                                 y=['No Rain', 'Rain']
                                 )
-                fig.update_xaxes(side="top")
-                fig.update_layout(title=str((1 + prediction_time_step) * 5) + ' minute prediction', title_x=0.5)
+                # fig.update_xaxes(side="top")
+                fig.update_layout(title=str((1 + prediction_time_step) * 5) + ' minute prediction', title_x=0.5,
+                                  title_y=1)
                 fig.write_html(
                     os.path.join(path_to_current_eval_time_step, 'diagramms', 'rain_no_rain' + file_ending + '.html'),
                     full_html=False)
@@ -269,11 +277,29 @@ class Evaluation(object):
                                 x=['No Rain', 'light rain intensity', 'medium rain intensity', 'strong rain intensity'],
                                 y=['No Rain', 'light rain intensity', 'medium rain intensity', 'strong rain intensity']
                                 )
-                fig.update_xaxes(side="top")
-                fig.update_layout(title=str((1 + prediction_time_step) * 5) + ' minute prediction', title_x=0.5)
+                # fig.update_xaxes(side="top")
+                fig.update_layout(title=str((1 + prediction_time_step) * 5) + ' minute prediction', title_x=0.5,
+                                  title_y=1)
                 fig.write_html(
                     os.path.join(path_to_current_eval_time_step, 'diagramms',
                                  'four_categories' + file_ending + '.html'),
+                    full_html=False)
+
+            if weather_changes_two_categories:
+                data = pickle.load(
+                    open(os.path.join(path_to_current_eval_time_step,
+                                      'weather_changes_two_categories' + file_ending + '.p'), 'rb'))
+                fig = px.imshow(data,
+                                labels=dict(x="Actual Class", y="Predicted Class"),
+                                x=['Weather remains as it is', 'It will start to rain', 'Rain will stop'],
+                                y=['Weather remains as it is', 'It will start to rain', 'Rain will stop']
+                                )
+                # fig.update_xaxes(side="top")
+                fig.update_layout(title=str((1 + prediction_time_step) * 5) + ' minute prediction', title_x=0.5,
+                                  title_y=1)
+                fig.write_html(
+                    os.path.join(path_to_current_eval_time_step, 'diagramms',
+                                 'weather_changes_two_categories' + file_ending + '.html'),
                     full_html=False)
 
         head = '''
@@ -292,6 +318,8 @@ class Evaluation(object):
             interactive_report = self.add_rain_no_rain_report(interactive_report, file_ending)
         if four_categories:
             interactive_report = self.add_four_categories_report(interactive_report, file_ending)
+        if weather_changes_two_categories:
+            interactive_report = self.add_weather_changes_two_categories_report(interactive_report, file_ending)
 
         with open(os.path.join(self.eval_model_dir, 'evaluation', 'final_report' + file_ending + '.html'), "w") as file:
             file.write(interactive_report)
@@ -307,14 +335,14 @@ class Evaluation(object):
                  "rb"))
 
         number_of_datapoints = int(cm.sum())
-        number_of_no_rain_datapoints = int(cm.T.sum(axis=1)[0])
-        number_of_light_datapoints = int(cm.T.sum(axis=1)[1])
-        number_of_medium_datapoints = int(cm.T.sum(axis=1)[2])
-        number_of_strong_datapoints = int(cm.T.sum(axis=1)[3])
+        number_of_no_rain_datapoints = int(cm.T.sum(axis=0)[0])
+        number_of_light_datapoints = int(cm.T.sum(axis=0)[1])
+        number_of_medium_datapoints = int(cm.T.sum(axis=0)[2])
+        number_of_strong_datapoints = int(cm.T.sum(axis=0)[3])
 
-        rain_no_rain_intro = f'''<p style="margin-bottom: 0in; line-height: 100%;" align="justify"><span style="font-family: Calibri, sans-serif;"><span style="font-size: xx-large;">Rain/ no rain evaluation</span></span></p>
+        rain_no_rain_intro = f'''<p style="margin-bottom: 0in; line-height: 100%;" align="justify"><span style="font-family: Calibri, sans-serif;"><span style="font-size: xx-large;">Four categories evaluation</span></span></p>
                                                     <p style="margin-bottom: 0in; line-height: 100%;" align="justify">&nbsp;</p>
-                                                    <p style="margin-bottom: 0in; line-height: 100%;" align="justify"><span style="font-family: Calibri, sans-serif;"><span style="font-size: small;">In the following section the model performance is evaluated by dividing the weather into two categories: rain/no rain. </span></span><span style="font-family: Calibri, sans-serif;"><span style="font-size: small;">Therefore {number_of_datapoints} data points were analyzed out of which {number_of_no_rain_datapoints} were of the class no rain, {number_of_light_datapoints} were of the class light rain intensity, {number_of_medium_datapoints} were of the class medium rain intensity and {number_of_strong_datapoints} were of the class strong rain intensity</span></span></p>
+                                                    <p style="margin-bottom: 0in; line-height: 100%;" align="justify"><span style="font-family: Calibri, sans-serif;"><span style="font-size: small;">In the following section the model performance is evaluated by dividing the weather into four categories: no rain, light rain intensity, medium rain intensity and strong rain intensity. </span></span><span style="font-family: Calibri, sans-serif;"><span style="font-size: small;">Therefore {number_of_datapoints} data points were analyzed out of which {number_of_no_rain_datapoints} were of the class no rain, {number_of_light_datapoints} were of the class light rain intensity, {number_of_medium_datapoints} were of the class medium rain intensity and {number_of_strong_datapoints} were of the class strong rain intensity</span></span></p>
                                                     <br>
                                                     <br>
                                                     <br>
@@ -337,8 +365,8 @@ class Evaluation(object):
             open(os.path.join(self.eval_model_dir, 'evaluation', '5_minute_prediction', 'rain_no_rain' + '.p'), "rb"))
 
         number_of_datapoints = int(cm.sum())
-        number_of_no_rain_datapoints = int(cm.T.sum(axis=1)[0])
-        number_of_rain_datapoints = int(cm.T.sum(axis=1)[1])
+        number_of_no_rain_datapoints = int(cm.T.sum(axis=0)[0])
+        number_of_rain_datapoints = int(cm.T.sum(axis=0)[1])
 
         rain_no_rain_intro = f'''<p style="margin-bottom: 0in; line-height: 100%;" align="justify"><span style="font-family: Calibri, sans-serif;"><span style="font-size: xx-large;">Rain/ no rain evaluation</span></span></p>
                                             <p style="margin-bottom: 0in; line-height: 100%;" align="justify">&nbsp;</p>
@@ -354,6 +382,36 @@ class Evaluation(object):
                                                                                 1 + prediction_time_step) * 5) + '_minute_prediction')
             graph = codecs.open(os.path.join(path_to_current_eval_time_step_diagramms, 'diagramms',
                                              'rain_no_rain' + file_ending + '.html'), 'r').read()
+
+            _interactive_block = self.report_block_template(graph_html=graph, interactive=True, caption='')
+            interactive_report += _interactive_block
+
+        return interactive_report
+
+    def add_weather_changes_two_categories_report(self, interactive_report, file_ending):
+        cm = pickle.load(
+            open(os.path.join(self.eval_model_dir, 'evaluation', '5_minute_prediction',
+                              'weather_changes_two_categories' + '.p'), "rb"))
+
+        number_of_datapoints = int(cm.sum())
+        number_of_weather_remains = int(cm.T.sum(axis=0)[0])
+        number_of_start_rain = int(cm.T.sum(axis=0)[1])
+        number_of_stop_rain = int(cm.T.sum(axis=0)[2])
+
+        rain_no_rain_intro = f'''<p style="margin-bottom: 0in; line-height: 100%;" align="justify"><span style="font-family: Calibri, sans-serif;"><span style="font-size: xx-large;">Weather changes evaluation</span></span></p>
+                                                    <p style="margin-bottom: 0in; line-height: 100%;" align="justify">&nbsp;</p>
+                                                    <p style="margin-bottom: 0in; line-height: 100%;" align="justify"><span style="font-family: Calibri, sans-serif;"><span style="font-size: small;">In the following section the model performance is evaluated by dividing the weather into two categories: rain/no rain. </span></span><span style="font-family: Calibri, sans-serif;"><span style="font-size: small;">Therefore {number_of_datapoints} data points were analyzed out of which {number_of_weather_remains} were of the class "weather will remain the same", {number_of_start_rain} were of the class "weather changes to rain" and {number_of_stop_rain} were of the class "the rain will stop"</span></span></p>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    '''
+        interactive_report += rain_no_rain_intro
+        for prediction_time_step in range(self.number_of_predictions):
+            path_to_current_eval_time_step_diagramms = os.path.join(self.eval_model_dir, 'evaluation',
+                                                                    str((
+                                                                                1 + prediction_time_step) * 5) + '_minute_prediction')
+            graph = codecs.open(os.path.join(path_to_current_eval_time_step_diagramms, 'diagramms',
+                                             'weather_changes_two_categories' + file_ending + '.html'), 'r').read()
 
             _interactive_block = self.report_block_template(graph_html=graph, interactive=True, caption='')
             interactive_report += _interactive_block
@@ -440,7 +498,7 @@ class Evaluation(object):
                                             current_actual):
 
         if previous_actual.shape != self.dimension:
-            return np.zeros((3,3))
+            return np.zeros((3, 3))
         # create new arrays
         new_previous_predictions_array = np.zeros(current_actual.shape)
         new_current_prediction_array = np.zeros(current_actual.shape)
@@ -496,22 +554,27 @@ def provideData(dimension, batch_size, channels, flatten=False, transform_input=
     return train, test
 
 
-PATH_TO_MODEL = '/home/paul/Documents/DeepRain/Simon_git/DeepRain2/Networks/Utils/model_data/UNet64_categorical_crossentropy/UNet64_categorical_crossentropy448x448x5.h5'
+PATH_TO_MODEL = '/home/paul/Documents/DeepRain/clean_git/DeepRain2/Networks/Utils/model_data/medium_thin_UNet64_categorical_crossentropy/medium_thin_UNet64_categorical_crossentropy448x448x5-03.hdf5'
+PATH_TO_WEIGHTS = ''
 DIMESNION = (448, 448)
+SCLICES = [100, 548, 200, 648]
+#DIMESNION = (64, 64)
+#SCLICES = [256, 320, 256, 320]
 NUMBER_OF_PREDICTIONS = 6
-NUMBER_OF_TIMESTEPS = 50
+NUMBER_OF_TIMESTEPS = 20
 CHANNELS = 5
 BATCH_SIZE = 1
-SCLICES = [100, 548, 200, 648]
 
 cutOutFrame = cutOut(SCLICES)
 
 PRETRAINING_TRANSFORMATIONS = [cutOutFrame]
 
-# model = load_model(PATH_TO_MODEL)
+#model = model((*dimension, channels))
+model = load_model(PATH_TO_MODEL)
+
 '''
-evaluation = Evaluation('Baseline',
-                        model=False,
+evaluation = Evaluation('Medium_UNet64_categorical_crossentropy_448_448_all_germany1',
+                        model=model,
                         Data=provideData(batch_size=BATCH_SIZE, dimension=DIMESNION,
                                          preTransformation=PRETRAINING_TRANSFORMATIONS, transform_input=[Normalize()],
                                          transform_output=[ToCategorical([-10000, 0, 2, 10, 256])], channels=CHANNELS),
@@ -524,8 +587,24 @@ evaluation = Evaluation('Baseline',
                         time_steps=NUMBER_OF_TIMESTEPS
                         )
                         '''
+'''
+evaluation = Evaluation('Medium_thin_UNet64_mse_sortOut_448_448_64_64_LSTM',
+                        model=model,
+                        Data=provideData(batch_size=BATCH_SIZE, dimension=DIMESNION,
+                                         preTransformation=PRETRAINING_TRANSFORMATIONS, transform_input=[Normalize()],
+                                         transform_output=None, channels=CHANNELS),
+                        batch_size=BATCH_SIZE,
+                        channels=CHANNELS,
+                        dimension=DIMESNION,
+                        number_of_predictions=NUMBER_OF_PREDICTIONS,
+                        transform_input=[Normalize()],
+                        transform_predictions=None,
+                        time_steps=NUMBER_OF_TIMESTEPS
+                        )
+                        '''
 
 # Baseline:
+'''
 evaluation = Evaluation('Baseline',
                         model=False,
                         Data=provideData(batch_size=BATCH_SIZE, dimension=DIMESNION,
@@ -539,11 +618,12 @@ evaluation = Evaluation('Baseline',
                         transform_predictions=None,
                         time_steps=NUMBER_OF_TIMESTEPS
                         )
+'''
 
 start = time.time()
 print("Start to measure Time")
 evaluation.make_predictions()
-# evaluation.create_grayscale_gif()
+evaluation.create_grayscale_gif(10)
 evaluation.evaluation(rain_no_rain=True, four_categories=True, weather_changes_two_categories=True)
 evaluation.create_report()
 end = time.time()
