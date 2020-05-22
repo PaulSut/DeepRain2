@@ -126,7 +126,7 @@ def medium_unet():
     #dimension = (256, 256,)
     dimension = (448, 448,)
     channels = 5
-    optimizer = Adam(lr=1e-3)
+    optimizer = Adam(lr=3e-3)
     BATCH_SIZE = 1
     #optimizer = Adadelta()
     #optimizer = RMSprop(learning_rate=1e-3)
@@ -168,7 +168,7 @@ def medium_unet():
             )
             '''
 
-    t.fit(epochs=50)
+    t.fit(epochs=5)
 
 
 

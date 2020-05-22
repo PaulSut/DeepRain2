@@ -69,12 +69,22 @@ class Evaluation(object):
         print('Start to make the predictions. This might take a while')
         for point_of_time in range(self.time_steps):
             print('Currently at time step', point_of_time + 1, 'of', self.time_steps)
-            actual_weather = np.reshape(self.train[point_of_time][1], self.dimension)
+
+            weather = np.asanyarray(self.train[point_of_time][0][0])
+            weather = np.transpose(weather, (2, 0, 1))
+            #print(weather.shape)
+            actual_weather = np.reshape(weather[4]*255, self.dimension)
             actual_weather = np.asanyarray(actual_weather, dtype=np.int8)
             actual_weather = PIL.Image.fromarray(actual_weather, mode='L')
             actual_weather.save(
                 os.path.join(self.EVAL_DIR, self.model_name, 'actual_weather', str(point_of_time) + '.png'))
             weather_history = self.train[point_of_time][0]
+            #print(weather_history.shape)
+            #weather_history = np.transpose(weather_history, (0, 2, 3, 1))
+            #print(weather_history.shape)
+            #test = PIL.Image.fromarray(weather_history, mode='L')
+            #test.save(
+            #    os.path.join(self.EVAL_DIR, self.model_name, 'test', str(point_of_time) + '.png'))
             os.makedirs(os.path.join(self.path_to_predictions, str(point_of_time)))
             for prediction in range(self.number_of_predictions):
                 if not self.model:
@@ -83,6 +93,16 @@ class Evaluation(object):
                     forecast = np.reshape(forecast, (self.dimension))
                 else:
                     forecast = self.model.predict(weather_history)
+
+                    #test = np.asanyarray(np.reshape(weather_history * 255, (self.dimension[0], self.dimension[1] * 5), order='F'),
+                     #                    dtype=np.int8)
+                    #print(test.shape)
+                    #print(np.unique(test, return_counts=True))
+
+                    #test = PIL.Image.fromarray(test, mode='L')
+                    #test.save(
+                    #    os.path.join(self.EVAL_DIR, self.model_name, 'actual_weather',
+                    #                 'test' + str(point_of_time) + str(prediction)  + '.png'))
 
                 if self.transform_predictions is not None:
                     for operation in self.transform_predictions:
@@ -106,9 +126,11 @@ class Evaluation(object):
                 weather_history = np.concatenate((weather_history, forecast), axis=3)
                 weather_history = weather_history[:, :, :, 1:]
 
+
+
         for point_of_time in range(self.time_steps, self.time_steps + self.number_of_predictions):
             actual_weather = np.reshape(self.train[point_of_time][1], self.dimension)
-            actual_weather = np.asanyarray(actual_weather, dtype=np.int8)
+            actual_weather = np.asanyarray(actual_weather*255, dtype=np.int8)
             actual_weather = PIL.Image.fromarray(actual_weather, mode='L')
             actual_weather.save(
                 os.path.join(self.EVAL_DIR, self.model_name, 'actual_weather', str(point_of_time) + '.png'))
@@ -554,7 +576,7 @@ def provideData(dimension, batch_size, channels, flatten=False, transform_input=
     return train, test
 
 
-PATH_TO_MODEL = '/home/paul/Documents/DeepRain/clean_git/DeepRain2/Networks/Utils/model_data/medium_thin_UNet64_categorical_crossentropy/medium_thin_UNet64_categorical_crossentropy448x448x5-03.hdf5'
+PATH_TO_MODEL = '/home/paul/Documents/DeepRain/clean_git/DeepRain2/Networks/Utils/model_data/medium_thin_UNet64_categorical_crossentropy/medium_thin_UNet64_categorical_crossentropy448x448x5-02.hdf5'
 PATH_TO_WEIGHTS = ''
 DIMESNION = (448, 448)
 SCLICES = [100, 548, 200, 648]
@@ -572,8 +594,8 @@ PRETRAINING_TRANSFORMATIONS = [cutOutFrame]
 #model = model((*dimension, channels))
 model = load_model(PATH_TO_MODEL)
 
-'''
-evaluation = Evaluation('Medium_UNet64_categorical_crossentropy_448_448_all_germany1',
+
+evaluation = Evaluation('Medium_UNet64_categorical_crossentropy_448_448_all_germany_sortOut_1',
                         model=model,
                         Data=provideData(batch_size=BATCH_SIZE, dimension=DIMESNION,
                                          preTransformation=PRETRAINING_TRANSFORMATIONS, transform_input=[Normalize()],
@@ -586,7 +608,7 @@ evaluation = Evaluation('Medium_UNet64_categorical_crossentropy_448_448_all_germ
                         transform_predictions=[from_sparse_categorical()],
                         time_steps=NUMBER_OF_TIMESTEPS
                         )
-                        '''
+
 '''
 evaluation = Evaluation('Medium_thin_UNet64_mse_sortOut_448_448_64_64_LSTM',
                         model=model,

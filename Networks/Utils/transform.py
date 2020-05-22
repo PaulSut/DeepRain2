@@ -46,45 +46,73 @@ class ToCategorical(object):
 
         return newVector
 
-    class ToCategorical(object):
-        """
+class from_sparse_categorical(object):
 
-            Map array values to values in conditions
+    def __call__(self, array):
+        array_shape = array.shape
+        target_value0 = 0
+        target_value1 = 2
+        target_value2 = 10
+        target_value3 = 11
 
-            [1,50,60]
+        array = np.reshape(array, (array.shape[1] * array.shape[2], 4))
 
-            values between 1 and 50 will be mapped to index 0
-            => [1,0,0]
+        new_vector = []
+        for pixel in array:
+            index_of_max_val = np.argmax(pixel)
 
-        """
+            if index_of_max_val == 0:
+                new_vector.append(target_value0)
+            elif index_of_max_val == 1:
+                new_vector.append(target_value1)
+            elif index_of_max_val == 2:
+                new_vector.append(target_value2)
+            elif index_of_max_val == 3:
+                new_vector.append(target_value3)
 
-        def __init__(self, conditions):
-            super(ToCategorical, self).__init__()
-            self.conditions = conditions
-            self.numClasses = len(self.conditions) - 1
+        new_vector = np.asanyarray(new_vector)
+        final_vector = np.reshape(new_vector, (array_shape[1], array_shape[2]))
+        return final_vector
 
-        def __call__(self, array):
+class ToCategorical(object):
+    """
 
-            newVector = np.zeros((*array.shape, self.numClasses))
+        Map array values to values in conditions
 
-            for i in range(1, self.numClasses + 1):
-                value = self.conditions[i]
-                valuePrev = self.conditions[i - 1]
-                idx = np.where((array <= value) & (array > valuePrev))
-                classV = np.zeros((self.numClasses))
-                classV[i - 1] = 1
-                for x_idx, y_idx in zip(idx[0], idx[1]):
-                    newVector[x_idx, y_idx] = classV
+        [1,50,60]
 
-            for i in newVector:
-                if i.max() < 1:
-                    print(array[i])
-                    exit(-1)
+        values between 1 and 50 will be mapped to index 0
+        => [1,0,0]
 
-            # newVector = newVector.flatten()
-            # print('ToCategorical Shape', newVector.shape)
-            # print(newVector[:10])
-            return newVector
+    """
+
+    def __init__(self, conditions):
+        super(ToCategorical, self).__init__()
+        self.conditions = conditions
+        self.numClasses = len(self.conditions) - 1
+
+    def __call__(self, array):
+
+        newVector = np.zeros((*array.shape, self.numClasses))
+
+        for i in range(1, self.numClasses + 1):
+            value = self.conditions[i]
+            valuePrev = self.conditions[i - 1]
+            idx = np.where((array <= value) & (array > valuePrev))
+            classV = np.zeros((self.numClasses))
+            classV[i - 1] = 1
+            for x_idx, y_idx in zip(idx[0], idx[1]):
+                newVector[x_idx, y_idx] = classV
+
+        for i in newVector:
+            if i.max() < 1:
+                print(array[i])
+                exit(-1)
+
+        # newVector = newVector.flatten()
+        # print('ToCategorical Shape', newVector.shape)
+        # print(newVector[:10])
+        return newVector
 
 
 class Normalize(object):

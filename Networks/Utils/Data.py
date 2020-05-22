@@ -65,7 +65,6 @@ def dataWrapper(path,
                 transform_input=None,
                 transform_output=None, ):
     """
-
         Returns two Data objects, which can be used for training.
         The first returned object is the trainingdata, second is
         testdata.
@@ -168,7 +167,6 @@ def prepareListOfFiles(path, workingdir=WRKDIR, nameOfCsvFile=CSVFILE, sortOut=F
 
 def getListOfFiles(path):
     """
-
         stolen from :
         https://thispointer.com/python-how-to-get-list-of-files-in-directory-and-sub-directories/
     """
@@ -210,7 +208,7 @@ class Dataset(Sequence):
                  timeSteps=5,
                  sequenceExist=False,
                  flatten=False,
-                 sortOut=True,
+                 sortOut=False,
                  lstm=False,
                  dtype=np.float32,
                  transform_input=None,
@@ -218,7 +216,6 @@ class Dataset(Sequence):
                  preTransformation=None):
 
         """
-
             timeToPred    : minutes forecast, default is 30 minutes
             timeSteps     : time between images, default is 5 minutes
         """
@@ -298,7 +295,7 @@ class Dataset(Sequence):
         # self.listOfFiles = self.new_listOfFiles[416:436]
         # self.listOfFiles = self.new_listOfFiles[1000:1500]
         len_list = len(self.new_listOfFiles)
-        self.listOfFiles = self.new_listOfFiles[int(5/12*len_list):int(7/12*len_list)]
+        self.listOfFiles = self.new_listOfFiles[int(5 / 12 * len_list):int(6 / 12 * len_list)]
 
         # self.indizes = np.arange(len(self))
         self.indizes = np.arange(len(self.listOfFiles) - self.label_offset)
@@ -309,7 +306,7 @@ class Dataset(Sequence):
                 path = listOfFiles[i]
                 img = np.array(Image.open(path))
                 val, counts = np.unique(img, return_counts=True)
-                if counts[0]< int(img.shape[0]*img.shape[1]*0.90):
+                if counts[0] < int(img.shape[0] * img.shape[1] * 0.95):
                 #if img.max() > 0:
                     y.append(i)
             return y
@@ -318,7 +315,7 @@ class Dataset(Sequence):
             self.indizes = sortOut(self.listOfFiles)
 
     def __data_generation(self, index):
-   
+
         X = []
         Y = []
 
@@ -329,7 +326,7 @@ class Dataset(Sequence):
 
                 for operation in self.transform_input:
                     img = operation(img)
-                    
+
             assert img.shape == self.dim, \
                 "[Error] (Data generation) Image shape {} does not match dimension {}".format(img.shape, self.dim)
 
@@ -346,7 +343,6 @@ class Dataset(Sequence):
 
             for operation in self.transform_output:
                 label = operation(label)
-
 
         # Y.append(label.flatten())
         # Y = label.flatten()
@@ -388,13 +384,13 @@ class Dataset(Sequence):
         X = np.transpose(X, (0, 2, 3, 1))
         if self.lstm:
             try:
-                X = np.reshape(X, X.shape+(1,))
+                X = np.reshape(X, X.shape + (1,))
             except:
                 print('Error in __getitem__')
         if self.transform_input is not None or self.transform_output is not None:
             # print(X.shape)
             # print(Y.shape)
-            #X = np.transpose(X, (0, 2, 3, 1))
+            # X = np.transpose(X, (0, 2, 3, 1))
             # X = np.reshape(X, (X.shape[0], X.shape[1], X.shape[2]*X.shape[3], X.shape[4] ))
             Y = np.reshape(Y, (Y.shape[0], self.dim[0], self.dim[1], 4))
             # X = dim
@@ -406,6 +402,6 @@ class Dataset(Sequence):
             pass
             # Y = np.transpose(Y,(0,2,3,1))
         else:
-            return X / 255, Y.flatten()
+            return X , Y.flatten()
 
         return X / 255.0, Y / 255.0
