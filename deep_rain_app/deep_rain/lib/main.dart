@@ -33,7 +33,7 @@ class MainAppState extends State<MainApp> {
   }
 
   //The screens for the bottomNavigiation
-  int _selectedTab = 0;
+  int _selectedTab = 1;
   final _pageOptions = [
     ForecastList(),
     ForecastMap(),
