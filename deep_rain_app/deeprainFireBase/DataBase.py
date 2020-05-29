@@ -80,11 +80,6 @@ if __name__ == '__main__':
         regions = db.collection(u'Regions').stream()
         regions = list(regions)
 
-        # TODO hier muss die tatsächliche Zeit genommen werden, die zu der Regenvorhersage passt
-        # the current time for firebase document ID
-        now = datetime.now()
-        current_time = now.strftime("%H:%M")
-
         # For each region where are users, (Device Tokens in the Regions/Region/tokens collection), a forecast need to be pushed
         for region in regions:
             start = time.time()
@@ -104,9 +99,8 @@ if __name__ == '__main__':
 
             #calculate for each image the rain intense and load it to firebase
             for image in range(len(forecast_images)):
-                #TODO hier sollte immer die Uhrzeit des aktuellen Bildes eingesetzt werden
                 # the unique id for the documents of database.
-                documentID = 'deeprain_' + current_time + '_' + str(ID)
+                documentID = 'deeprain_' + time_of_forecasts[image] + '_' + str(ID)
 
                 rainIntense = return_rain_intense_from_forecast_by_latlng(region_latitude, region_longitude, forecast_images[image])
 
