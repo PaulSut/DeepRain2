@@ -9,6 +9,7 @@ from NeuralNetwork import predict_weather
 from time import sleep
 from transform import *
 import os
+import forecast_database_uploader as rain_intense_uploader
 
 PATH_TO_FORECAST_DIR = './forecast/'
 HISTORICAL_PICTURE_PATH = './historical_data/images/'
@@ -89,6 +90,7 @@ if __name__ == '__main__':
         #Hey Till hier musst du die Funktion aufrufen. Hier noch die beiden arrays die du brauchst
         print(time_stamps)
         print(rain_intensity_values)
+        rain_intense_uploader.upload_data_to_firbase(rain_intensity_values, time_stamps)
 
 
 
