@@ -1,4 +1,4 @@
-from CreateRainPNG import create_rain_image, resize_images, take_slice_of_image
+from CreateRainPNG import *
 import numpy as np
 from tensorflow.keras.models import load_model
 import PIL
@@ -10,12 +10,12 @@ from time import sleep
 from transform import *
 import os
 
-PATH_TO_FORECAST_DIR = '/home/paul/Documents/Master1/DeepRain_Teamproject/HomeOffice/Workflow/forecast/'
-HISTORICAL_PICTURE_PATH = '/home/paul/Documents/Master1/DeepRain_Teamproject/HomeOffice/Workflow/historical_data/images/'
-SCLICE_PICTURE_PATH = '/home/paul/Documents/Master1/DeepRain_Teamproject/HomeOffice/Workflow/historical_data/slices/'
-FORECAST_GRAYSCALE_PATH = '/home/paul/Documents/Master1/DeepRain_Teamproject/HomeOffice/Workflow/forecast_grayscale/'
-HISTORICAL_RADAR_DATA_PATH = '/home/paul/Documents/Master1/DeepRain_Teamproject/HomeOffice/Workflow/historical_data/bin/'
-PATH_TO_NN = '/home/paul/Documents/Master1/DeepRain_Teamproject/HomeOffice/Workflow/NeuralNetworks/UNet64_categorical_crossentropy448x448x5.h5'
+PATH_TO_FORECAST_DIR = './forecast/'
+HISTORICAL_PICTURE_PATH = './historical_data/images/'
+SCLICE_PICTURE_PATH = './historical_data/slices/'
+FORECAST_GRAYSCALE_PATH = './forecast_grayscale/'
+HISTORICAL_RADAR_DATA_PATH = './historical_data/bin/'
+PATH_TO_NN = './NeuralNetworks/medium_thin_UNet64_categorical_crossentropy448x448x5.h5'
 DIMENSION = (448,448)
 TARGET_DIMENSION = [450, 450]
 IMAGE_POS = [0, 0]
@@ -61,11 +61,15 @@ if __name__ == '__main__':
         forecast_picture_list = os.listdir(FORECAST_GRAYSCALE_PATH)
         forecast_picture_list.sort()
 
+        rain_intensity_values = []
+        time_stamps = []
         historical_images = []
         for path in forecast_picture_list[:10]:
             img = np.asanyarray(PIL.Image.open(FORECAST_GRAYSCALE_PATH + path, mode='r'))
             img_rgba = np.asanyarray(PIL.Image.open(FORECAST_GRAYSCALE_PATH + path, mode='r').convert(mode='RGBA'))
             historical_images.append(PIL.Image.fromarray(create_rain_image(img, img_rgba, TARGET_DIMENSION, IMAGE_POS), mode='RGBA'))
+            rain_intensity_values.append(create_rain_intensity_values(img, TARGET_DIMENSION, IMAGE_POS))
+            time_stamps.append(path[:-4])
         #historical_images.reverse()
 
         forecast_images = []
@@ -73,7 +77,22 @@ if __name__ == '__main__':
             img = np.asanyarray(PIL.Image.open(FORECAST_GRAYSCALE_PATH + path, mode='r'))
             img_rgba = np.asanyarray(PIL.Image.open(FORECAST_GRAYSCALE_PATH + path, mode='r').convert(mode='RGBA'))
             forecast_images.append(PIL.Image.fromarray(create_rain_image(img, img_rgba, TARGET_DIMENSION, IMAGE_POS), mode='RGBA'))
+            rain_intensity_values.append(create_rain_intensity_values(img, TARGET_DIMENSION, IMAGE_POS))
+            time_stamps.append(path[:-4])
 
         print('Upload forecast images')
         replace_forecast_in_firebase(historical_images, forecast_images, PATH_TO_FORECAST_DIR)
+
+
+        print('Upload rain intensity values')
+
+        #Hey Till hier musst du die Funktion aufrufen. Hier noch die beiden arrays die du brauchst
+        print(time_stamps)
+        print(rain_intensity_values)
+
+
+
         print('Done. Weather Forecast is up to date')
+
+
+

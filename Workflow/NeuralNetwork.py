@@ -21,6 +21,9 @@ def predict_weather(model, number_of_input_images, number_of_predictions, path_t
                     image = operation(image)
             input_data = [image] + input_data
 
+        last_time_stamp = input_data_filenames[0][:-4]
+
+
         final_data = []
         for a,b,c,d,e in zip(input_data[0], input_data[1], input_data[2], input_data[3], input_data[4]):
             line = []
@@ -49,12 +52,15 @@ def predict_weather(model, number_of_input_images, number_of_predictions, path_t
                 #print('Mooooin')
                 forecast.append(255)
 
-        forecast = np.reshape(forecast, (1, 272, 224, 1))
-        # until here 
+        forecast = np.reshape(forecast, (1, 272, 224, 1))       
+         # until here 
         '''
         forecast[forecast>255] = 255
         forecast[forecast<0] = 0
-        cv2.imwrite(path_to_forecast_grayscale+f'9{prediction}.png', forecast)
+        current_timestamp = str(int(last_time_stamp) + 5)
+        if int(current_timestamp[-2:])%60 == 0:
+            current_timestamp = int(current_timestamp)+40
+        cv2.imwrite(path_to_forecast_grayscale+f'{current_timestamp}.png', forecast)
 
         #image = PIL.Image.fromarray(forecast[0], mode='L')
         #image.save(path_to_forecast_grayscale+f'1{prediction}.png')

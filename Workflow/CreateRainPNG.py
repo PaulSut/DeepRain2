@@ -33,6 +33,7 @@ def create_rain_image(prediction, prediction_rgba, target_dim, image_pos):
     prediction_rgba_copy = np.reshape(prediction_rgba_copy, (img_hight, img_width, 4))
 
     final_image = fit_image_to_map(target_dim, image_pos, prediction_rgba_copy)
+
     #print(final_image.shape)
     #print(prediction_rgba_copy.shape)
     # Flip Picture
@@ -40,6 +41,39 @@ def create_rain_image(prediction, prediction_rgba, target_dim, image_pos):
     #final_image = np.flip(final_image, axis=1)
 
     return final_image
+
+def create_rain_intensity_values(prediction, target_dimension, image_pos):
+    TRANSPARENT = 0
+
+    above_y = target_dimension[0] - (target_dimension[0] - image_pos[0])
+    above_x = target_dimension[1]
+
+    left_y = prediction.shape[0]
+    left_x = target_dimension[1] - (target_dimension[1] - image_pos[1])
+
+    right_y = prediction.shape[0]
+    right_x = target_dimension[1] - (image_pos[1] + prediction.shape[1])
+
+    below_y = target_dimension[0] - (image_pos[0] + prediction.shape[0])
+    below_x = target_dimension[1]
+
+    above_image = np.full((above_y, above_x), TRANSPARENT)
+    left_of_image = np.full((left_y, left_x), TRANSPARENT)
+    right_of_image = np.full((right_y, right_x), TRANSPARENT)
+    below_of_image = np.full((below_y, below_x), TRANSPARENT)
+
+    middle_section_with_image = np.concatenate((left_of_image, prediction, right_of_image), axis=1)
+    rain_intensity_values = np.asanyarray(np.concatenate((above_image, middle_section_with_image, below_of_image)),
+                                  dtype=np.uint8)
+
+    rain_intensity_values = np.reshape(rain_intensity_values, (target_dimension[0], target_dimension[1]))
+
+    rain_intensity_values_img = PIL.Image.fromarray(rain_intensity_values)
+    rain_intensity_values_img_final = np.asanyarray(rain_intensity_values_img.resize((900,900)))
+
+    return rain_intensity_values_img_final
+
+
 
 
 def fit_image_to_map(target_dimension, image_pos, image_array):
@@ -90,7 +124,7 @@ def resize_images(dim, image_dir, save_dir, num_of_historical_imag, reverse):
         x, y = dim
         img = cv2.resize(img, (y, x))
         img = PIL.Image.fromarray(img)
-        img.save(save_dir + str(i) + '.png')
+        img.save(save_dir + str(image[:-4]) + '.png')
 
 
 def take_slice_of_image(slices, image_dir, save_dir, num_of_historical_imag):
@@ -99,19 +133,14 @@ def take_slice_of_image(slices, image_dir, save_dir, num_of_historical_imag):
 
     clear_save_dir(save_dir)
 
-    images = []
     for i, image in enumerate(image_filenames[:num_of_historical_imag]):
         img = np.asanyarray(PIL.Image.open(image_dir + image))
         img = img[[slice(slices[0], slices[1]), slice(slices[2], slices[3])]]
-        images.append(img)
-    images.reverse()
-    save_images(images, save_dir)
-
-
-def save_images(images, save_dir):
-    for i, img in enumerate(images):
         img = PIL.Image.fromarray(img)
-        img.save(save_dir + str(i) + '.png')
+        img.save(save_dir + str(image[15:-8]) + '.png')
+
+
+
 
 
 def clear_save_dir(save_dir):
