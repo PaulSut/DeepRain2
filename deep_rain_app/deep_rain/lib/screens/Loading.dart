@@ -73,17 +73,10 @@ class _LoadingState extends State<Loading> {
   @override
   Future<void> initState() {
     super.initState();
-    setupApp();
   }
 
   @override
   Widget build(BuildContext context) {
-    //Stay 2,5 seconds on the loadingscreen.
-    /*Timer(
-        Duration(seconds: 3, milliseconds: 500),
-        () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainApp()))
-    );*/
-
     return FutureBuilder(
       future: setupApp(),
       builder: (context, snap){

@@ -2,15 +2,13 @@ import pickle
 
 import firebase_admin
 from firebase_admin import credentials, firestore, storage
-import sched
-import time
-from random import randrange
 from datetime import datetime
 from PIL import Image
 import numpy as np
+import time
 
 #
-# creats example rain forecast data. upload this data to firebase. every 5 minutes one dataset.
+# Push the rain intense values for each region to firebase
 #
 
 if __name__ == '__main__':
@@ -20,115 +18,188 @@ if __name__ == '__main__':
     bucket = storage.bucket()
     db = firestore.client()
 
-    #to upload new forecast data from Time to time
-    s = sched.scheduler(time.time, time.sleep)
+    #get the lists with coordinate data
+    f = open('listLatitudeComplete.pckl', 'rb')
+    listLatitude = pickle.load(f)
+    f.close()
+
+    f = open('listLongitudeComplete.pckl', 'rb')
+    listLongitude = pickle.load(f)
+    f.close()
+
+    f = open('listCoordinates.pckl', 'rb')
+    listCoordinates = pickle.load(f)
+    f.close()
 
     # Counter for the ID of Data
     ID = 0
 
-    #return the cordinates of the pixel by [x (lat), y (lng)]
+    #list for all latitudes and longitudes which are already calulated
+    #[latitude, longitude, pixels]
+    latitude_longitude_pixels = []
+
+    #return the cordinates of the pixel by [y (lng), x (lat)]
+    #TODO es kommen bei einem 900x900 grid natürlich andere Pixel raus als bei 1100x900, aber sind diese Werte richtig?
     def return_pixel_from_coordinates(latitude, longitude):
-        #f = open('listLatitude.pckl', 'rb')
-        f = open('listLatitudeComplete.pckl', 'rb')
-        listLatitude = pickle.load(f)
-        f.close()
 
-        #f = open('listLongitude.pckl', 'rb')
-        f = open('listLongitudeComplete.pckl', 'rb')
-        listLongitude = pickle.load(f)
-        f.close()
-
-        f = open('listCoordinates.pckl', 'rb')
-        listCoordinates = pickle.load(f)
-        f.close()
+        #check, if the pixel coordinates for this latitude and longitude is already calculated
+        for latitude_index in range(len(latitude_longitude_pixels)):
+            if latitude_longitude_pixels[latitude_index][0] == latitude:
+                if latitude_longitude_pixels[latitude_index][1] == longitude:
+                    return latitude_longitude_pixels[latitude_index][2]
 
         dist_to_pixel = []
         for idx in range(len(listLatitude)):
-            dist_to_pixel.append(np.linalg.norm([longitude - listLongitude[idx], latitude - listLatitude[idx]]))
+            dist_to_pixel.append(np.linalg.norm([latitude - listLatitude[idx], longitude - listLongitude[idx]]))
         index_of_min_dist = dist_to_pixel.index(min(dist_to_pixel))
 
-        return listCoordinates[index_of_min_dist]
+        pixel_coordinates = listCoordinates[index_of_min_dist]
 
-    print(return_pixel_from_coordinates(8.774200, 47.856621))
+        latitude_longitude_pixels.append([latitude, longitude, pixel_coordinates])
 
-    def return_rain_intense_from_forecast_by_latlng(latitude, longitude):
-        #get the pixel coordinate for this long and latitude
+        return pixel_coordinates
+
+    def return_rain_intense_from_forecast_by_latlng(latitude, longitude, image):
+
+        #get the pixel coordinate for this long and latitude in format [y,x]
         pixel_cordinate = return_pixel_from_coordinates(latitude, longitude)
 
-        #at a later point, this will be the last forecast image which was generated
-        img = Image.open("assets/example_forecast.png")
         #get the value of the pixel
-        rain_intense = img.getpixel((pixel_cordinate[0], pixel_cordinate[1]))
+        rain_intense = image.getpixel((pixel_cordinate[1], pixel_cordinate[0]))
 
-        return rain_intense;
+        return rain_intense
 
-    def upload_data_to_firbase(sc):
+
+    def delete_collection(coll_ref):
+        docs = coll_ref.stream()
+        for doc in docs:
+            doc.reference.delete()
+
+    def upload_data_to_firbase(forecast_images, time_of_forecasts):
         # all regions where are users
         regions = db.collection(u'Regions').stream()
         regions = list(regions)
 
         # For each region where are users, (Device Tokens in the Regions/Region/tokens collection), a forecast need to be pushed
         for region in regions:
+            start = time.time()
+            print('Start with: ', region.id)
             global ID
-            # the current time for firebase document ID
-            now = datetime.now()
-            current_time = now.strftime("%H:%M")
+            #get the latitude and longitude of the current region
+            region_lat_lng = region.to_dict()
+            region_latitude = region_lat_lng['Latitude']
+            region_longitude = region_lat_lng['Longitude']
 
-            # the unique id for the documents of database.
-            documentID = 'deeprain_' + current_time + '_' + str(ID)
+            forecast_collection = db.collection('Regions').document(region.id).collection('forecast')
 
-            # random dummy rainintense
-            rainIntense = randrange(100)
+            #delete the old data
+            delete_collection(forecast_collection)
 
-            #needed for pushnotification tests
-            #rainIntense = 94
+            is_pushnotification_sended = False
 
-            #needed for test of real dataflow
-            #rainIntense = return_rain_intense_from_forecast_by_latlng(47.66033, 9.17582)
-            #print(rainIntense)
+            #calculate for each image the rain intense and load it to firebase
+            for image in range(len(forecast_images)):
+                # the unique id for the documents of database.
+                documentID = 'deeprain_' + time_of_forecasts[image] + '_' + str(ID)
 
-            # upload forecast to firebase
-            #doc_ref = db.collection('forecast').document(str(documentID))
-            #doc_ref.set({
-            #    'rainIntense': rainIntense,
-            #    'time': current_time
-            #})
+                rainIntense = return_rain_intense_from_forecast_by_latlng(region_latitude, region_longitude, forecast_images[image])
 
-            doc_ref = db.collection('Regions').document(region.id).collection('forecast').document(str(documentID))
-            doc_ref.set({
-                'rainIntense': rainIntense,
-                'time': current_time
-            })
-
-            for doc in regions:
-                print(u'{} => {}'.format(doc.id, doc.to_dict()))
-
-            # send push notifications to devices.
-            if(rainIntense > 90):
-                doc_ref = db.collection('RainWarningPushNotification').document(str(documentID))
+                #upload the forecast data to firebase
+                doc_ref = forecast_collection.document(str(documentID))
                 doc_ref.set({
-                    'title': 'Es gibt eine Regenwarnung!',
-                    'body': 'Nehmen Sie besser Ihren Regenschirm mit, es wird in 30 Minuten regenen!',
-                    'time_before_raining': '30',
-                    'region': region.id
+                    'rainIntense': rainIntense,
+                    'time': time_of_forecasts[image]
                 })
 
-            # increase the ID
-            ID = ID + 1
-            print('Upload erfolgeich. ID:' + str(ID) + '. rainIntense: ' + str(rainIntense) + '. time: ' + str(current_time))
+                ID = ID +1
 
-            # all regions where are users
-            forecasts = db.collection(u'Regions').document(region.id).collection('forecast').stream()
-            forecasts = list(forecasts)
-            number_of_forecasts = len(forecasts)
-            # if there are 20 items in the db, alway remove the oldest one
-            if number_of_forecasts > 19:
-                # delete in firebase
-                db.collection('Regions').document(region.id).collection('forecast').document(forecasts[0].id).delete()
+                # send push notifications to devices.
+                if is_pushnotification_sended == False:
+                    if(rainIntense > 90):
+                        doc_ref = db.collection('RainWarningPushNotification').document(str(documentID))
+                        doc_ref.set({
+                            'title': 'Es gibt eine Regenwarnung!',
+                            'body': 'Nehmen Sie besser Ihren Regenschirm mit, es wird in 30 Minuten regenen!',
+                            'time_before_raining': '30',
+                            'region': region.id
+                        })
+                        is_pushnotification_sended = True
+            is_pushnotification_sended == False
 
-            s.enter(300, 1, upload_data_to_firbase, (sc,))
-    s.enter(300, 1, upload_data_to_firbase, (s,))
-    s.run()
+            # print('Upload erfolgeich. ID:' + str(ID) + '. rainIntense: ' + str(rainIntense) + '. time: ' + str(current_time))
+            end = time.time()
+            print('Time needed: ', end - start)
+
+            #db.collection('Regions').document(region.id).collection('forecast').document(forecasts[0].id).delete()
+
+    image0 = Image.open("assets/1701020100.png")
+    image1 = Image.open("assets/1701020105.png")
+    image2 = Image.open("assets/1701020110.png")
+    image3 = Image.open("assets/1701020115.png")
+    image4 = Image.open("assets/1701020120.png")
+    image5 = Image.open("assets/1701020125.png")
+    image6 = Image.open("assets/1701020130.png")
+    image7 = Image.open("assets/1701020135.png")
+    image8 = Image.open("assets/1701020140.png")
+    image9 = Image.open("assets/1701020145.png")
+    image90 = Image.open("assets/1701020150.png")
+    image91 = Image.open("assets/1701020155.png")
+    image92 = Image.open("assets/1701020200.png")
+    image93 = Image.open("assets/1701020205.png")
+    image94 = Image.open("assets/1701020210.png")
+    image95 = Image.open("assets/1701020215.png")
+    image96 = Image.open("assets/1701020220.png")
+    image97 = Image.open("assets/1701020225.png")
+    image98 = Image.open("assets/1701020230.png")
+    image99 = Image.open("assets/1701020235.png")
+
+    forecast_images = [
+        image0,
+        image1,
+        image2,
+        image3,
+        image4,
+        image5,
+        image6,
+        image7,
+        image8,
+        image9,
+        image90,
+        image91,
+        image92,
+        image93,
+        image94,
+        image95,
+        image96,
+        image97,
+        image98,
+        image99,
+    ]
+    time_steps_of_images = [
+        "10:50",
+        "10:55",
+        "11:00",
+        "11:05",
+        "11:10",
+        "11:15",
+        "11:20",
+        "11:25",
+        "11:30",
+        "11:35",
+        "11:40",
+        "11:45",
+        "11:50",
+        "11:55",
+        "12:00",
+        "12:05",
+        "12:10",
+        "12:15",
+        "12:20",
+        "12:25",
+    ]
+
+    upload_data_to_firbase(forecast_images, time_steps_of_images)
+
 
 
 

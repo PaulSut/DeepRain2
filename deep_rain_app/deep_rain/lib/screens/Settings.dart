@@ -156,7 +156,7 @@ class _LoadingState extends State<Settings> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: Text(_uiText.chooseLanguageDialogHeader),
+                          title: Text(_uiText.chooseWarningTimeScreen),
                           content: StatefulBuilder(
                             builder: (BuildContext context, StateSetter setState){
                               return DurationPicker(
@@ -182,7 +182,7 @@ class _LoadingState extends State<Settings> {
                               onPressed: (){
                                 Navigator.of(context).pop();
                               },
-                              child: Text(_uiText.chooseLanguageDialogOkButton),
+                              child: Text(_uiText.chooseWarningTimeDialogOkButton),
                             )
                           ],
                         );
