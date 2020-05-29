@@ -9,6 +9,7 @@ from NeuralNetwork import predict_weather
 from time import sleep
 from transform import *
 import os
+import forecast_database_uploader as rain_intense_uploader
 
 PATH_TO_FORECAST_DIR = './forecast/'
 HISTORICAL_PICTURE_PATH = './historical_data/images/'
@@ -39,6 +40,22 @@ NUMBER_OF_HISTORICAL_IMAGES = 10
 if __name__ == '__main__':
     model = load_model(PATH_TO_NN)
     new_radar_data_downloaded = False
+
+    # get the lists with coordinate data
+    f = open('listLatitudeComplete.pckl', 'rb')
+    listLatitude = pickle.load(f)
+    f.close()
+
+    f = open('listLongitudeComplete.pckl', 'rb')
+    listLongitude = pickle.load(f)
+    f.close()
+
+    f = open('listCoordinates.pckl', 'rb')
+    listCoordinates = pickle.load(f)
+    f.close()
+
+    coordinate_lists = [listLatitude, listLongitude, listCoordinates]
+
     while True:
         while not new_radar_data_downloaded:
             new_radar_data_downloaded = get_new_radar_pngs(HISTORICAL_RADAR_DATA_PATH, HISTORICAL_PICTURE_PATH)
@@ -89,6 +106,7 @@ if __name__ == '__main__':
         #Hey Till hier musst du die Funktion aufrufen. Hier noch die beiden arrays die du brauchst
         print(time_stamps)
         print(rain_intensity_values)
+        rain_intense_uploader.upload_data_to_firbase(rain_intensity_values, time_stamps, coordinate_lists)
 
 
 
