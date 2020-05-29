@@ -6,29 +6,12 @@ from PIL import Image
 import numpy as np
 import time
 
-# Never, ever upload this Certificate file to git
-cred = credentials.Certificate('./deeprain-firebase-adminsdk-xpcbj-bcbc99b37e.json')
-default_app = firebase_admin.initialize_app(cred, {'storageBucket': 'deeprain.appspot.com'})
-bucket = storage.bucket()
-db = firestore.client()
-
-# get the lists with coordinate data
-f = open('listLatitudeComplete.pckl', 'rb')
-listLatitude = pickle.load(f)
-f.close()
-
-f = open('listLongitudeComplete.pckl', 'rb')
-listLongitude = pickle.load(f)
-f.close()
-
-f = open('listCoordinates.pckl', 'rb')
-listCoordinates = pickle.load(f)
-f.close()
-
-
 #return the cordinates of the pixel by [y (lng), x (lat)]
 #TODO es kommen bei einem 900x900 grid natürlich andere Pixel raus als bei 1100x900, aber sind diese Werte richtig?
-def return_pixel_from_coordinates(latitude, longitude):
+def return_pixel_from_coordinates(latitude, longitude, coordinate_lists):
+    listLatitude = coordinate_lists[0]
+    listLongitude = coordinate_lists[1]
+    listCoordinates = coordinate_lists[2]
 
     #check, if the pixel coordinates for this latitude and longitude is already calculated
     for latitude_index in range(len(latitude_longitude_pixels)):
@@ -47,10 +30,10 @@ def return_pixel_from_coordinates(latitude, longitude):
 
     return pixel_coordinates
 
-def return_rain_intense_from_forecast_by_latlng(latitude, longitude, image):
+def return_rain_intense_from_forecast_by_latlng(latitude, longitude, image, coordinate_lists):
 
     #get the pixel coordinate for this long and latitude in format [y,x]
-    pixel_cordinate = return_pixel_from_coordinates(latitude, longitude)
+    pixel_cordinate = return_pixel_from_coordinates(latitude, longitude, coordinate_lists)
 
     #get the value of the pixel
     rain_intense = image.getpixel((pixel_cordinate[1], pixel_cordinate[0]))
@@ -63,7 +46,14 @@ def delete_collection(coll_ref):
     for doc in docs:
         doc.reference.delete()
 
-def upload_data_to_firbase(forecast_images, time_of_forecasts):
+def upload_data_to_firbase(forecast_images, time_of_forecasts, coordinate_lists):
+    # Never, ever upload this Certificate file to git
+    cred = credentials.Certificate('./deeprain-firebase-adminsdk-xpcbj-bcbc99b37e.json')
+    default_app = firebase_admin.initialize_app(cred, {'storageBucket': 'deeprain.appspot.com'})
+    bucket = storage.bucket()
+    db = firestore.client()
+
+
     # Counter for the ID of Data
     ID = 0
 
@@ -80,7 +70,7 @@ def upload_data_to_firbase(forecast_images, time_of_forecasts):
     for region in regions:
         start = time.time()
         print('Start with: ', region.id)
-        global ID
+        ID = 0
         #get the latitude and longitude of the current region
         region_lat_lng = region.to_dict()
         region_latitude = region_lat_lng['Latitude']
@@ -98,7 +88,7 @@ def upload_data_to_firbase(forecast_images, time_of_forecasts):
             # the unique id for the documents of database.
             documentID = 'deeprain_' + time_of_forecasts[image] + '_' + str(ID)
 
-            rainIntense = return_rain_intense_from_forecast_by_latlng(region_latitude, region_longitude, forecast_images[image])
+            rainIntense = return_rain_intense_from_forecast_by_latlng(region_latitude, region_longitude, forecast_images[image], coordinate_lists)
 
             #upload the forecast data to firebase
             doc_ref = forecast_collection.document(str(documentID))
