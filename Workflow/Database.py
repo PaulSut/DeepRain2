@@ -48,7 +48,7 @@ def replace_image_in_firebase(image, index, mode, bucket, path_to_forecast_dir):
 
 
 def init_firebase():
-    cred = credentials.Certificate('/home/paul/Documents/Master1/DeepRain_Teamproject/HomeOffice/Workflow/ServiceAccountKey.json')
+    cred = credentials.Certificate('./ServiceAccountKey.json')
     app = firebase_admin.initialize_app(cred, {'storageBucket': 'deeprain.appspot.com'
                                                })
     bucket = storage.bucket()

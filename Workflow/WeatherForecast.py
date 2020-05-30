@@ -10,6 +10,7 @@ from time import sleep
 from transform import *
 import os
 import forecast_database_uploader as rain_intense_uploader
+import pickle
 
 PATH_TO_FORECAST_DIR = './forecast/'
 HISTORICAL_PICTURE_PATH = './historical_data/images/'
@@ -30,11 +31,9 @@ SLICES = [100, 548, 200, 648]
 SLICES = [0, 896, 0, 896]
 INPUT_TRANSFORMATIONS = [Normalize()]
 OUTPUT_TRANSFORMATIONS = [from_sparse_categorical()]
-# INPUT_TRANSFORMATIONS = None
 NUMBER_OF_INPUT_IMAGES = 5
 NUMBER_OF_PREDICTIONS = 10
 NUMBER_OF_HISTORICAL_IMAGES = 10
-# HISTORICAL_RADAR_DATA_ZIPPED_PATH = '/home/paul/Documents/Master1/DeepRain_Teamproject/HomeOffice/Workflow/historical_data/zipped/'
 
 
 if __name__ == '__main__':
@@ -103,12 +102,8 @@ if __name__ == '__main__':
 
         print('Upload rain intensity values')
 
-        #Hey Till hier musst du die Funktion aufrufen. Hier noch die beiden arrays die du brauchst
-        print(time_stamps)
-        print(rain_intensity_values)
+        #uploade forecat rain intense data to firebase
         rain_intense_uploader.upload_data_to_firbase(rain_intensity_values, time_stamps, coordinate_lists)
-
-
 
         print('Done. Weather Forecast is up to date')
 

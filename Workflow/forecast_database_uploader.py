@@ -6,18 +6,21 @@ from PIL import Image
 import numpy as np
 import time
 
+# list for all latitudes and longitudes which are already calulated
+# [latitude, longitude, pixels]
+latitude_longitude_pixels = {}
+
 #return the cordinates of the pixel by [y (lng), x (lat)]
 #TODO es kommen bei einem 900x900 grid natürlich andere Pixel raus als bei 1100x900, aber sind diese Werte richtig?
 def return_pixel_from_coordinates(latitude, longitude, coordinate_lists):
+    global latitude_longitude_pixels
+
     listLatitude = coordinate_lists[0]
     listLongitude = coordinate_lists[1]
     listCoordinates = coordinate_lists[2]
 
-    #check, if the pixel coordinates for this latitude and longitude is already calculated
-    for latitude_index in range(len(latitude_longitude_pixels)):
-        if latitude_longitude_pixels[latitude_index][0] == latitude:
-            if latitude_longitude_pixels[latitude_index][1] == longitude:
-                return latitude_longitude_pixels[latitude_index][2]
+    if str(latitude + longitude) in latitude_longitude_pixels:
+        return latitude_longitude_pixels[str(latitude+longitude)]
 
     dist_to_pixel = []
     for idx in range(len(listLatitude)):
@@ -25,8 +28,7 @@ def return_pixel_from_coordinates(latitude, longitude, coordinate_lists):
     index_of_min_dist = dist_to_pixel.index(min(dist_to_pixel))
 
     pixel_coordinates = listCoordinates[index_of_min_dist]
-
-    latitude_longitude_pixels.append([latitude, longitude, pixel_coordinates])
+    latitude_longitude_pixels[str(latitude + longitude)] = pixel_coordinates
 
     return pixel_coordinates
 
@@ -36,7 +38,7 @@ def return_rain_intense_from_forecast_by_latlng(latitude, longitude, image, coor
     pixel_cordinate = return_pixel_from_coordinates(latitude, longitude, coordinate_lists)
 
     #get the value of the pixel
-    rain_intense = image.getpixel((pixel_cordinate[1], pixel_cordinate[0]))
+    rain_intense = image[pixel_cordinate[0], pixel_cordinate[1]]
 
     return rain_intense
 
@@ -53,14 +55,15 @@ def upload_data_to_firbase(forecast_images, time_of_forecasts, coordinate_lists)
     bucket = storage.bucket()
     db = firestore.client()
 
+    # list for all latitudes and longitudes which are already calulated
+    # [latitude, longitude, pixels]
+    global latitude_longitude_pixels
+    f = open('latitude_longitude_pixels.pckl', 'rb')
+    latitude_longitude_pixels = pickle.load(f)
+    f.close()
 
     # Counter for the ID of Data
     ID = 0
-
-    # list for all latitudes and longitudes which are already calulated
-    # [latitude, longitude, pixels]
-    latitude_longitude_pixels = []
-
 
     # all regions where are users
     regions = db.collection(u'Regions').stream()
@@ -68,8 +71,6 @@ def upload_data_to_firbase(forecast_images, time_of_forecasts, coordinate_lists)
 
     # For each region where are users, (Device Tokens in the Regions/Region/tokens collection), a forecast need to be pushed
     for region in regions:
-        start = time.time()
-        print('Start with: ', region.id)
         ID = 0
         #get the latitude and longitude of the current region
         region_lat_lng = region.to_dict()
@@ -83,6 +84,7 @@ def upload_data_to_firbase(forecast_images, time_of_forecasts, coordinate_lists)
 
         is_pushnotification_sended = False
 
+        print('Start with: ', region.id)
         #calculate for each image the rain intense and load it to firebase
         for image in range(len(forecast_images)):
             # the unique id for the documents of database.
@@ -93,8 +95,8 @@ def upload_data_to_firbase(forecast_images, time_of_forecasts, coordinate_lists)
             #upload the forecast data to firebase
             doc_ref = forecast_collection.document(str(documentID))
             doc_ref.set({
-                'rainIntense': rainIntense,
-                'time': time_of_forecasts[image]
+                'rainIntense': int(rainIntense),
+                'time': str(time_of_forecasts[image][-4:-2] + ":" + time_of_forecasts[image][-2:])
             })
 
             ID = ID +1
@@ -112,8 +114,8 @@ def upload_data_to_firbase(forecast_images, time_of_forecasts, coordinate_lists)
                     is_pushnotification_sended = True
         is_pushnotification_sended == False
 
-        # print('Upload erfolgeich. ID:' + str(ID) + '. rainIntense: ' + str(rainIntense) + '. time: ' + str(current_time))
-        end = time.time()
-        print('Time needed: ', end - start)
+    #store the already calculated latitude longitude pixel context
+    with open('latitude_longitude_pixels.pckl', 'wb') as f:
+        pickle.dump(latitude_longitude_pixels, f)
 
-        #db.collection('Regions').document(region.id).collection('forecast').document(forecasts[0].id).delete()
+    firebase_admin.delete_app(default_app)
