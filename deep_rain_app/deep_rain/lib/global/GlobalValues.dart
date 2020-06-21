@@ -208,12 +208,14 @@ class GlobalValues{
     print(latitude);
     print(longitude);
 
-    FindPixel hey = FindPixel();
+    //FindPixel hey = FindPixel();
 //    var longitude_min = longitudeListVar.reduce((curr, next) => curr < next? curr: next);
 //    var longitude_max = longitudeListVar.reduce((curr, next) => curr > next? curr: next);
 //    var latitude_min = latitudeListVar.reduce((curr, next) => curr < next? curr: next);
 //    var latitude_max = latitudeListVar.reduce((curr, next) => curr > next? curr: next);
-    var pixels = hey.getClosest_Coordinate(longitudeListVar, latitudeListVar, 899, 0, 899, 0, AppRegion.longitude, AppRegion.latitude);
+    //var pixels = hey.getClosest_Coordinate(longitudeListVar, latitudeListVar, 899, 0, 899, 0, AppRegion.longitude, AppRegion.latitude);
+
+    var pixels = [300,200];
 
     print('HALELASJDLJLASJDLAJSDL');
     print(pixels);

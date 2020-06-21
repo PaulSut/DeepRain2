@@ -86,7 +86,6 @@ class _LoadingState extends State<Loading> {
       await _globalValues.setAppPixel([appPixel_x, appPixel_y]);
     }
 
-
     for(var i = 1; i <= 20; i++){
       print('Ich hole Bilder');
       await instance.getImage(i);

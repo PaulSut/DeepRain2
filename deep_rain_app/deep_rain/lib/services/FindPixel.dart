@@ -54,7 +54,7 @@ class FindPixel {
     return getClosest_Coordinate(x, y, x_range_min_, x_range_max_, y_range_min_, y_range_max_, location_x, location_y);
   }
 
-  getBoxLocation(var x_range,var y_range,var x_range_min,var y_range_min,List<dynamic> x,List<dynamic> y,var location_x,var location_y){
+  getBoxLocation(var x_range,var y_range,var x_range_min,var y_range_min, List<dynamic> x, List<dynamic> y,var location_x,var location_y){
     var x_range_uneven = (x_range) % 2 == 1 ? 1 : false;
     var y_range_uneven = (y_range) % 2 == 1 ? 1 : false;
 
