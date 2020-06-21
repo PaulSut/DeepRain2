@@ -1,5 +1,11 @@
+import 'dart:convert';
+
+import 'package:deep_rain/services/FindPixel.dart';
+import 'package:flutter/services.dart';
 import 'package:latlong/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ml_linalg/linalg.dart';
+import 'dart:math';
 
 /*
 All variables which need to be accesed are stored here. If a variable changes, the set method will be called.
@@ -15,6 +21,10 @@ bool AppSwitchRainWarning;
 String AppLanguage;
 LatLng AppRegion;
 String AppRegionCity;
+List<String> AppCoordinateList;
+List<String> AppLatitudeList;
+List<String> AppLongitudeList;
+var AppPixel;
 
 class GlobalValues{
 
@@ -113,4 +123,112 @@ class GlobalValues{
     }
     return "Konstanz";
   }
+
+  setCoordinateLists(String CoordinateList) async{
+//    AppCoordinateList = CoordinateList.map((s) => s as String).toList();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('AppCoordinateList', CoordinateList);
+  }
+  List<dynamic> getCoordinateLists(){
+    return AppCoordinateList;
+  }
+
+  setLatitudeList(String LatitudeList) async{
+    //AppLatitudeList = LatitudeList.map((s) => s as String).toList();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('AppLatitudeList', LatitudeList);
+  }
+  List<dynamic> getLatitudeList(){
+    return AppLatitudeList;
+  }
+
+  setLongitudeList(String LongitudeList) async{
+    //AppLongitudeList = LongitudeList.map((s) => s as String).toList();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('AppLongitudeList', LongitudeList);
+  }
+  List<dynamic> getLongitudeList(){
+    return AppLongitudeList;
+  }
+
+  Future<String> loadListCoordinates() async {
+    final ByteData data = await rootBundle.load('assets/data/listCoordinates.json');
+    String jsonContent = utf8.decode(data.buffer.asUint8List());
+    return jsonContent;
+
+  }
+  Future<String> loadListLatitude() async {
+    final ByteData data = await rootBundle.load('assets/data/listLatitudeComplete.json');
+    String jsonContent = utf8.decode(data.buffer.asUint8List());
+    return jsonContent;
+  }
+  Future<String> loadListLongitude() async {
+    final ByteData data = await rootBundle.load('assets/data/listLongitudeComplete.json');
+    String jsonContent = utf8.decode(data.buffer.asUint8List());
+    return jsonContent;
+  }
+
+  setAppPixel(var Pixel) async{
+    AppPixel = Pixel;
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setInt('AppPixel_X', Pixel[0]);
+    prefs.setInt('AppPixel_Y', Pixel[1]);
+  }
+  getAppPixel() async{
+    print('APPPIXEL');
+    print(AppPixel);
+    if(AppPixel != null){
+      return AppPixel;
+    }
+    if(AppPixel == null){
+      changeAppPixel();
+    }
+  }
+
+  changeAppPixel() async{
+    print('Ich berechne jetzt den Pixel!');
+    String coordinateListString = await loadListCoordinates();
+    String latitudeListString = await loadListLatitude();
+    String longitudeListString = await loadListLongitude();
+
+    print('Ich berechne jetzt den Pixel! 2');
+    var coordinateListVar = await json.decode(coordinateListString);
+    print('Ich berechne jetzt den Pixel! 3');
+    var longitudeListVar = await jsonDecode(longitudeListString);
+    print('Ich berechne jetzt den Pixel! 4');
+    var latitudeListVar = await jsonDecode(latitudeListString);
+
+    print('TADAAA');
+    print(coordinateListVar[100]);
+    print(longitudeListVar[100]);
+    print(latitudeListVar[100]);
+
+    double latitude = AppRegion.latitude;
+    double longitude = AppRegion.longitude;
+    print(latitude);
+    print(longitude);
+
+    //FindPixel hey = FindPixel();
+//    var longitude_min = longitudeListVar.reduce((curr, next) => curr < next? curr: next);
+//    var longitude_max = longitudeListVar.reduce((curr, next) => curr > next? curr: next);
+//    var latitude_min = latitudeListVar.reduce((curr, next) => curr < next? curr: next);
+//    var latitude_max = latitudeListVar.reduce((curr, next) => curr > next? curr: next);
+    //var pixels = hey.getClosest_Coordinate(longitudeListVar, latitudeListVar, 899, 0, 899, 0, AppRegion.longitude, AppRegion.latitude);
+
+    var pixels = [300,200];
+
+    print('HALELASJDLJLASJDLAJSDL');
+    print(pixels);
+
+    coordinateListVar = null;
+    longitudeListVar = null;
+    latitudeListVar  = null;
+
+    await setAppPixel(pixels);
+
+    print('Ich berechne jetzt den Pixel! 5');
+
+    return pixels;
+  }
+
 }

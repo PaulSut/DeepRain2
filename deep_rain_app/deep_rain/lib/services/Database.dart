@@ -4,7 +4,13 @@ import 'package:deep_rain/DataObjects/DataHolder.dart';
 import 'package:deep_rain/DataObjects/ForecastListItem.dart';
 import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart' as imageloader;
+import 'package:flutter/material.dart';
+import 'package:image/image.dart' as image_libary;
+import 'dart:io' as dart_io;
+import 'dart:convert';
+import 'dart:async' show Future;
+import 'package:flutter/services.dart' show rootBundle;
 
 /*
 The communication with the firesbase is handled in this class
@@ -35,21 +41,44 @@ class DatabaseService{
   }
 
   //if the image is not already stored in the DataHolder, it will be downloaded from firebase
-  Uint8List getImage(int division){
-    StorageReference photosReference = FirebaseStorage.instance.ref().child('photos');
+  Future<Uint8List> getImage(int division) async{
+    StorageReference photosReference =  await FirebaseStorage.instance.ref().child('photos');
+
+//    var url = await photosReference.getDownloadURL();
+//    print('URL: ' + url.toString());
+//    Image image = Image.network(url);
+//    _image = Image.memory(image);
+//    print(image);
+
+//    var result = expensiveA().then((_) => expensiveB()).then((_) => expensiveC()); // the Future returned by expensiveC will be returned because `doSomethingWith` is not awaited in your code
+//    result.then(doSomethingWith);
+//    return result;
 
     if (!requestedIndexes.contains(division)) {
+      print('Ich bin hier' + division.toString());
       int MAX_SIZE = 7 * 1024 * 1024;
-      photosReference.child('$division.png').getData(MAX_SIZE).then((data){
+      await photosReference.child('$division.png').getData(MAX_SIZE).then((data) async{
         requestedIndexes.add(division);
-        imageData.putIfAbsent(division, () {
+        await calculate_pixel_value(data, division);
+        imageData.putIfAbsent(division, (){
           return data;
         });
         return data;
       }).catchError((onError) {
-        debugPrint(onError.toString());
+        imageloader.debugPrint(onError.toString());
       });
     }
+  }
+
+  Future<int> calculate_pixel_value(data, division) async{
+    var pixel_of_current_location = await _globalValues.getAppPixel();
+    //Example for
+    int x = pixel_of_current_location[0];
+    int y = pixel_of_current_location[1];
+    image_libary.Image image = image_libary.decodeImage(data);
+    int pixel = image.getPixel(x, y);
+    print('Pixel value: ' + pixel.toString() + ' In division: ' + division.toString());
+    return pixel;
   }
 
   //If the user change the time of rain warning, this function will update the device token in the firebase.

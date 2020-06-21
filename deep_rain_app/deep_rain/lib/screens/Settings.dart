@@ -39,6 +39,8 @@ class _LoadingState extends State<Settings> {
       Coordinates coordinates = new Coordinates(coordinatesInLatLng.latitude, coordinatesInLatLng.longitude);
       _globalValues.setAppRegion(coordinatesInLatLng);
 
+      _globalValues.changeAppPixel();
+
       var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
       var first = addresses.first;
       _globalValues.setAppRegionCity(first.locality);
