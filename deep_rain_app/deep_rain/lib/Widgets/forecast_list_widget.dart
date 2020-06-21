@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:deep_rain/DataObjects/ForecastListItem.dart';
 import 'package:deep_rain/Widgets/forecast_tile.dart';
+import 'package:deep_rain/services/Database.dart';
+import 'package:deep_rain/services/ProvideForecastData.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +18,16 @@ class _ForecastListWidgetState extends State<ForecastListWidget> {
   @override
   Widget build(BuildContext context) {
 
-    final forecasts = Provider.of<List<ForecastListItem>>(context);
+    //final forecasts = Provider.of<List<ForecastListItem>>(context);
+
+    ProvideForecastData provider = ProvideForecastData();
+    final forecasts = provider.getForecast();
+
+
+//    print('HelloHelloHelloHelloHelloHello');
+//    print(forecasts);
+//    print(forecasts[0].time);
+//    print(forecasts.length);
 
     return ListView.builder(
       itemCount: forecasts == null ? 0 : forecasts.length,

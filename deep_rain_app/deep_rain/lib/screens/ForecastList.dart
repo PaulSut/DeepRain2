@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:deep_rain/DataObjects/ForecastListItem.dart';
 import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:deep_rain/global/UIText.dart';
@@ -11,19 +13,18 @@ This screen displays the forecast data as list. Cause of StreamProvider, always 
  */
 class ForecastList extends StatelessWidget {
   GlobalValues _globalValues = GlobalValues();
+
   @override
   Widget build(BuildContext context) {
+
     UIText _uiText = UIText();
-    return StreamProvider<List<ForecastListItem>>.value(
-      value: DatabaseService().Forecast,
-      child: Scaffold(
+    return Scaffold(
         backgroundColor: Colors.brown[50],
         appBar: AppBar(
           title: Text(_uiText.forecastListAppTitle + " " + _globalValues.getAppRegionCity()),
           elevation: 0.0,
         ),
         body: ForecastListWidget()
-      ),
-    );
+      );
   }
 }

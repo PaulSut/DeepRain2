@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:image/image.dart' as image_libary;
 import 'dart:io' as dart_io;
 import 'dart:convert';
-import 'dart:async' show Future;
+import 'dart:async' show Future, StreamController;
 import 'package:flutter/services.dart' show rootBundle;
 
 /*
@@ -28,6 +28,7 @@ class DatabaseService{
   // forecast list from snapshot
   List<ForecastListItem> _forecastListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.documents.map((doc){
+
       return ForecastListItem(
         time: doc.data['time'] ?? '',
         rainIntense: doc.data['rainIntense'] ?? 0
@@ -40,8 +41,14 @@ class DatabaseService{
     .map(_forecastListFromSnapshot);
   }
 
+  StreamController<List<ForecastListItem>> get forecast_values{
+    StreamController<List<ForecastListItem>>  controller = StreamController<List<ForecastListItem>>();
+    return controller;
+  }
+
+
   //if the image is not already stored in the DataHolder, it will be downloaded from firebase
-  Future<Uint8List> getImage(int division) async{
+  Future<int> getImage(int division) async{
     StorageReference photosReference =  await FirebaseStorage.instance.ref().child('photos');
 
 //    var url = await photosReference.getDownloadURL();
@@ -53,13 +60,13 @@ class DatabaseService{
 //    var result = expensiveA().then((_) => expensiveB()).then((_) => expensiveC()); // the Future returned by expensiveC will be returned because `doSomethingWith` is not awaited in your code
 //    result.then(doSomethingWith);
 //    return result;
-
+    int pixel_value = 0;
     if (!requestedIndexes.contains(division)) {
       print('Ich bin hier' + division.toString());
       int MAX_SIZE = 7 * 1024 * 1024;
       await photosReference.child('$division.png').getData(MAX_SIZE).then((data) async{
         requestedIndexes.add(division);
-        await calculate_pixel_value(data, division);
+        pixel_value = await calculate_pixel_value(data, division);
         imageData.putIfAbsent(division, (){
           return data;
         });
@@ -68,6 +75,7 @@ class DatabaseService{
         imageloader.debugPrint(onError.toString());
       });
     }
+    return pixel_value;
   }
 
   Future<int> calculate_pixel_value(data, division) async{
