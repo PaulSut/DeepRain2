@@ -27,6 +27,7 @@ class DatabaseService{
 
   // forecast list from snapshot
   List<ForecastListItem> _forecastListFromSnapshot(QuerySnapshot snapshot){
+    print('HAlloHallo');
     return snapshot.documents.map((doc){
 
       return ForecastListItem(
@@ -37,8 +38,24 @@ class DatabaseService{
   }
   //get forecast stream
   Stream<List<ForecastListItem>> get Forecast{
+    print('HAlloHalloHallo');
     return ForecastCollection.snapshots()
     .map(_forecastListFromSnapshot);
+  }
+
+  final CollectionReference UpdateCollection = Firestore.instance.collection('ImageUpdate');
+  // forecast list from snapshot
+  List<ForecastListItem> _ImageUpdateFromSnapshot(QuerySnapshot snapshot){
+    print('Es hat funktioniert');
+    return snapshot.documents.map((doc){
+
+    }).toList();
+  }
+  //get forecast stream
+  Stream<List<ForecastListItem>> get UpdateImage{
+    print('Es hat hier funktioniert');
+    return UpdateCollection.snapshots()
+        .map(_ImageUpdateFromSnapshot);
   }
 
   StreamController<List<ForecastListItem>> get forecast_values{
