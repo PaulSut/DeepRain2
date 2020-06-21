@@ -7,7 +7,7 @@ Die App soll die von den Netzen berechnete Vorhersagen visualisieren und dem Ben
 Im Wesentlichen besteht die App aus drei Screens. Einem Screen zum Anzeigen der Daten in Listenform, einem zu Anzeigen der Daten auf einer Karte und den Einstellungen. Die jeweiligen Screens können über die Bottomnavigation erreicht, somit ist es möglich von jedem Screen zu jedem Screen zu wechseln.   
 [Hier Jeweils ein Screenshot von jedem Screen, wenn die App endgültig fertig ist]  
 
-\subsubsection*{Regenvorhersage als List}
+\subsubsection*{Regenvorhersage als Liste}
 Auf diesem Screen werden alle von den Netzen berechneten Regenvorhersagen angezeigt. Dabei wird in die drei Kategorien “Kein Regen”, “Leichter Regen” und “Starker Regen” unterschieden. Je höher die berechnete Regenintensität ist, je dunkler wird der Regenschirm welcher zu Beginn der Listeneinträge zu sehen ist.   
 
 \subsubsection*{Regenvorhersage als Karte}
@@ -15,21 +15,26 @@ Auf diesem Screen werden die von den Netzen erzeugten PNGs visualisiert. Dafür 
 
 \subsubsection*{Einstellungen}
 Auf diesem Screen können alle relevanten Einstellungen gemacht werden. Dazu gehört z.B. die Sprache der Benutzeroberfläche. Außerdem kann die Region eingestellt werden. Die hier ausgewählte Region wird standardmäßig auf der Karte angezeigt und nur für diese Region werden Regenwarnungen gesendet. Unter der Benachrichtigung’s Kategorie können die Regenwarnungen Aktiviert werden sowie der Zeitpunkt der Regenwarnung eingestellt werden. Jede Aktion in dieser Kategorie löst eine Datenbankaktion aus. Wenn die Regenwarnung aktiviert wird, wird der Device Token von dem Gerät in die Datenbank hochgeladen, beim Deaktivieren wird der Device Token gelöscht. Wenn der Zeitpunkt der Regenwarnung verändert wird, wird der Device Token in der Datenbank von einer Kollektion in eine andere Kollektion verschoben.   
-Alle gemachten Einstellungen werden in sogenannten Shared Preferences gespeichert, damit sie auch nach App Start immer noch vorhanden sind. Die Shared Preferences sind eine Key-Value Datenbank die auf dem Gerät gespeichert wird. Bei App Start werden die Einstellungen aus den Shared Preferences gelesen und auf globale Variablen gespeichert. Diese Variablen sind dafür entscheidend, welche Einstellungen wiederhergestellt werden.  In der folgenden Abbildung kann der Datenfluss nachdem der Zeitpunkt der Regenwarnung verändert wurde nachvollzogen werden.   
+Alle gemachten Einstellungen werden in sogenannten Shared Preferences gespeichert, damit sie auch nach App Start immer noch vorhanden sind. Die Shared Preferences sind eine Key-Value Datenbank die auf dem Gerät gespeichert wird. Bei App Start werden die Einstellungen aus den Shared Preferences gelesen und auf globale Variablen gespeichert. Diese Variablen sind dafür entscheidend, welche Einstellungen wiederhergestellt werden.  In der folgenden Abbildung kann der Datenfluss nachdem der Zeitpunkt der Regenwarnung verändert wurde nachvollzogen werden.  
 
-\begin{figure}[h]
+\begin{figure}[H]
  \centering
  \includegraphics[width=0.8\textwidth,angle=0]{abb/sequence_diagram_change_settings}
  \caption[Sequencediagram Einstellungen ändern]{Der Datenfluss beim ändern des Zeitpunktes der Regenwarnung}
 \label{fig:sequence_diagram_change_settings}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
  \centering
  \includegraphics[width=0.8\textwidth,angle=0]{abb/sequence_diagram_app_start}
  \caption[Sequencediagram Appstart]{Datenfluss beim starten der App inklusive der Datenbankabfragen (Server und Lokale Datenbank)}
 \label{fig:sequence_diagram_app_start}
 \end{figure}
+
+\subsubsection*{Die Berechnung der Regenintensität}
+Zu beginn wur angenommen, dass die App nur in Konstanz verwendet werden soll. Im Laufe des Projektes stellte sich jedoch heraus, dass die Vorhersagen auch für ganz Deutschland gemacht werden können. Da die Software Architektur nicht für eine solche Anwendung ausgelegt war, mussten einige Änderungen vorgenommen werden. Bis zu diesem Zeitpunkt wurden die Vorhersage Daten für jeden Pixel auf dem Server berechnet und im Anschluss in der Firebase gespeichert. Bei verschiedenen Nutzern in verschiedenen Regionen kommt diese Architektur allerdings schnell an seine Grenzen. Hat die App bspw. 1000 Nutzer in verschiedenen Regionen, müssen für jeden der 1000 Nutzer, alle fünf Minuten, 20 Vorhersage Daten hochgeladen werden. Daher musste der Datenfluss so umstrukturiert werden, dass der neue Regenwert in der App berechnet wird. Dabei muss das Handy den entsprechneden, eigenen, Pixel auf der Karte berechnen. Die Berechnung hierfür ist relativ aufwändig, da mit großen Listen (810.000) Einträgen gearbeitet werden muss. 
+
+Wenn die Bilder beim Appstart oder bei einem Vorhersageupdate heruntergeladen werden, wird von jedem Bild der Regenwert in dem entsprechnden Pixel berechnet. Es wird eine Liste mit ForecastListItem Objekten erstellt. Diese wird global gespeichert und in der Vorhersage Liste angezeigt. Aktuell können nur beim App Start und durch manuelles auslösen eines Updates die Vorhersage Daten aktualisiert werden.   
 
 \subsubsection{Framework Entscheidung}\label{framework entscheidung}
 Bei der Entwicklung einer App steht die Frage der zu bedienenden Plattformen an erster Stelle. Soll die App zum Beispiel nur unternehmensintern verwendet werden oder ist das Gerät auf dem sie verwendet wird eine Neuanschaffung kann es ausreichend sein nativ auf einer Plattform zu entwickeln. Soll jedoch, wie bei den meisten Apps, eine breite Zielgruppe angesprochen werden, ist es unerlässlich die App auf IOS und Android zur Verfügung zu stellen. Je nach dem auf welchen Betriebssystemen die App verwendet werden soll, muss eine komplett andere Framework wahl getroffen werden. So würde man, wenn man entweder nur für IOS oder Android entwickeln möchte, zu einer der nativen Lösungen greifen. Je nach Anforderungen kann auch, wenn beide Betriebssysteme bedient werden sollen, zu der nativen Lösung gegriffen werden. In dem Fall muss der komplette Code natürlich doppelt geschrieben werden. Daher wird normalerweise auf Frameworks zurück gegriffen welche beide Betriebssysteme bedienen. Einige bekannte Frameworks sind zum Beispiel Xamarin, React Native oder Flutter. Jedes dieser Frameworks ist zukunftsträchtig und wurde von großen Unternehmen auf den Markt gebracht. So steht Microsoft hinter Xamarin, Facebook hinter React Native und Google hinter Flutter. Je nach Framework Wahl kann von ca. 80-100 Prozent von dem kompletten Code für beide Betriebssysteme verwendet werden. Dafür sind Cross-Plattform Frameworks oft nicht so performant wie die nativen. Dies fällt besonders bei rechenaufwändigen Apps und Spielen ins Gewicht. Bei so einer leichten App wie DeepRain fällt dieser Nachteil nicht ins Gewicht. Außerdem hätten wir auch nicht genug Kapazitäten um zwei native und voneinander unabhängige Apps zu entwickeln. 
@@ -58,7 +63,7 @@ Welche Files gibt es? \\
 Welche Klassen gibt es? \\
 Wie arbeitet was zusammen? \\
 
-\subsubsection{Cloudfunktionen}
+\subsection{Cloudfunktionen}
 Was ist eine Cloudfunktion? \\
 Was macht die Cloudfunktion? \\
 Wie funktioniert eine Cloudfunktion? \\
