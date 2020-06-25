@@ -16,35 +16,26 @@ class fromCategorical(object):
         self.conditions = conditions
 
 
-class ToCategorical(object):
-    """
-        Map array values to values in conditions
+class from_sparse_categorical_lin(object):
 
-        [1,50,60]
-        values between 1 and 50 will be mapped to index 0
-        => [1,0,0]
-    """
-
-    def __init__(self, conditions):
-        super(ToCategorical, self).__init__()
-        self.conditions = np.array(conditions)
-        self.numClasses = len(self.conditions) - 1
+    def __init__(self, num_classes, multi_val):
+        self.num_classes = num_classes
+        self.multi_val = multi_val
 
     def __call__(self, array):
-        newVector = np.zeros((*array.shape, self.numClasses))
-        for i in range(1, self.numClasses):
-            value = self.conditions[i]
-            valuePrev = self.conditions[i - 1]
-            idx = np.where((array < value) & (array >= valuePrev))
-            if len(idx[0]) == 0:
-                continue
+        array_shape = array.shape
+        array = np.reshape(array, (array.shape[1] * array.shape[2], self.num_classes))
 
-            classV = np.zeros((self.numClasses))
-            classV[i - 1] = 1
+        new_vector = []
+        for pixel in array:
+            index_of_max_val = np.argmax(pixel)
+            new_vector.append(index_of_max_val*self.multi_val)
 
-            newVector[idx] = classV
+        new_vector = np.asanyarray(new_vector)
+        final_vector = np.reshape(new_vector, (array_shape[1], array_shape[2]))
 
-        return newVector
+        return final_vector
+
 
 class from_sparse_categorical(object):
 
@@ -55,7 +46,8 @@ class from_sparse_categorical(object):
         target_value2 = 10
         target_value3 = 11
 
-        array = np.reshape(array, (array.shape[1] * array.shape[2], 4))
+        #array = np.reshape(array, (array.shape[1] * array.shape[2], 4))
+        array = np.reshape(array, (array.shape[0] * array.shape[1], 4))
 
         new_vector = []
         for pixel in array:
@@ -65,13 +57,18 @@ class from_sparse_categorical(object):
                 new_vector.append(target_value0)
             elif index_of_max_val == 1:
                 new_vector.append(target_value1)
+                print('light Rain')
             elif index_of_max_val == 2:
                 new_vector.append(target_value2)
+                print('medium Rain')
             elif index_of_max_val == 3:
                 new_vector.append(target_value3)
 
         new_vector = np.asanyarray(new_vector)
-        final_vector = np.reshape(new_vector, (array_shape[1], array_shape[2]))
+        if len( np.unique(new_vector, return_counts=True)[0])>1:
+            print('From Sarse: ', np.unique(new_vector, return_counts=True))
+        #final_vector = np.reshape(new_vector, (array_shape[1], array_shape[2]))
+        final_vector = np.reshape(new_vector, (array_shape[0], array_shape[1]))
         return final_vector
 
 class ToCategorical(object):
@@ -110,8 +107,8 @@ class ToCategorical(object):
                 exit(-1)
 
         # newVector = newVector.flatten()
-        # print('ToCategorical Shape', newVector.shape)
-        # print(newVector[:10])
+        #print('ToCategorical Shape', newVector.shape)
+        #print(newVector[:10])
         return newVector
 
 

@@ -22,6 +22,7 @@ PathToData = os.path.join(DatasetFolder, "MonthPNGData")
 def provideData(dimension,
                 batch_size,
                 channels,
+                channels_output = 1,
                 transform_input=None,
                 transform_output=None,
                 preTransformation=None,
@@ -35,10 +36,11 @@ def provideData(dimension,
         onlyUseYears        : List of years to use in Dataset
     """
 
-    getDataSet(DatasetFolder, year=[2017])
+    getDataSet(DatasetFolder, year=year)
     train, test = dataWrapper(PathToData,
                               dimension=dimension,
                               channels=channels,
+                              channels_output= channels_output,
                               batch_size=batch_size,
                               overwritecsv=True,
                               onlyUseYears=onlyUseYears,
@@ -52,6 +54,7 @@ def provideData(dimension,
 def dataWrapper(path,
                 dimension,
                 channels,
+                channels_output,
                 batch_size,
                 csvFile=CSVFILE,
                 workingdir=WRKDIR,
@@ -102,6 +105,7 @@ def dataWrapper(path,
     train = Dataset(TRAINSETFOLDER,
                     dim=dimension,
                     n_channels=channels,
+                    channels_output = channels_output,
                     batch_size=batch_size,
                     workingdir=TRAINSETFOLDER,
                     saveListOfFiles=trainsetCSV,
@@ -114,6 +118,7 @@ def dataWrapper(path,
     val = Dataset(VALSETFOLDER,
                   dim=dimension,
                   n_channels=channels,
+                  channels_output = channels_output,
                   batch_size=batch_size,
                   workingdir=VALSETFOLDER,
                   saveListOfFiles=valsetCSV,
@@ -151,6 +156,7 @@ def prepareListOfFiles(path, workingdir=WRKDIR, nameOfCsvFile=CSVFILE, sortOut=F
             prefix = "YW2017.002_"
             for year in onlyUseYears:
                 checkFile = prefix + str(year)
+                print('Try to use images from: ', checkFile)
                 for file in listOfFiles:
                     if checkFile in file:
                         newlist.append(file)
@@ -185,7 +191,10 @@ def getListOfFiles(path):
 
 def mergeLists(list1, list2):
     newlist = []
-    for file in list1:
+    len_list = len(list1)
+    for index, file in enumerate(list1):
+        if index%5000 == 0:
+            print(f'{index} out of {len_list} done')
         name = file.split("/")[-1]
         for file2 in list2:
             name2 = file2.split("/")[-1]
@@ -201,6 +210,7 @@ class Dataset(Sequence):
                  batch_size,
                  dim,
                  n_channels=5,
+                 channels_output =1,
                  shuffle=True,
                  saveListOfFiles=CSVFILE,
                  workingdir=WRKDIR,
@@ -208,7 +218,7 @@ class Dataset(Sequence):
                  timeSteps=5,
                  sequenceExist=False,
                  flatten=False,
-                 sortOut=False,
+                 sortOut=True,
                  lstm=False,
                  dtype=np.float32,
                  transform_input=None,
@@ -227,6 +237,7 @@ class Dataset(Sequence):
         self.batch_size = batch_size
         self.dim = dim
         self.n_channels = n_channels
+        self.channels_output = channels_output
         self.shuffle = shuffle
         self.workingdir = workingdir
         self.saveListOfFiles = saveListOfFiles
@@ -306,8 +317,8 @@ class Dataset(Sequence):
                 path = listOfFiles[i]
                 img = np.array(Image.open(path))
                 val, counts = np.unique(img, return_counts=True)
-                if counts[0] < int(img.shape[0] * img.shape[1] * 0.95):
-                #if img.max() > 0:
+                #if counts[0] < int(img.shape[0] * img.shape[1] * 0.85):
+                if img.max() > 0:
                     y.append(i)
             return y
 
@@ -333,21 +344,18 @@ class Dataset(Sequence):
             X.append(img)
 
         try:
-            label = np.array(Image.open(self.listOfFiles[index + self.label_offset]))
+            for image_number in range(self.channels_output):
+                label = np.array(Image.open(self.listOfFiles[index + self.label_offset + image_number]))
+
+                if self.transform_output is not None:
+                    for operation in self.transform_output:
+                        label = operation(label)
+                Y.append(label)
 
         except Exception as e:
             print("\n\n", index, self.label_offset, len(self.listOfFiles))
             exit(-1)
 
-        if self.transform_output is not None:
-
-            for operation in self.transform_output:
-                label = operation(label)
-
-        # Y.append(label.flatten())
-        # Y = label.flatten()
-        # Y = label
-        Y.append(label)
 
         return np.array(X), np.array(Y)
 
@@ -392,11 +400,12 @@ class Dataset(Sequence):
             # print(Y.shape)
             # X = np.transpose(X, (0, 2, 3, 1))
             # X = np.reshape(X, (X.shape[0], X.shape[1], X.shape[2]*X.shape[3], X.shape[4] ))
-            Y = np.reshape(Y, (Y.shape[0], self.dim[0], self.dim[1], 4))
+            X = np.reshape(X, (1, self.dim[0], self.dim[1]*self.channels_output, 1))
+            Y = np.reshape(Y, (1, self.dim[0], self.dim[1]*self.channels_output, 4))
             # X = dim
             # Y = np.reshape(Y, (Y.shape[0], 272, 224, 4))
-            # print(X.shape)
-            # print(Y.shape)
+            #print(X.shape)
+            #print(Y.shape)
             return X, Y
         if not self.flatten:
             pass

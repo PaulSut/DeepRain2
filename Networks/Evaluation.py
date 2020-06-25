@@ -26,6 +26,7 @@ class Evaluation(object):
                  Data,
                  batch_size,
                  channels,
+                 channels_output,
                  dimension,
                  number_of_predictions,
                  time_steps,
@@ -53,6 +54,7 @@ class Evaluation(object):
         self.train, self.test = dataWrapper(Data,
                                             dimension=dimension,
                                             channels=channels,
+                                            channels_output=channels_output,
                                             batch_size=batch_size,
                                             flatten=flatten)
 
@@ -73,7 +75,7 @@ class Evaluation(object):
             weather = np.asanyarray(self.train[point_of_time][0][0])
             weather = np.transpose(weather, (2, 0, 1))
             #print(weather.shape)
-            actual_weather = np.reshape(weather[4]*255, self.dimension)
+            actual_weather = np.reshape(weather[-1]*255, self.dimension)
             actual_weather = np.asanyarray(actual_weather, dtype=np.int8)
             actual_weather = PIL.Image.fromarray(actual_weather, mode='L')
             actual_weather.save(
@@ -113,7 +115,7 @@ class Evaluation(object):
                     forecast[forecast > 255] = 255
                     forecast = np.reshape(forecast, self.dimension)
 
-                #print(np.unique(forecast, return_counts=True))
+                    #print(np.unique(forecast, return_counts=True))
 
                 forecast_img = PIL.Image.fromarray(np.asanyarray(forecast, dtype=np.int8), mode='L')
                 forecast_img.save(os.path.join(self.path_to_predictions, str(point_of_time), str(prediction) + '.png'))
@@ -126,11 +128,62 @@ class Evaluation(object):
                 weather_history = np.concatenate((weather_history, forecast), axis=3)
                 weather_history = weather_history[:, :, :, 1:]
 
-
-
         for point_of_time in range(self.time_steps, self.time_steps + self.number_of_predictions):
             actual_weather = np.reshape(self.train[point_of_time][1], self.dimension)
             actual_weather = np.asanyarray(actual_weather*255, dtype=np.int8)
+            actual_weather = PIL.Image.fromarray(actual_weather, mode='L')
+            actual_weather.save(
+                os.path.join(self.EVAL_DIR, self.model_name, 'actual_weather', str(point_of_time) + '.png'))
+
+    def make_multi_predictions(self):
+        # create dir structur
+        try:
+
+            os.makedirs(os.path.join(self.EVAL_DIR, self.model_name), )
+            os.makedirs(self.path_to_actual_weather)
+            os.makedirs(self.path_to_predictions)
+        except Exception as e:
+            print('Prediction already made.\n', e)
+            return
+        print('Start to make the predictions. This might take a while')
+        for point_of_time in range(self.time_steps):
+            print('Currently at time step', point_of_time + 1, 'of', self.time_steps)
+
+            weather = np.asanyarray(self.train[point_of_time][0][0])
+            weather = np.transpose(weather, (2, 0, 1))
+            # print(weather.shape)
+            actual_weather = np.reshape(weather[-1] * 255, self.dimension)
+            actual_weather = np.asanyarray(actual_weather, dtype=np.int8)
+            actual_weather = PIL.Image.fromarray(actual_weather, mode='L')
+            actual_weather.save(
+                os.path.join(self.EVAL_DIR, self.model_name, 'actual_weather', str(point_of_time) + '.png'))
+            weather_history = self.train[point_of_time][0]
+            os.makedirs(os.path.join(self.path_to_predictions, str(point_of_time)))
+
+
+            forecast_array = self.model.predict(np.reshape(weather_history,(1, 128, 128*6, 1)))[0]
+
+            print('Here We Are ', forecast_array.shape)
+
+            for image_number in range(self.number_of_predictions):
+                forecast = forecast_array[image_number]
+
+                if self.transform_predictions is not None:
+                    for operation in self.transform_predictions:
+                        forecast = operation(forecast)
+                else:
+                    forecast *= 255
+                    forecast[forecast < 0] = 0
+                    forecast[forecast > 255] = 255
+                    forecast = np.reshape(forecast, self.dimension)
+
+
+                forecast_img = PIL.Image.fromarray(np.asanyarray(forecast, dtype=np.int8), mode='L')
+                forecast_img.save(os.path.join(self.path_to_predictions, str(point_of_time), str(image_number) + '.png'))
+
+        for point_of_time in range(self.time_steps, self.time_steps + self.number_of_predictions):
+            actual_weather = np.reshape(self.train[point_of_time][1][0][0], self.dimension)
+            actual_weather = np.asanyarray(actual_weather * 255, dtype=np.int8)
             actual_weather = PIL.Image.fromarray(actual_weather, mode='L')
             actual_weather.save(
                 os.path.join(self.EVAL_DIR, self.model_name, 'actual_weather', str(point_of_time) + '.png'))
@@ -559,12 +612,13 @@ DatasetFolder = "./Data/RAW"
 PathToData = os.path.join(DatasetFolder, "MonthPNGData")
 
 
-def provideData(dimension, batch_size, channels, flatten=False, transform_input=None,
+def provideData(dimension, batch_size, channels, channels_output, flatten=False, transform_input=None,
                 transform_output=None, preTransformation=None):
     getDataSet(DatasetFolder, year=[2017])
     train, test = dataWrapper(PathToData,
                               dimension=dimension,
                               channels=channels,
+                              channels_output = channels_output,
                               batch_size=batch_size,
                               overwritecsv=True,
                               flatten=flatten,
@@ -576,15 +630,17 @@ def provideData(dimension, batch_size, channels, flatten=False, transform_input=
     return train, test
 
 
-PATH_TO_MODEL = '/home/paul/Documents/DeepRain/clean_git/DeepRain2/Networks/Utils/model_data/medium_thin_UNet64_categorical_crossentropy/medium_thin_UNet64_categorical_crossentropy448x448x5-02.hdf5'
-PATH_TO_WEIGHTS = ''
-DIMESNION = (448, 448)
+PATH_TO_MODEL = '/Networks/Utils/model_data/medium_thin_UNet64_mse_4Outputs/medium_thin_UNet64_mse448x448x5-14.hdf5'
+PATH_TO_MODEL = '/home/paul/Documents/DeepRain/clean_git/DeepRain2/Networks/Utils/model_data/megorical_crossentropy128x128x5-01.hdf5'
 SCLICES = [100, 548, 200, 648]
 #DIMESNION = (64, 64)
 #SCLICES = [256, 320, 256, 320]
+DIMESNION = (128, 128,)
+SCLICES = [256, 384, 256, 384]
 NUMBER_OF_PREDICTIONS = 6
-NUMBER_OF_TIMESTEPS = 20
-CHANNELS = 5
+NUMBER_OF_TIMESTEPS = 2000
+CHANNELS = 6
+OUTPUT_CHANNELS = 1
 BATCH_SIZE = 1
 
 cutOutFrame = cutOut(SCLICES)
@@ -594,8 +650,8 @@ PRETRAINING_TRANSFORMATIONS = [cutOutFrame]
 #model = model((*dimension, channels))
 model = load_model(PATH_TO_MODEL)
 
-
-evaluation = Evaluation('Medium_UNet64_categorical_crossentropy_448_448_all_germany_sortOut_1',
+'''
+evaluation = Evaluation('Medium_UNet64_categorical_crossentropy_448_448_all_germany_sortOut_4',
                         model=model,
                         Data=provideData(batch_size=BATCH_SIZE, dimension=DIMESNION,
                                          preTransformation=PRETRAINING_TRANSFORMATIONS, transform_input=[Normalize()],
@@ -610,20 +666,21 @@ evaluation = Evaluation('Medium_UNet64_categorical_crossentropy_448_448_all_germ
                         )
 
 '''
-evaluation = Evaluation('Medium_thin_UNet64_mse_sortOut_448_448_64_64_LSTM',
+evaluation = Evaluation('Medium_UNet64_categorical_crossentropy_448_448_6_output',
                         model=model,
-                        Data=provideData(batch_size=BATCH_SIZE, dimension=DIMESNION,
+                        Data=provideData(channels_output= OUTPUT_CHANNELS, batch_size=BATCH_SIZE, dimension=DIMESNION,
                                          preTransformation=PRETRAINING_TRANSFORMATIONS, transform_input=[Normalize()],
                                          transform_output=None, channels=CHANNELS),
                         batch_size=BATCH_SIZE,
                         channels=CHANNELS,
+                        channels_output=OUTPUT_CHANNELS,
                         dimension=DIMESNION,
                         number_of_predictions=NUMBER_OF_PREDICTIONS,
                         transform_input=[Normalize()],
-                        transform_predictions=None,
+                        transform_predictions=[from_sparse_categorical()],
                         time_steps=NUMBER_OF_TIMESTEPS
                         )
-                        '''
+
 
 # Baseline:
 '''
@@ -644,8 +701,8 @@ evaluation = Evaluation('Baseline',
 
 start = time.time()
 print("Start to measure Time")
-evaluation.make_predictions()
-evaluation.create_grayscale_gif(10)
+evaluation.make_multi_predictions()
+evaluation.create_grayscale_gif(NUMBER_OF_TIMESTEPS)
 evaluation.evaluation(rain_no_rain=True, four_categories=True, weather_changes_two_categories=True)
 evaluation.create_report()
 end = time.time()

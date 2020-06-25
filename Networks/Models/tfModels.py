@@ -76,7 +76,7 @@ def medium_UNet64(input_shape,
                   flatten_output=False,
                   activation_hidden="relu",
                   activation_output="sigmoid"):
-    start_neurons = 5
+    start_neurons = 10
     print("OUT", type(n_predictions), n_predictions)
     print('input shape:', input_shape)
 
@@ -224,14 +224,11 @@ def medium_thin_UNet64(input_shape,
                        flatten_output=False,
                        activation_hidden="relu",
                        activation_output="sigmoid"):
-    start_neurons = 30
+    start_neurons = 100
     print("OUT", type(n_predictions), n_predictions)
     print('input shape:', input_shape)
 
     inputs = Input(shape=input_shape)
-
-    #inputs = Input(shape=input_shape + (1,))
-    #inputs = Input((input_shape[2], input_shape[0], input_shape[1], 1))
 
     print('inputs:', inputs.shape)
     conv01 = Conv2D(start_neurons, kernel_size=(3, 3), padding="same")(inputs)  # 10 x 64x64
@@ -254,13 +251,6 @@ def medium_thin_UNet64(input_shape,
     conv04_pool = MaxPooling2D((2, 2), strides=(2, 2))(conv04_act)  # 20 x 4x4
     print("3)", conv04_pool.shape, "20 x 4x4")
 
-    #lstm_layer = lstmLayer(conv04_pool,filters = [20,20,20])
-    #lstm_test = BatchNormalization()(lstm_layer)
-    #conv04 = concatenate([conv04, lstm_test], axis=3)
-    #dense01 = Dense(conv04_pool.shape[-1], activation= activation_hidden)(bidirectional_lstm)
-    #dense01_reshape = tf.reshape(dense01, conv04_pool.shape)
-    #conv01 = Conv2D(start_neurons, kernel_size=(3, 3), padding="same")(dense01_reshape)  # 10 x 64x64
-
     ### UPSAMPLING:
     up04 = UpSampling2D((2, 2))(conv04_pool)  # 20 x 8x8
     up04_con = concatenate([conv04, up04], axis=3)  # 20+20 x 8x8
@@ -279,11 +269,6 @@ def medium_thin_UNet64(input_shape,
     print("7)", up01.shape, "90 x 64x64")
 
     output = Conv2D(n_predictions, (1, 1), activation=activation_output)(up01_con)  # 1 x 64x64
-    #output = Dense(tfp.layers.IndependentBernoulli.params_size(output))  # 1 x 64x64
-    #output = Flatten()(output)
-    #output = tfp.layers.IndependentBernoulli((input_shape[0], input_shape[1], n_predictions),
-    #                                         tfp.distributions.Bernoulli.logits)(output)
-    #output = tfp.layers.IndependentBernoulli(output)
 
     print("8)", output.shape, "{} x 64x64".format(n_predictions))
     if flatten_output:
@@ -298,6 +283,82 @@ def medium_thin_UNet64(input_shape,
 
     return model
 
+def medium_thin_UNet64_6_outputs(input_shape,
+                       n_predictions=4,
+                       simpleclassification=None,
+                       flatten_output=False,
+                       activation_hidden="relu",
+                       activation_output="sigmoid"):
+    start_neurons = 20
+    input_shape = (128, 768, 1)
+    print("OUT", type(n_predictions), n_predictions)
+    print('input shape:', input_shape)
+
+
+    inputs = Input(shape=input_shape)
+
+    print('inputs:', inputs.shape)
+    conv01 = Conv2D(start_neurons, kernel_size=(3, 3), padding="same")(inputs)  # 10 x 64x64
+    conv01_act = Activation(activation_hidden)(conv01)
+    conv01_pool = MaxPooling2D((2, 2), strides=(2, 2))(conv01_act)  # 10 x 32x32
+    print("0)", conv01_pool.shape, "10 x 32x32")
+
+    conv02 = Conv2D(start_neurons*2, kernel_size=(3, 3), padding="same")(conv01_pool)  # 20 x 32x32
+    conv02_act = Activation(activation_hidden)(conv02)
+    conv02_pool = MaxPooling2D((2, 2), strides=(2, 2))(conv02_act)  # 20 x 16x16
+    print("1)", conv02_pool.shape, "20 x 16x16")
+
+    conv03 = Conv2D(start_neurons*2, kernel_size=(3, 3), padding="same")(conv02_pool)  # 20 x 16x16
+    conv03_act = Activation(activation_hidden)(conv03)
+    conv03_pool = MaxPooling2D((2, 2), strides=(2, 2))(conv03_act)  # 20 x 8x8
+    print("2)", conv03_pool.shape, "20 x 8x8")
+
+    conv04 = Conv2D(start_neurons*2, kernel_size=(3, 3), padding="same")(conv03_pool)  # 20 x 8x8
+    conv04_act = Activation(activation_hidden)(conv04)
+    conv04_pool = MaxPooling2D((2, 2), strides=(2, 2))(conv04_act)  # 20 x 4x4
+    print("3)", conv04_pool.shape, "20 x 4x4")
+
+    ### UPSAMPLING:
+    up04 = UpSampling2D((2, 2))(conv04_pool)  # 20 x 8x8
+    up04_con = concatenate([conv04, up04], axis=3)  # 20+20 x 8x8
+    print("4)", up04.shape, "40 x 8x8")
+
+    up03 = UpSampling2D((2, 2))(up04_con)  # 40 x 16x16
+    up03_con = concatenate([conv03, up03], axis=3)  # 20+40 x 16x16
+    print("5)", up03.shape, "60 x 16x16")
+
+    up02 = UpSampling2D((2, 2))(up03_con)  # 60 x 32x32
+    up02_con = concatenate([conv02, up02], axis=3)  # 20+60 x 32x32
+    print("6)", up02.shape, "80 x 32x32")
+
+    up01 = UpSampling2D((2, 2))(up02_con)  # 80 x 64x64
+    up01_con = concatenate([conv01, up01], axis=3)  # 10+80 x 64x64
+    print("7)", up01.shape, "90 x 64x64")
+
+    output = Conv2D(n_predictions, (1, 1), activation=activation_output)(up01_con)
+    #outputs_6 = Dense((6* 448* 448* 1), activation=activation_output)(up01_con)
+    #output_expand = tf.keras.backend.expand_dims((up01_con), axis=-1)
+    #output_6_images = UpSampling3D((2, 2, 2))(output_expand)
+    #output_6_images = Conv3D(6, (1,1,1), activation=activation_hidden)(output_expand)  # 1 x 64x64
+    #print("7.1)", output_6_images.shape, "{} x 64x64".format(n_predictions))
+    #output_6_images_reshaped = Reshape((6,128,128, 240))(output_6_images)
+    #print("7.2)", output_6_images_reshaped.shape, "{} x 64x64".format(n_predictions))
+    #output_final_dim = tf.keras.backend.expand_dims((output_6_images_reshaped), axis=-1)
+    #output = Conv3D(4, (1, 1,1), activation=activation_output)(output_6_images_reshaped)
+
+
+    print("8)", output.shape, "{} x 64x64".format(n_predictions))
+    if flatten_output:
+        output = Flatten()(output)
+        print("output flattened to {}".format(output.shape))
+        if simpleclassification is not None:
+            output = Dense(simpleclassification, activation='softmax')(output)
+            print("9)", output.shape, "zur Klassifikation von {} Klassen (mit softmax)".format(simpleclassification))
+
+
+    model = Model(inputs=inputs, outputs=output)
+
+    return model
 
 
 def UNet643D(input_shape,

@@ -17,26 +17,21 @@ import tensorflow.keras.layers as tfkl
 DatasetFolder = "./Data/RAW"
 PathToData = os.path.join(DatasetFolder, "MonthPNGData")
 
-# dimension = (256,192)
-dimension = (64,64)
-#dimension = (272, 224)
-channels = 5
-optimizer = Adam(lr=1e-3)
 
 
-# pathToData = "/home/simon/MonthPNGData/MonthPNGData"
 
 
-def provideData(flatten=False, dimension=dimension, batch_size=10, transform_input=None,
+def provideData(channels, channels_output, flatten=False, dimension=(64,64), batch_size=10, transform_input=None,
                 transform_output=None, preTransformation=None):
-    getDataSet(DatasetFolder, year=[2017])
+    getDataSet(DatasetFolder, year=[2015])
     train, test = dataWrapper(PathToData,
                               dimension=dimension,
                               channels=channels,
+                              channels_output=channels_output,
                               batch_size=batch_size,
                               overwritecsv=True,
                               flatten=flatten,
-                              onlyUseYears=[2017],
+                              onlyUseYears=[2015],
                               transform_input=transform_input,
                               transform_output=transform_output,
                               preTransformation=preTransformation)
@@ -87,7 +82,7 @@ def small_uet():
                 metrics=['categorical_crossentropy', 'mse', 'accuracy'],
                 )
 
-    t.fit(epochs=30)
+    t.fit(epochs=1)
 
 def lstm_many_to_one_train():
     dimension = (64, 64,)
@@ -121,35 +116,39 @@ def lstm_many_to_one_train():
 
 
 def medium_unet():
-    dimension = (64, 64,)
-    #dimension = (128, 128,)
+    #dimension = (64, 64,)
+    dimension = (128, 128,)
     #dimension = (256, 256,)
-    dimension = (448, 448,)
-    channels = 5
-    optimizer = Adam(lr=3e-3)
+    #dimension = (448, 448,)
+    channels = 6
+    channels_output = 6
+    optimizer = Adam(lr=1e-3)
     BATCH_SIZE = 1
     #optimizer = Adadelta()
     #optimizer = RMSprop(learning_rate=1e-3)
 
-    slices = [256, 320, 256, 320]
-    #slices = [256, 384, 256, 384]
+    #slices = [256, 320, 256, 320]
+    slices = [256, 384, 256, 384]
     #slices = [256, 512, 256, 512]
-    slices = [100, 548, 200, 648]
+    #slices = [100, 548, 200, 648]
     cutOutFrame = cutOut(slices)
-
+    #transform_output=[ToCategorical([-10000, 0, 2, 10, 256])]
+    #transform_output=[ToCategorical( list(range(-10 , 256, 10)))]
     PRETRAINING_TRANSFORMATIONS = [cutOutFrame]
 
+    #test = list(range(-10 , 256, 10))
+    #print(test)
 
-
-    t = Trainer(medium_thin_UNet64,
+    t = Trainer(medium_thin_UNet64_6_outputs,
                 lossfunction='categorical_crossentropy',
-                pathToData=provideData(batch_size=BATCH_SIZE, dimension=dimension,preTransformation=PRETRAINING_TRANSFORMATIONS, transform_input=[Normalize()],
+                pathToData=provideData(channels, channels_output, batch_size=BATCH_SIZE, dimension=dimension,preTransformation=PRETRAINING_TRANSFORMATIONS, transform_input=[Normalize()],
                                        transform_output=[ToCategorical([-10000, 0, 2, 10, 256])]),
                 batch_size=BATCH_SIZE,
                 optimizer=optimizer,
                 dimension=dimension,
                 channels=channels,
-                load=True,
+                channels_output = channels_output,
+                load=False,
                 metrics=['categorical_crossentropy', 'mse', 'accuracy'],
                 )
 
@@ -158,17 +157,18 @@ def medium_unet():
             lossfunction='mse',
             pathToData=provideData(batch_size=BATCH_SIZE, dimension=dimension,
                                    preTransformation=PRETRAINING_TRANSFORMATIONS, transform_input=[Normalize()],
-                                   transform_output=None),
+                                   transform_output=[Normalize()]),
             batch_size=BATCH_SIZE,
             optimizer=optimizer,
             dimension=dimension,
             channels=channels,
-            load=True,
+            load=False,
             metrics=['mse', 'accuracy'],
             )
-            '''
+    '''
 
-    t.fit(epochs=5)
+
+    t.fit(epochs=2)
 
 
 

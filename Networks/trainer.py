@@ -53,6 +53,7 @@ class Trainer(object):
                  pathToData,
                  batch_size=5,
                  channels=5,
+                 channels_output = 1,
                  optimizer="adam",
                  dimension=(272, 224),
                  metrics=[],
@@ -66,6 +67,7 @@ class Trainer(object):
         self.pathToData = pathToData
         self.batch_size = batch_size
         self.channels = channels
+        self.channels_output = channels_output
         self.dimension = dimension
         self.lossfunction = lossfunction
         self.flatten = flatten
@@ -81,6 +83,7 @@ class Trainer(object):
             self.train, self.test = dataWrapper(self.pathToData,
                                                 dimension=dimension,
                                                 channels=channels,
+                                                channels_output = self.channels_output,
                                                 batch_size=batch_size,
                                                 flatten=flatten)
 
@@ -134,9 +137,9 @@ class Trainer(object):
     def fit(self, epochs):
         filepath = os.path.join(self.pathToModel, self.nameOfModel+"-{epoch:02d}.hdf5")
         training_callbacks = [
-            keras.callbacks.ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=False, mode='max'),
-            keras.callbacks.ReduceLROnPlateau( monitor='val_loss', factor=0.3, patience=2, verbose=1, mode='auto',
-                cooldown=0, min_lr=0,)
+            keras.callbacks.ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=False, mode='min'),
+            #keras.callbacks.ReduceLROnPlateau( monitor='val_loss', factor=0.3, patience=2, verbose=1, mode='auto',
+            #    cooldown=0, min_lr=0,)
             ]
         history = self.model.fit(self.train,
                                  epochs=self.initialEpoch + epochs,
