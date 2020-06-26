@@ -208,12 +208,23 @@ class GlobalValues{
     print(latitude);
     print(longitude);
 
-    //FindPixel hey = FindPixel();
+    FindPixel hey = FindPixel();
 //    var longitude_min = longitudeListVar.reduce((curr, next) => curr < next? curr: next);
 //    var longitude_max = longitudeListVar.reduce((curr, next) => curr > next? curr: next);
 //    var latitude_min = latitudeListVar.reduce((curr, next) => curr < next? curr: next);
 //    var latitude_max = latitudeListVar.reduce((curr, next) => curr > next? curr: next);
-    //var pixels = hey.getClosest_Coordinate(longitudeListVar, latitudeListVar, 899, 0, 899, 0, AppRegion.longitude, AppRegion.latitude);
+
+    print(longitudeListVar.length);
+
+    int row = 900;
+    int col = 900;
+    var longitude_list_2d = List.generate(row, (i) => List.generate(col, (k) => longitudeListVar[i * k + k]), growable: false);
+    var latitude_list_2d = List.generate(row, (i) => List.generate(col, (k) => latitudeListVar[i * k + k]), growable: false);
+    var coordinate_list_2d = List.generate(row, (i) => List.generate(col, (k) => coordinateListVar[i * k + k]), growable: false);
+
+
+    var pixels_index = hey.getClosest_Coordinate(longitude_list_2d, latitude_list_2d, 899, 0, 899, 0, AppRegion.longitude, AppRegion.latitude);
+    print(coordinate_list_2d[pixels_index[0]][pixels_index[1]]);
 
     var pixels = [300,200];
 

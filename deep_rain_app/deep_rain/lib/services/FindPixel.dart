@@ -3,12 +3,16 @@ import'package:intl/intl.dart';
 class FindPixel {
   getClosest_Coordinate(List<dynamic> x,List<dynamic> y,var x_range_max,var x_range_min,var y_range_max,var y_range_min,var location_x,var location_y){
     if(x_range_min == x_range_max && y_range_max == y_range_min){
+      print('Y_RANGE_MIN');
+      print(y_range_min);
       return [y[y_range_min], x[x_range_min]];
     }
     var x_range = (x_range_max + 1 - x_range_min);
     var y_range = (y_range_max + 1 - y_range_min);
 
     var box_location = getBoxLocation(x_range, y_range, x_range_min, y_range_min, x, y, location_x, location_y);
+    print('Box Location');
+    print(box_location);
 
     var x_range_uneven = (x_range) % 2 == 1 ? 1 : false;
     var y_range_uneven = (y_range) % 2 == 1 ? 1 : false;
@@ -62,18 +66,24 @@ class FindPixel {
     var x_min_right;
     var y_min_bottom;
 
+    print('x_min_left');
+    print(x_min_left);
+
     if (x_range_uneven){
       x_min_right = x[y_range_min][(x_range_min + x_range / 2).round()];
     }else{
-      x_min_right = x[y_range_min][(x_range_min + x_range / 2).round()] + ((x[y_range_min][(x_range_min + x_range / 2).round() - 1] - [(x_range_min + x_range / 2).round()]) / 2);
+      x_min_right = x[y_range_min][(x_range_min + x_range / 2).round()] + ((x[y_range_min][(x_range_min + x_range / 2).round() - 1] - (x_range_min + x_range / 2).round()) / 2);
     }
+
+    print('x_min_right');
+    print(x_min_right);
 
     var y_min_top = y[y_range_min][x_range_min] + ((y[y_range_min][x_range_min]- y[y_range_min + 1][x_range_min]) / 2);
     if (y_range_uneven){
       y_min_bottom = y[(y_range_min + y_range / 2).round()][x_range_min];
     }
     else{
-      y_min_bottom = y[(y_range_min + y_range / 2).round()][x_range_min] + ((y[(y_range_min + y_range / 2).round() - 1][x_range_min]- [(y_range_min + y_range / 2).round()]) / 2);
+      y_min_bottom = y[(y_range_min + y_range / 2).round()][x_range_min] + ((y[(y_range_min + y_range / 2).round() - 1][x_range_min]- (y_range_min + y_range / 2).round()) / 2);
     }
 
     //top left
@@ -100,7 +110,7 @@ class FindPixel {
       return 'bottom_right';
     }
     else{
-      print('Error');
+      print('Error in getBoxLocation');
     }
 
 
