@@ -175,8 +175,6 @@ class GlobalValues{
     prefs.setInt('AppPixel_Y', Pixel[1]);
   }
   getAppPixel() async{
-    print('APPPIXEL');
-    print(AppPixel);
     if(AppPixel != null){
       return AppPixel;
     }
@@ -223,8 +221,8 @@ class GlobalValues{
     var coordinate_list_2d = List.generate(row, (i) => List.generate(col, (k) => coordinateListVar[i * k + k]), growable: false);
 
 
-    var pixels_index = hey.getClosest_Coordinate(longitude_list_2d, latitude_list_2d, 899, 0, 899, 0, AppRegion.longitude, AppRegion.latitude);
-    print(coordinate_list_2d[pixels_index[0]][pixels_index[1]]);
+    //var pixels_index = hey.getClosest_Coordinate(longitude_list_2d, latitude_list_2d, 899, 0, 899, 0, AppRegion.longitude, AppRegion.latitude);
+    //print(coordinate_list_2d[pixels_index[0]][pixels_index[1]]);
 
     var pixels = [300,200];
 

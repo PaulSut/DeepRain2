@@ -22,7 +22,6 @@ class DatabaseService{
   GlobalValues _globalValues = GlobalValues();
 
   // collection reference for the forecast data
-  //final CollectionReference ForecastCollection = Firestore.instance.collection('forecast');
   final CollectionReference ForecastCollection = Firestore.instance.collection('Regions').document(AppRegionCity).collection('forecast');
 
   // forecast list from snapshot
@@ -38,45 +37,28 @@ class DatabaseService{
   }
   //get forecast stream
   Stream<List<ForecastListItem>> get Forecast{
-    print('HAlloHalloHallo');
     return ForecastCollection.snapshots()
     .map(_forecastListFromSnapshot);
   }
 
-  final CollectionReference UpdateCollection = Firestore.instance.collection('ImageUpdate');
-  // forecast list from snapshot
-  List<ForecastListItem> _ImageUpdateFromSnapshot(QuerySnapshot snapshot){
-    print('Es hat funktioniert');
+  //collection reference for the timestep data (which will be shown in the label of the slider in forecastmap)
+  final CollectionReference TimeStepCollection = Firestore.instance.collection('TimeSteps');
+  // timestep list from snapshot
+  List<String> _timeStepListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.documents.map((doc){
-
+      return doc.data['time'].toString();
     }).toList();
   }
   //get forecast stream
-  Stream<List<ForecastListItem>> get UpdateImage{
-    print('Es hat hier funktioniert');
-    return UpdateCollection.snapshots()
-        .map(_ImageUpdateFromSnapshot);
+  Stream<List<String>> get TimeSteps{
+    return TimeStepCollection.snapshots()
+        .map(_timeStepListFromSnapshot);
   }
-
-  StreamController<List<ForecastListItem>> get forecast_values{
-    StreamController<List<ForecastListItem>>  controller = StreamController<List<ForecastListItem>>();
-    return controller;
-  }
-
 
   //if the image is not already stored in the DataHolder, it will be downloaded from firebase
   Future<int> getImage(int division) async{
     StorageReference photosReference =  await FirebaseStorage.instance.ref().child('photos');
 
-//    var url = await photosReference.getDownloadURL();
-//    print('URL: ' + url.toString());
-//    Image image = Image.network(url);
-//    _image = Image.memory(image);
-//    print(image);
-
-//    var result = expensiveA().then((_) => expensiveB()).then((_) => expensiveC()); // the Future returned by expensiveC will be returned because `doSomethingWith` is not awaited in your code
-//    result.then(doSomethingWith);
-//    return result;
     int pixel_value = 0;
     if (!requestedIndexes.contains(division)) {
       print('Ich bin hier' + division.toString());
