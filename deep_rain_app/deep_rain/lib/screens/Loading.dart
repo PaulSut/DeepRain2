@@ -88,12 +88,18 @@ class _LoadingState extends State<Loading> {
       await _globalValues.setAppPixel([appPixel_x, appPixel_y]);
     }
 
+
+    List<String> time_steps = [];
+    instance.TimeSteps.listen((event) {
+      time_steps = event;
+    });
+
     int pixel_value;
     List<ForecastListItem> forecast_list = [];
     for(var i = 1; i <= 20; i++){
       print('Ich hole Bilder');
       pixel_value = await instance.getImage(i);
-      forecast_list.add(ForecastListItem(rainIntense: pixel_value, time: '10:15'));
+      forecast_list.add(ForecastListItem(rainIntense: pixel_value, time: time_steps[i-1]));
     }
     ProvideForecastData provider = ProvideForecastData();
     provider.setForecast(forecast_list);
