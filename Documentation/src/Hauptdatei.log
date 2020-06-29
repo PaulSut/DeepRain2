@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7445) (preloaded format=pdflatex 2020.6.21)  29 JUN 2020 08:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7445) (preloaded format=pdflatex 2020.6.21)  29 JUN 2020 10:56
 entering extended mode
 **/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.tex
 (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.tex
@@ -679,13 +679,18 @@ Overfull \hbox (24.33136pt too wide) in paragraph at lines 11--237
  []
 
 
-Overfull \hbox (25.36607pt too wide) in paragraph at lines 11--237
-\T1/lmr/m/n/12 jeweiligen Geräten angezeigt (Siehe Kapitel App und Datenbank). Der Übersichtlichkeit
+Overfull \hbox (24.80095pt too wide) in paragraph at lines 11--237
+\T1/lmr/m/n/12 Datenbeschaffung |& Vorverarbeitung, Vorhersage und App |& Datenbankhandling
  []
 
 
-Overfull \hbox (0.6214pt too wide) in paragraph at lines 11--237
-\T1/lmr/m/n/12 Komponente Datenbeschaffung |& Vorverarbeitung beinhaltet alles vom Download
+Overfull \hbox (26.5015pt too wide) in paragraph at lines 11--237
+\T1/lmr/m/n/12 aufgeteilt. Die Komponente Datenbeschaffung |& Vorverarbeitung reicht vom Download
+ []
+
+
+Overfull \hbox (9.0235pt too wide) in paragraph at lines 11--237
+\T1/lmr/m/n/12 der Binär - Daten beim DWD bis zu den daraus generierten PNG's. In der Komponente
  []
 
 [1 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/Gesamtsystem.png>] (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/daten/die_daten.tex
@@ -703,12 +708,15 @@ File: abb/daten_stationsuebersicht.png Graphic file (type png)
 <use abb/daten_stationsuebersicht.png>
 Package pdftex.def Info: abb/daten_stationsuebersicht.png  used on input line 6.
 (pdftex.def)             Requested size: 256.07741pt x 182.53362pt.
-[2 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/daten_stationsuebersicht.png (PNG copy)>]
-<abb/radolan_koordinatensystem_aufbau.png, id=114, 709.65125pt x 495.8525pt>
+<abb/radolan_koordinatensystem_aufbau.png, id=110, 709.65125pt x 495.8525pt>
 File: abb/radolan_koordinatensystem_aufbau.png Graphic file (type png)
 <use abb/radolan_koordinatensystem_aufbau.png>
 Package pdftex.def Info: abb/radolan_koordinatensystem_aufbau.png  used on input line 16.
 (pdftex.def)             Requested size: 341.43437pt x 238.57394pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[2 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/daten_stationsuebersicht.png (PNG copy)>]
 <abb/karte_abdeckung_daten.png, id=116, 665.48625pt x 605.26125pt>
 File: abb/karte_abdeckung_daten.png Graphic file (type png)
 <use abb/karte_abdeckung_daten.png>
@@ -828,78 +836,78 @@ Overfull \hbox (17.6757pt too wide) in paragraph at lines 2--1
  []
 
 [10 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/firebase_aufbau.png>]
-Overfull \hbox (16.07178pt too wide) in paragraph at lines 11--12
+Overfull \hbox (16.07178pt too wide) in paragraph at lines 14--17
 \T1/lmr/m/n/12 Auf diesem Screen werden alle von den Netzen berechneten Regenvorhersagen angezeigt.
  []
 
 
-Overfull \hbox (7.65926pt too wide) in paragraph at lines 14--15
+Overfull \hbox (7.65926pt too wide) in paragraph at lines 19--24
 \T1/lmr/m/n/12 Einstellungen eingestellt wurde. Mit dem Slider kann der Zeitpunkt eingestellt werden,
  []
 
 
-Overfull \hbox (15.02695pt too wide) in paragraph at lines 14--15
+Overfull \hbox (15.02695pt too wide) in paragraph at lines 19--24
 \T1/lmr/m/n/12 Actionbar können die neusten Bilder vom Server heruntergeladen werden. Im Normalfall
  []
 
 [11]
-Overfull \hbox (3.60588pt too wide) in paragraph at lines 17--19
+Overfull \hbox (3.60588pt too wide) in paragraph at lines 26--36
 \T1/lmr/m/n/12 gehört z.B. die Sprache der Benutzeroberfläche. Auÿerdem kann die Region eingestellt
  []
 
 
-Overfull \hbox (23.64651pt too wide) in paragraph at lines 17--19
+Overfull \hbox (23.64651pt too wide) in paragraph at lines 26--36
 \T1/lmr/m/n/12 und nur für diese Region werden Regenwarnungen gesendet. Unter der Benachrichtigung's
  []
 
 
-Overfull \hbox (39.30873pt too wide) in paragraph at lines 17--19
+Overfull \hbox (39.30873pt too wide) in paragraph at lines 26--36
 \T1/lmr/m/n/12 Regenwarnung eingestellt werden. Jede Aktion in dieser Kategorie löst eine Datenbankaktion
  []
 
 
-Overfull \hbox (7.55821pt too wide) in paragraph at lines 17--19
+Overfull \hbox (7.55821pt too wide) in paragraph at lines 26--36
 \T1/lmr/m/n/12 werden die Einstellungen aus den Shared Preferences gelesen und auf globale Variablen
  []
 
 
-Overfull \hbox (36.0837pt too wide) in paragraph at lines 17--19
+Overfull \hbox (36.0837pt too wide) in paragraph at lines 26--36
 \T1/lmr/m/n/12 gespeichert. Diese Variablen sind dafür entscheidend, welche Einstellungen wiederhergestellt
  []
 
 <abb/sequence_diagram_change_settings.png, id=162, 766.865pt x 695.59875pt>
 File: abb/sequence_diagram_change_settings.png Graphic file (type png)
 <use abb/sequence_diagram_change_settings.png>
-Package pdftex.def Info: abb/sequence_diagram_change_settings.png  used on input line 22.
+Package pdftex.def Info: abb/sequence_diagram_change_settings.png  used on input line 39.
 (pdftex.def)             Requested size: 341.43437pt x 309.70499pt.
 [12]
 <abb/sequence_diagram_app_start.png, id=169, 971.63pt x 644.4075pt>
 File: abb/sequence_diagram_app_start.png Graphic file (type png)
 <use abb/sequence_diagram_app_start.png>
-Package pdftex.def Info: abb/sequence_diagram_app_start.png  used on input line 29.
+Package pdftex.def Info: abb/sequence_diagram_app_start.png  used on input line 46.
 (pdftex.def)             Requested size: 341.43437pt x 226.4408pt.
 
-Overfull \hbox (12.44916pt too wide) in paragraph at lines 35--46
+Overfull \hbox (12.44916pt too wide) in paragraph at lines 52--63
 \T1/lmr/m/n/12 Architektur nicht für eine solche Anwendung ausgelegt war, mussten einige Änderungen
  []
 
 
-Overfull \hbox (10.19371pt too wide) in paragraph at lines 35--46
+Overfull \hbox (10.19371pt too wide) in paragraph at lines 52--63
 \T1/lmr/m/n/12 Es wird eine Liste mit ForecastListItem Objekten erstellt. Diese wird global gespeichert
  []
 
 [13 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/sequence_diagram_change_settings.png> </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/sequence_diagram_app_start.png>]
-Overfull \hbox (9.73058pt too wide) in paragraph at lines 48--50
+Overfull \hbox (9.73058pt too wide) in paragraph at lines 65--81
 \T1/lmr/m/n/12 oder ist das Gerät auf dem sie verwendet wird eine Neuanschaffung kann es ausreichend
  []
 
 
-Overfull \hbox (20.84264pt too wide) in paragraph at lines 48--50
+Overfull \hbox (20.84264pt too wide) in paragraph at lines 65--81
 \T1/lmr/m/n/12 Daher wird normalerweise auf Frameworks zurück gegriffen welche beide Betriebssysteme
  []
 
 
-Overfull \hbox (21.84724pt too wide) in paragraph at lines 48--50
+Overfull \hbox (21.84724pt too wide) in paragraph at lines 65--81
 \T1/lmr/m/n/12 Begriff Flutter abgebildet. Das in Kombination mit eigenem Interesse an dem Framework,
  []
 
@@ -907,40 +915,40 @@ Overfull \hbox (21.84724pt too wide) in paragraph at lines 48--50
 <abb/flutter_google_trends.png, id=181, 1124.2pt x 238.8925pt>
 File: abb/flutter_google_trends.png Graphic file (type png)
 <use abb/flutter_google_trends.png>
-Package pdftex.def Info: abb/flutter_google_trends.png  used on input line 53.
+Package pdftex.def Info: abb/flutter_google_trends.png  used on input line 84.
 (pdftex.def)             Requested size: 341.43437pt x 72.55408pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 62--68
+Underfull \hbox (badness 10000) in paragraph at lines 98--104
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 70--73
+Underfull \hbox (badness 10000) in paragraph at lines 106--109
 
  []
 
 [15 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/flutter_google_trends.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 75--78
+Underfull \hbox (badness 10000) in paragraph at lines 111--114
 
  []
 
 
-Overfull \hbox (16.13419pt too wide) in paragraph at lines 80--86
+Overfull \hbox (16.13419pt too wide) in paragraph at lines 116--129
 \T1/lmr/m/n/12 Zum Warnen der Benutzer, wenn es eine Regenvorhersage gibt werden Push Nachrichten
  []
 
 
-Overfull \hbox (22.19362pt too wide) in paragraph at lines 80--86
+Overfull \hbox (22.19362pt too wide) in paragraph at lines 116--129
 \T1/lmr/m/n/12 Gerät gespeichert wurden. Je nach dem zu welchem Zeitpunkt ein User die Regenwarnung
  []
 
 <abb/funktionsweise_pushnachrichten_senden.png, id=187, 648.17157pt x 392.96812pt>
 File: abb/funktionsweise_pushnachrichten_senden.png Graphic file (type png)
 <use abb/funktionsweise_pushnachrichten_senden.png>
-Package pdftex.def Info: abb/funktionsweise_pushnachrichten_senden.png  used on input line 89.
+Package pdftex.def Info: abb/funktionsweise_pushnachrichten_senden.png  used on input line 132.
 (pdftex.def)             Requested size: 341.43437pt x 207.0009pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 90--90
+Underfull \hbox (badness 10000) in paragraph at lines 133--133
 [][][]\T1/lmr/m/n/12 Funktionsweise des Prozesses zum senden von Push -
  []
 
@@ -948,12 +956,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 90--90
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (8.07217pt too wide) in paragraph at lines 95--98
+Overfull \hbox (8.07217pt too wide) in paragraph at lines 138--143
 \T1/lmr/m/n/12 mithilfe einer VirtualBox auf der MacOS installiert wurde auf einem IPhone installiert. 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 95--98
+Underfull \hbox (badness 10000) in paragraph at lines 138--143
 
  []
 
@@ -981,7 +989,7 @@ Here is how much of TeX's memory you used:
  4 hyphenation exceptions out of 8191
  45i,11n,56p,10175b,371s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/home/till/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-ec.enc}</home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmbx12.pfb></home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmr12.pfb></home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmr17.pfb></home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmssbx10.pfb>
-Output written on /home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.pdf (21 pages, 1481947 bytes).
+Output written on /home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.pdf (21 pages, 1481835 bytes).
 PDF statistics:
  287 PDF objects out of 1000 (max. 8388607)
  64 named destinations out of 1000 (max. 500000)
