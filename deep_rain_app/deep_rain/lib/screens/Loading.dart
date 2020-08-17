@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:deep_rain/DataObjects/ForecastListItem.dart';
 import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:deep_rain/main.dart';
 import 'package:deep_rain/services/Database.dart';
+import 'package:deep_rain/services/ProvideForecastData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -80,16 +82,28 @@ class _LoadingState extends State<Loading> {
       await _globalValues.setAppPixel([appPixel_x, appPixel_y]);
     }
 
+    List<String> time_steps = [];
+    instance.TimeSteps.listen((event) {
+      time_steps = event;
+    });
+
     // download the forecast images
+    int pixel_value;
+    List<ForecastListItem> forecast_list = [];
     for(var i = 1; i <= 20; i++){
       print('Ich hole Bilder');
-      await instance.getImage(i);
+      pixel_value = await instance.getImage(i);
+      forecast_list.add(ForecastListItem(rainIntense: pixel_value, time: time_steps[i-1]));
     }
+    ProvideForecastData provider = ProvideForecastData();
+    provider.setForecast(forecast_list);
 
     final FirebaseMessaging _fcm = FirebaseMessaging();
     await _fcm.getToken().then((token) async{
       _globalValues.setDeviceToken(token);
     });
+
+
 
     // Navigate to the next screen.
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainApp()));

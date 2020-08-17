@@ -40,26 +40,32 @@ class DatabaseService{
     .map(_forecastListFromSnapshot);
   }
 
+  //collection reference for the timestep data (which will be shown in the label of the slider in forecastmap)
+  final CollectionReference TimeStepCollection = Firestore.instance.collection('TimeSteps');
+  // timestep list from snapshot
+  List<String> _timeStepListFromSnapshot(QuerySnapshot snapshot){
+    return snapshot.documents.map((doc){
+
+      return doc.data['time'].toString();
+    }).toList();
+  }
+
+  Stream<List<String>> get TimeSteps{
+    return TimeStepCollection.snapshots()
+        .map(_timeStepListFromSnapshot);
+  }
+
   //if the image is not already stored in the DataHolder, it will be downloaded from firebase
-  Future<Uint8List> getImage(int division) async{
+  Future<int> getImage(int division) async{
     StorageReference photosReference =  await FirebaseStorage.instance.ref().child('photos');
 
-//    var url = await photosReference.getDownloadURL();
-//    print('URL: ' + url.toString());
-//    Image image = Image.network(url);
-//    _image = Image.memory(image);
-//    print(image);
-
-//    var result = expensiveA().then((_) => expensiveB()).then((_) => expensiveC()); // the Future returned by expensiveC will be returned because `doSomethingWith` is not awaited in your code
-//    result.then(doSomethingWith);
-//    return result;
-
+    int pixel_value = 0;
     if (!requestedIndexes.contains(division)) {
       print('Ich bin hier' + division.toString());
       int MAX_SIZE = 7 * 1024 * 1024;
       await photosReference.child('$division.png').getData(MAX_SIZE).then((data) async{
         requestedIndexes.add(division);
-        await calculate_pixel_value(data, division);
+        pixel_value = await calculate_pixel_value(data, division);
         imageData.putIfAbsent(division, (){
           return data;
         });
@@ -68,6 +74,7 @@ class DatabaseService{
         imageloader.debugPrint(onError.toString());
       });
     }
+    return pixel_value;
   }
 
   Future<int> calculate_pixel_value(data, division) async{
