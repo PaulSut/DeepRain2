@@ -201,5 +201,15 @@ if __name__ == '__main__':
     upload_data_to_firbase(forecast_images, time_steps_of_images)
 
 
-
+    abc = ['a', 'b', 'c', 'd','e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't']
+    def upload_time_steps(time_steps):
+        time_collection = db.collection('TimeSteps')
+        id = 0
+        for time in time_steps:
+            doc_ref = time_collection.document(abc[id])
+            doc_ref.set({
+                'time' : time
+            })
+            id = id + 1
+    upload_time_steps(time_steps_of_images)
 
