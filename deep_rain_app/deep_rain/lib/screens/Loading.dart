@@ -18,7 +18,6 @@ import 'dart:io' show File;
 import 'dart:typed_data';
 
 //Is called as first screen at appstart. All forecast images get downloaded from firebase. All app settings from shared preferences will be set.
-
 class Loading extends StatefulWidget {
   @override
   _LoadingState createState() => _LoadingState();
@@ -26,33 +25,17 @@ class Loading extends StatefulWidget {
 
 class _LoadingState extends State<Loading> {
 
-  Future<String> loadListCoordinates() async {
-    final ByteData data = await rootBundle.load('assets/data/listCoordinates.json');
-    String jsonContent = utf8.decode(data.buffer.asUint8List());
-    return jsonContent;
-
-  }
-  Future<String> loadListLatitude() async {
-    final ByteData data = await rootBundle.load('assets/data/listLatitudeComplete.json');
-    String jsonContent = utf8.decode(data.buffer.asUint8List());
-    return jsonContent;
-  }
-  Future<String> loadListLongitude() async {
-    final ByteData data = await rootBundle.load('assets/data/listLongitudeComplete.json');
-    String jsonContent = utf8.decode(data.buffer.asUint8List());
-    return jsonContent;
-  }
-
-  //Download images. Set settings.
+  //Is called with every start of the app. Download all Forecast images. Set the stored Settings.
   Future<bool> setupApp() async{
     // The local stored settings will be set again.
     final prefs = await SharedPreferences.getInstance();
     GlobalValues _globalValues = GlobalValues();
     await FirebaseAuth.instance.signInAnonymously();
 
-    //The Images will be downloaded
+    //The instance for the Databasehandler
     DatabaseService instance = DatabaseService();
 
+    // restore the region
     if(_globalValues.getAppLastRegionDocument() == null){
       instance.storeRegion();
       _globalValues.setAppLastRegionDocument('Konstanz');
@@ -60,23 +43,34 @@ class _LoadingState extends State<Loading> {
       _globalValues.setAppLastRegionDocument(_globalValues.getAppLastRegionDocument());
     }
 
+    // restore the language. Default Deutsch, otherwise the language which the User set.
     _globalValues.setAppLanguage(prefs.getString('AppLanguage') == null ? 'Deutsch' : prefs.getString('AppLanguage'));
+
+    // restore the device Token. If null, put the token default in 20_min, otherwise in the time which was from user choosed.
     _globalValues.setAppLastDeviceTokenDocument(prefs.getString('AppLastDeviceTokenDocument') == null ? '20_min' : prefs.getString('AppLastDeviceTokenDocument'));
     _globalValues.setDeviceToken(prefs.getString('AppDeviceToken'));
+
+    // restore the push notification switch (get notifications or not)
     _globalValues.setAppSwitchRainWarning(prefs.getBool('AppSwitchRainWarning'));
+
+    // restore the cityname (only needed for UI)
     _globalValues.setAppRegionCity(prefs.getString('AppRegionCity') == null ? 'Konstanz' : prefs.getString('AppRegionCity'));
 
+    // set the time when the push notification should be sended
     int minutes = prefs.getInt('AppTimeBeforeWarning');
     Duration _duration = Duration(minutes: minutes == null ? 20 : minutes);
     _globalValues.setTimeBeforeWarning(_duration);
 
+    //activate Pushnotifications by default
     instance.activatePushNotification();
 
+    // Set the region of the app. Is needed to get the Data for the Forecastlist. Default: Konstanz.
     double latitude = prefs.getDouble('AppRegionLatitude');
     double longitude = prefs.getDouble('AppRegionLongitude');
     LatLng _latLng = LatLng(latitude == null ? 47.66033 : latitude, longitude == null ? 9.17582 : longitude);
     _globalValues.setAppRegion(_latLng);
 
+    // Restore the coordinate of the region in the forecast image (x and y pixel). If the pixel is not calculated, it will need to calculate it (take some time)
     int appPixel_x = prefs.getInt('AppPixel_X');
     int appPixel_y = prefs.getInt('AppPixel_Y');
     if(appPixel_y == null && appPixel_x == null){
@@ -86,6 +80,7 @@ class _LoadingState extends State<Loading> {
       await _globalValues.setAppPixel([appPixel_x, appPixel_y]);
     }
 
+    // download the forecast images
     for(var i = 1; i <= 20; i++){
       print('Ich hole Bilder');
       await instance.getImage(i);
@@ -96,6 +91,7 @@ class _LoadingState extends State<Loading> {
       _globalValues.setDeviceToken(token);
     });
 
+    // Navigate to the next screen.
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainApp()));
   }
 
@@ -104,6 +100,7 @@ class _LoadingState extends State<Loading> {
     super.initState();
   }
 
+  // UI Widget
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -113,20 +110,13 @@ class _LoadingState extends State<Loading> {
           backgroundColor: Colors.blueGrey,
           body: Center(
             child: TypewriterAnimatedTextKit(
-              totalRepeatCount: 1,
+              totalRepeatCount: 3,
               pause: Duration(milliseconds:  1000),
               text: ["deepRain", "stay dry", "HTWG Konstanz"],
               textStyle: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
               displayFullTextOnTap: true,
               stopPauseOnTap: true,
-              onFinished:(){
-                //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainApp()));
-          },
-          ),/*
-            SpinKitRotatingPlain(
-              color: Colors.white,
-              size: 50.0,
-            ),*/
+            ),
           ),
         );
       },
