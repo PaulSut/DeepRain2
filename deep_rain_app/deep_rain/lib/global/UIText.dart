@@ -30,6 +30,9 @@ class UIText{
     //Choose Region Screen
     String chooseRegionScreenSearchHint;
     String chooseRegionScreenAwaitingForLocation;
+    //Choose Time Screen
+    String chooseWarningTimeScreen;
+    String chooseWarningTimeDialogOkButton;
   String settingsHeaderMore;
   String settingsImpressum;
 
@@ -71,6 +74,9 @@ class UIText{
         //Choose Region Screen
         chooseRegionScreenSearchHint = 'Stadt Suchen';
         chooseRegionScreenAwaitingForLocation = 'Am suchen...';
+        //Choose Time Screen
+        chooseWarningTimeScreen= "Zeitpunkt der Regenwarnung";
+        chooseWarningTimeDialogOkButton= "Bestätigen";
       settingsHeaderMore = "Weiteres";
       settingsImpressum = "Impressum";
 
@@ -112,6 +118,9 @@ class UIText{
         //Choose Region Screen
         chooseRegionScreenSearchHint = 'Pesquisar';
         chooseRegionScreenAwaitingForLocation = 'Procurando por sua localização';
+        //Choose Time Screen
+        chooseWarningTimeScreen= "La hora de la advertencia de la lluvia";
+        chooseWarningTimeDialogOkButton= "Confirme";
       settingsHeaderMore = "More";
       settingsImpressum = "Impressum";
 
@@ -152,8 +161,11 @@ class UIText{
         chooseLanguageDialogHeader = 'Choose Language';
         chooseLanguageDialogOkButton = 'Ok';
         //Choose Region Screen
-        chooseRegionScreenSearchHint = 'Pesquisar';
-        chooseRegionScreenAwaitingForLocation = 'Procurando por sua localização';
+        chooseRegionScreenSearchHint = 'Search City';
+        chooseRegionScreenAwaitingForLocation = 'Searching...';
+        //Choose Time Screen
+        chooseWarningTimeScreen= "Time of rainwarning";
+        chooseWarningTimeDialogOkButton= "Ok";
       settingsHeaderMore = "Otro";
       settingsImpressum = "Impressum";
 

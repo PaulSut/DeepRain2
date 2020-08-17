@@ -47,6 +47,8 @@ dependencies:
   geocoder: ^0.2.1
   search_map_place: ^0.3.0
   animated_text_kit: ^2.0.0
+  image: ^2.1.13
+  ml_linalg: ^12.14.0
 
 
 
@@ -77,6 +79,9 @@ flutter:
   assets:
     - assets/
     - assets/ForecastList/
+    - assets/data/listCoordinates.json
+    - assets/data/listLatitudeComplete.json
+    - assets/data/listLongitudeComplete.json
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
