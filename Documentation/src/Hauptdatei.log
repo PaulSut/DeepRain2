@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7445) (preloaded format=pdflatex 2020.6.21)  18 AUG 2020 08:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7445) (preloaded format=pdflatex 2020.6.21)  18 AUG 2020 13:42
 entering extended mode
 **/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.tex
 (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.tex
@@ -169,17 +169,111 @@ Package caption Info: float package is loaded.
 \c@lotdepth=\count185
 \sf@top=\skip66
 \sf@bottom=\skip67
-) (/home/till/.miktex/texmfs/install/tex/generic/babel/babel.sty
+) (/home/till/.miktex/texmfs/install/tex/latex/svg/svg.sty
+Package: svg 2020/06/23 v2.02h (include SVG pictures)
+ (/home/till/.miktex/texmfs/install/tex/generic/iftex/iftex.sty
+Package: iftex 2020/03/06 v1.0d TeX engine tests
+) (/home/till/.miktex/texmfs/install/tex/latex/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-04 v0.32 Utility functions of pdfTeX for LuaTeX (HO)
+ (/home/till/.miktex/texmfs/install/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+) (/home/till/.miktex/texmfs/install/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2019/12/15 v1.24 LaTeX kernel commands for general use (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+) (/home/till/.miktex/texmfs/install/tex/latex/trimspaces/trimspaces.sty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+) (/home/till/.miktex/texmfs/install/tex/latex/tools/shellesc.sty
+Package: shellesc 2019/11/08 v1.0c unified shell escape interface for LaTeX
+Package shellesc Info: Restricted shell escape enabled on input line 77.
+)
+\c@svg@param@lastpage=\count186
+\svg@box=\box49
+\c@svg@param@currpage=\count187
+) (/home/till/.miktex/texmfs/install/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2016/05/11 v2.12 LaTeX color extensions (UK)
+ (/home/till/.miktex/texmfs/install/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1348.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1352.
+Package xcolor Info: Model `RGB' extended on input line 1364.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1366.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1367.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
+) (/home/till/.miktex/texmfs/install/tex/latex/transparent/transparent.sty
+Package: transparent 2019/11/29 v1.4 Transparency via pdfTeX's color stack (HO)
+ (/home/till/.miktex/texmfs/install/tex/latex/auxhook/auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+)) (/home/till/.miktex/texmfs/install/tex/latex/pgf/systemlayer/pgfsys.sty (/home/till/.miktex/texmfs/install/tex/latex/pgf/utilities/pgfrcs.sty (/home/till/.miktex/texmfs/install/tex/generic/pgf/utilities/pgfutil-common.tex
+\pgfutil@everybye=\toks20
+\pgfutil@tempdima=\dimen145
+\pgfutil@tempdimb=\dimen146
+ (/home/till/.miktex/texmfs/install/tex/generic/pgf/utilities/pgfutil-common-lists.tex)) (/home/till/.miktex/texmfs/install/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box50
+ (/home/till/.miktex/texmfs/install/tex/latex/ms/everyshi.sty
+Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
+)) (/home/till/.miktex/texmfs/install/tex/generic/pgf/utilities/pgfrcs.code.tex (/home/till/.miktex/texmfs/install/tex/generic/pgf/pgf.revision.tex)
+Package: pgfrcs 2020/01/08 v3.1.5b (3.1.5b)
+)) (/home/till/.miktex/texmfs/install/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2020/01/08 v3.1.5b (3.1.5b)
+ (/home/till/.miktex/texmfs/install/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks21
+\pgfkeys@temptoks=\toks22
+ (/home/till/.miktex/texmfs/install/tex/generic/pgf/utilities/pgfkeysfiltered.code.tex
+\pgfkeys@tmptoks=\toks23
+))
+\pgf@x=\dimen147
+\pgf@y=\dimen148
+\pgf@xa=\dimen149
+\pgf@ya=\dimen150
+\pgf@xb=\dimen151
+\pgf@yb=\dimen152
+\pgf@xc=\dimen153
+\pgf@yc=\dimen154
+\pgf@xd=\dimen155
+\pgf@yd=\dimen156
+\w@pgf@writea=\write3
+\r@pgf@reada=\read2
+\c@pgf@counta=\count188
+\c@pgf@countb=\count189
+\c@pgf@countc=\count190
+\c@pgf@countd=\count191
+\t@pgf@toka=\toks24
+\t@pgf@tokb=\toks25
+\t@pgf@tokc=\toks26
+\pgf@sys@id@count=\count192
+ (/home/till/.miktex/texmfs/install/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2020/01/08 v3.1.5b (3.1.5b)
+)
+Driver file for pgf: pgfsys-pdftex.def
+ (/home/till/.miktex/texmfs/install/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+File: pgfsys-pdftex.def 2020/01/08 v3.1.5b (3.1.5b)
+ (/home/till/.miktex/texmfs/install/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def
+File: pgfsys-common-pdf.def 2020/01/08 v3.1.5b (3.1.5b)
+))) (/home/till/.miktex/texmfs/install/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
+File: pgfsyssoftpath.code.tex 2020/01/08 v3.1.5b (3.1.5b)
+\pgfsyssoftpath@smallbuffer@items=\count193
+\pgfsyssoftpath@bigbuffer@items=\count194
+) (/home/till/.miktex/texmfs/install/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
+File: pgfsysprotocol.code.tex 2020/01/08 v3.1.5b (3.1.5b)
+)) (/home/till/.miktex/texmfs/install/tex/generic/babel/babel.sty
 Package: babel 2020/06/10 3.45 The Babel package
  (/home/till/.miktex/texmfs/install/tex/generic/babel/babel.def
 File: babel.def 2020/06/10 3.45 Babel common definitions
-\babel@savecnt=\count186
-\U@D=\dimen145
+\babel@savecnt=\count195
+\U@D=\dimen157
 \l@babelnohyphens=\language1
  (/home/till/.miktex/texmfs/install/tex/generic/babel/txtbabel.def)
-\bbl@readstream=\read2
+\bbl@readstream=\read3
 )
-\bbl@dirlevel=\count187
+\bbl@dirlevel=\count196
 
 *************************************
 * Local config file bblopts.cfg used
@@ -201,7 +295,7 @@ Package babel Warning: No hyphenation patterns were preloaded for
 Package babel Info: Making " an active character on input line 121.
 ))) (/home/till/.miktex/texmfs/install/tex/latex/eurosym/eurosym.sty
 Package: eurosym 1998/08/06 v1.1 European currency symbol ``Euro''
-\@eurobox=\box49
+\@eurobox=\box51
 ) (/home/till/.miktex/texmfs/install/tex/latex/base/fontenc.sty
 Package: fontenc 2020/02/11 v2.0o Standard LaTeX package
 ) (/home/till/.miktex/texmfs/install/tex/latex/lm/lmodern.sty
@@ -244,65 +338,57 @@ Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
 \LTright=\skip69
 \LTpre=\skip70
 \LTpost=\skip71
-\LTchunksize=\count188
-\LTcapwidth=\dimen146
-\LT@head=\box50
-\LT@firsthead=\box51
-\LT@foot=\box52
-\LT@lastfoot=\box53
-\LT@cols=\count189
-\LT@rows=\count190
-\c@LT@tables=\count191
-\c@LT@chunks=\count192
-\LT@p@ftn=\toks20
+\LTchunksize=\count197
+\LTcapwidth=\dimen158
+\LT@head=\box52
+\LT@firsthead=\box53
+\LT@foot=\box54
+\LT@lastfoot=\box55
+\LT@cols=\count198
+\LT@rows=\count199
+\c@LT@tables=\count266
+\c@LT@chunks=\count267
+\LT@p@ftn=\toks27
 )
-Class scrartcl Info: longtable captions redefined on input line 32.
+Class scrartcl Info: longtable captions redefined on input line 34.
  (/home/till/.miktex/texmfs/install/tex/latex/geometry/geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
  (/home/till/.miktex/texmfs/install/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
- (/home/till/.miktex/texmfs/install/tex/generic/iftex/iftex.sty
-Package: iftex 2020/03/06 v1.0d TeX engine tests
-))
-\Gm@cnth=\count193
-\Gm@cntv=\count194
-\c@Gm@tempcnt=\count195
-\Gm@bindingoffset=\dimen147
-\Gm@wd@mp=\dimen148
-\Gm@odd@mp=\dimen149
-\Gm@even@mp=\dimen150
-\Gm@layoutwidth=\dimen151
-\Gm@layoutheight=\dimen152
-\Gm@layouthoffset=\dimen153
-\Gm@layoutvoffset=\dimen154
-\Gm@dimlist=\toks21
+)
+\Gm@cnth=\count268
+\Gm@cntv=\count269
+\c@Gm@tempcnt=\count270
+\Gm@bindingoffset=\dimen159
+\Gm@wd@mp=\dimen160
+\Gm@odd@mp=\dimen161
+\Gm@even@mp=\dimen162
+\Gm@layoutwidth=\dimen163
+\Gm@layoutheight=\dimen164
+\Gm@layouthoffset=\dimen165
+\Gm@layoutvoffset=\dimen166
+\Gm@dimlist=\toks28
  (/home/till/.miktex/texmfs/install/tex/latex/geometry/geometry.cfg)) (/home/till/.miktex/texmfs/install/tex/latex/fancybox/fancybox.sty
 Package: fancybox 2010/05/15 1.4
 
 Style option: `fancybox' v1.4 <2010/05/15> (tvz)
-\@fancybox=\box54
-\shadowsize=\dimen155
-\@Sbox=\box55
-\do@VerbBox=\toks22
-\the@fancyput=\toks23
-\this@fancyput=\toks24
-\EndVerbatimTokens=\toks25
-\Verbatim@Outfile=\write3
-\Verbatim@Infile=\read3
+\@fancybox=\box56
+\shadowsize=\dimen167
+\@Sbox=\box57
+\do@VerbBox=\toks29
+\the@fancyput=\toks30
+\this@fancyput=\toks31
+\EndVerbatimTokens=\toks32
+\Verbatim@Outfile=\write4
+\Verbatim@Infile=\read4
 ) (/home/till/.miktex/texmfs/install/tex/latex/url/url.sty
 \Urlmuskip=\muskip16
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
-) (/home/till/.miktex/texmfs/install/tex/latex/graphics/color.sty
-Package: color 2019/11/23 v1.2a Standard LaTeX Color (DPC)
- (/home/till/.miktex/texmfs/install/tex/latex/graphics-cfg/color.cfg
-File: color.cfg 2016/01/02 v1.6 sample color configuration
-)
-Package color Info: Driver file: pdftex.def on input line 147.
 ) (/home/till/.miktex/texmfs/install/tex/latex/amsfonts/amssymb.sty
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
  (/home/till/.miktex/texmfs/install/tex/latex/amsfonts/amsfonts.sty
 Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
-\@emptytoks=\toks26
+\@emptytoks=\toks33
 \symAMSa=\mathgroup4
 \symAMSb=\mathgroup5
 LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
@@ -310,17 +396,7 @@ LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 )) (/home/till/.miktex/texmfs/install/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2020-05-15 v7.00e Hypertext links for LaTeX
- (/home/till/.miktex/texmfs/install/tex/generic/ltxcmds/ltxcmds.sty
-Package: ltxcmds 2019/12/15 v1.24 LaTeX kernel commands for general use (HO)
-) (/home/till/.miktex/texmfs/install/tex/latex/pdftexcmds/pdftexcmds.sty
-Package: pdftexcmds 2020-06-04 v0.32 Utility functions of pdfTeX for LuaTeX (HO)
- (/home/till/.miktex/texmfs/install/tex/generic/infwarerr/infwarerr.sty
-Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
-)
-Package pdftexcmds Info: \pdf@primitive is available.
-Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode found.
-) (/home/till/.miktex/texmfs/install/tex/generic/kvsetkeys/kvsetkeys.sty
+ (/home/till/.miktex/texmfs/install/tex/generic/kvsetkeys/kvsetkeys.sty
 Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
 ) (/home/till/.miktex/texmfs/install/tex/generic/kvdefinekeys/kvdefinekeys.sty
 Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
@@ -330,14 +406,12 @@ Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
 Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
 ) (/home/till/.miktex/texmfs/install/tex/latex/letltxmacro/letltxmacro.sty
 Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
-) (/home/till/.miktex/texmfs/install/tex/latex/auxhook/auxhook.sty
-Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
 ) (/home/till/.miktex/texmfs/install/tex/latex/kvoptions/kvoptions.sty
 Package: kvoptions 2019/11/29 v3.13 Key value format for package options (HO)
 )
-\@linkdim=\dimen156
-\Hy@linkcounter=\count196
-\Hy@pagecounter=\count197
+\@linkdim=\dimen168
+\Hy@linkcounter=\count271
+\Hy@pagecounter=\count272
  (/home/till/.miktex/texmfs/install/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2020-05-15 v7.00e Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
@@ -347,7 +421,7 @@ Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 ) (/home/till/.miktex/texmfs/install/tex/generic/etexcmds/etexcmds.sty
 Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
 )
-\Hy@SavedSpaceFactor=\count198
+\Hy@SavedSpaceFactor=\count273
 Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 4338.
 Package hyperref Info: Option `hyperfootnotes' set `false' on input line 4338.
 Package hyperref Info: Hyper figures OFF on input line 4464.
@@ -357,17 +431,17 @@ Package hyperref Info: Plain pages OFF on input line 4479.
 Package hyperref Info: Backreferencing OFF on input line 4484.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4717.
-\c@Hy@tempcnt=\count199
+\c@Hy@tempcnt=\count274
 LaTeX Info: Redefining \url on input line 5076.
-\XeTeXLinkMargin=\dimen157
+\XeTeXLinkMargin=\dimen169
  (/home/till/.miktex/texmfs/install/tex/generic/bitset/bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
  (/home/till/.miktex/texmfs/install/tex/generic/bigintcalc/bigintcalc.sty
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
 ))
-\Fld@menulength=\count266
-\Field@Width=\dimen158
-\Fld@charsize=\dimen159
+\Fld@menulength=\count275
+\Field@Width=\dimen170
+\Fld@charsize=\dimen171
 Package hyperref Info: Hyper figures OFF on input line 6347.
 Package hyperref Info: Link nesting OFF on input line 6352.
 Package hyperref Info: Hyper index ON on input line 6355.
@@ -380,8 +454,8 @@ LaTeX Info: Redefining \pageref on input line 6421.
  (/home/till/.miktex/texmfs/install/tex/generic/atbegshi/atbegshi.sty
 Package: atbegshi 2019/12/05 v1.19 At begin shipout hook (HO)
 )
-\Hy@abspage=\count267
-\c@Item=\count268
+\Hy@abspage=\count276
+\c@Item=\count277
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
  (/home/till/.miktex/texmfs/install/tex/latex/hyperref/hpdftex.def
@@ -390,8 +464,8 @@ File: hpdftex.def 2020-05-15 v7.00e Hyperref driver for pdfTeX
 Package: atveryend 2019-12-11 v1.11 Hooks at the very end of document (HO)
 Package atveryend Info: \enddocument detected (standard20110627).
 )
-\Fld@listcount=\count269
-\c@bookmark@seq@number=\count270
+\Fld@listcount=\count278
+\c@bookmark@seq@number=\count279
  (/home/till/.miktex/texmfs/install/tex/latex/rerunfilecheck/rerunfilecheck.sty
 Package: rerunfilecheck 2019/12/05 v1.9 Rerun checks for auxiliary files (HO)
  (/home/till/.miktex/texmfs/install/tex/generic/uniquecounter/uniquecounter.sty
@@ -413,7 +487,7 @@ Class scrartcl Warning: Usage of package `fancyhdr' together
 (scrartcl)              `\addtokomafont' for the page style elements need
 (scrartcl)              explicite user intervention to work.
 (scrartcl)              Nevertheless, using requested
-(scrartcl)              package `fancyhdr' on input line 63.
+(scrartcl)              package `fancyhdr' on input line 65.
 
 (/home/till/.miktex/texmfs/install/tex/latex/fancyhdr/fancyhdr.sty
 Package: fancyhdr 2019/01/31 v3.10 Extensive control of page headers and footers
@@ -428,13 +502,13 @@ Package: fancyhdr 2019/01/31 v3.10 Extensive control of page headers and footers
 \f@nch@O@orf=\skip81
 ) (/home/till/.miktex/texmfs/install/tex/latex/tools/array.sty
 Package: array 2019/08/31 v2.4l Tabular extension package (FMi)
-\col@sep=\dimen160
-\ar@mcellbox=\box56
-\extrarowheight=\dimen161
-\NC@list=\toks27
+\col@sep=\dimen172
+\ar@mcellbox=\box58
+\extrarowheight=\dimen173
+\NC@list=\toks34
 \extratabsurround=\skip82
 \backup@length=\skip83
-\ar@cellbox=\box57
+\ar@cellbox=\box59
 ) (/home/till/.miktex/texmfs/install/tex/latex/setspace/setspace.sty
 Package: setspace 2011/12/19 v6.7a set line spacing
 ) (/home/till/.miktex/texmfs/install/tex/latex/capt-of/capt-of.sty
@@ -442,23 +516,23 @@ Package: capt-of 2009/12/29 v0.2 standard captions outside of floats
 ) (/home/till/.miktex/texmfs/install/tex/latex/base/makeidx.sty
 Package: makeidx 2014/09/29 v1.0m Standard LaTeX package
 ) (/home/till/.miktex/texmfs/install/tex/latex/listings/listings.sty
-\lst@mode=\count271
-\lst@gtempboxa=\box58
-\lst@token=\toks28
-\lst@length=\count272
-\lst@currlwidth=\dimen162
-\lst@column=\count273
-\lst@pos=\count274
-\lst@lostspace=\dimen163
-\lst@width=\dimen164
-\lst@newlines=\count275
-\lst@lineno=\count276
-\lst@maxwidth=\dimen165
+\lst@mode=\count280
+\lst@gtempboxa=\box60
+\lst@token=\toks35
+\lst@length=\count281
+\lst@currlwidth=\dimen174
+\lst@column=\count282
+\lst@pos=\count283
+\lst@lostspace=\dimen175
+\lst@width=\dimen176
+\lst@newlines=\count284
+\lst@lineno=\count285
+\lst@maxwidth=\dimen177
  (/home/till/.miktex/texmfs/install/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
-\c@lstnumber=\count277
-\lst@skipnumbers=\count278
-\lst@framebox=\box59
+\c@lstnumber=\count286
+\lst@skipnumbers=\count287
+\lst@framebox=\box61
 ) (/home/till/.miktex/texmfs/install/tex/latex/listings/listings.cfg
 File: listings.cfg 2020/03/24 1.8d listings configuration
 ))
@@ -466,8 +540,8 @@ Package: listings 2020/03/24 1.8d (Carsten Heinz)
  (/home/till/.miktex/texmfs/install/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2020/03/24 1.8d listings language file
 )
-\@indexfile=\write4
-\openout4 = `Hauptdatei.idx'.
+\@indexfile=\write5
+\openout5 = `Hauptdatei.idx'.
 
 
 Writing index file Hauptdatei.idx
@@ -476,50 +550,29 @@ Package: nomencl 2020/03/01 v5.4 Nomenclature package
  (/home/till/.miktex/texmfs/install/tex/latex/xkeyval/xkeyval.sty
 Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
  (/home/till/.miktex/texmfs/install/tex/generic/xkeyval/xkeyval.tex (/home/till/.miktex/texmfs/install/tex/generic/xkeyval/xkvutils.tex
-\XKV@toks=\toks29
-\XKV@tempa@toks=\toks30
+\XKV@toks=\toks36
+\XKV@tempa@toks=\toks37
 )
-\XKV@depth=\count279
+\XKV@depth=\count288
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 )) (/home/till/.miktex/texmfs/install/tex/latex/base/ifthen.sty
 Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 )
 Package tocbasic Info: setting babel extension for `nlo' on input line 179.
 Package tocbasic Info: setting babel extension for `nls' on input line 180.
-\nomlabelwidth=\dimen166
-\nom@tempdim=\dimen167
+\nomlabelwidth=\dimen178
+\nom@tempdim=\dimen179
 \nomitemsep=\skip84
 )
-\@nomenclaturefile=\write5
-\openout5 = `Hauptdatei.nlo'.
+\@nomenclaturefile=\write6
+\openout6 = `Hauptdatei.nlo'.
 
-Package nomencl Info: Writing nomenclature file Hauptdatei.nlo on input line 115.
+Package nomencl Info: Writing nomenclature file Hauptdatei.nlo on input line 117.
  (/home/till/.miktex/texmfs/install/tex/latex/l3backend/l3backend-pdfmode.def
 File: l3backend-pdfmode.def 2020-06-03 L3 backend support: PDF mode
-\l__kernel_color_stack_int=\count280
-\l__pdf_internal_box=\box60
+\l__kernel_color_stack_int=\count289
+\l__pdf_internal_box=\box62
 ) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.aux
-
-LaTeX Warning: Label `fig:datenaufbereitung' multiply defined.
-
-
-LaTeX Warning: Label `fig:datenaufbereitung' multiply defined.
-
-
-LaTeX Warning: Label `fig:datenaufbereitung' multiply defined.
-
-
-LaTeX Warning: Label `fig:datenaufbereitung' multiply defined.
-
-
-LaTeX Warning: Label `fig:datenaufbereitung' multiply defined.
-
-
-LaTeX Warning: Label `fig:datenaufbereitung' multiply defined.
-
-
-LaTeX Warning: Label `fig:datenaufbereitung' multiply defined.
-
 
 LaTeX Warning: Label `fig:Beschreibung' multiply defined.
 
@@ -529,42 +582,42 @@ LaTeX Warning: Label `fig:sequence_diagram_app_start' multiply defined.
 )
 \openout1 = `Hauptdatei.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 133.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 135.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 135.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 135.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 135.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 135.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 135.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 135.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 135.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 135.
  (/home/till/.miktex/texmfs/install/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-Package scrbase Info: activating ngerman \contentsname on input line 133.
-Package scrbase Info: activating ngerman \listfigurename on input line 133.
-Package scrbase Info: activating ngerman \listtablename on input line 133.
+Package scrbase Info: activating ngerman \contentsname on input line 135.
+Package scrbase Info: activating ngerman \listfigurename on input line 135.
+Package scrbase Info: activating ngerman \listtablename on input line 135.
  (/home/till/.miktex/texmfs/install/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count281
-\scratchdimen=\dimen168
-\scratchbox=\box61
-\nofMPsegments=\count282
-\nofMParguments=\count283
-\everyMPshowfont=\toks31
-\MPscratchCnt=\count284
-\MPscratchDim=\dimen169
-\MPnumerator=\count285
-\makeMPintoPDFobject=\count286
-\everyMPtoPDFconversion=\toks32
+\scratchcounter=\count290
+\scratchdimen=\dimen180
+\scratchbox=\box63
+\nofMPsegments=\count291
+\nofMParguments=\count292
+\everyMPshowfont=\toks38
+\MPscratchCnt=\count293
+\MPscratchDim=\dimen181
+\MPnumerator=\count294
+\makeMPintoPDFobject=\count295
+\everyMPtoPDFconversion=\toks39
 ) (/home/till/.miktex/texmfs/install/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
@@ -578,7 +631,7 @@ Package caption Info: longtable package is loaded.
 Package: ltcaption 2020/05/30 v1.4b longtable captions (AR)
 )
 Package caption Info: End \AtBeginDocument code.
-
+ ABD: EveryShipout initializing macros
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -613,8 +666,8 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\AtBeginShipoutBox=\box62
-Package hyperref Info: Link coloring OFF on input line 133.
+\AtBeginShipoutBox=\box64
+Package hyperref Info: Link coloring OFF on input line 135.
 (/home/till/.miktex/texmfs/install/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
  (/home/till/.miktex/texmfs/install/tex/latex/refcount/refcount.sty
@@ -622,14 +675,14 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ) (/home/till/.miktex/texmfs/install/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count287
+\c@section@level=\count296
 )
-LaTeX Info: Redefining \ref on input line 133.
-LaTeX Info: Redefining \pageref on input line 133.
-LaTeX Info: Redefining \nameref on input line 133.
+LaTeX Info: Redefining \ref on input line 135.
+LaTeX Info: Redefining \pageref on input line 135.
+LaTeX Info: Redefining \nameref on input line 135.
  (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.out) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.out)
-\@outlinefile=\write6
-\openout6 = `Hauptdatei.out'.
+\@outlinefile=\write7
+\openout7 = `Hauptdatei.out'.
 
 Class scrartcl Info: loading recommended package `bookmark'.
 (scrartcl)           Using `bookmark' together with `hyperref' is recommended,
@@ -638,18 +691,18 @@ Class scrartcl Info: loading recommended package `bookmark'.
 (scrartcl)           `bookmarkpackage=false' before \begin{document} and
 (scrartcl)           you can avoid this message adding:
 (scrartcl)             \usepackage{bookmark}
-(scrartcl)           before \begin{document} on input line 133.
+(scrartcl)           before \begin{document} on input line 135.
  (/home/till/.miktex/texmfs/install/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2019/12/03 v1.28 PDF bookmarks (HO)
  (/home/till/.miktex/texmfs/install/tex/latex/bookmark/bkm-pdftex.def
 File: bkm-pdftex.def 2019/12/03 v1.28 bookmark driver for pdfTeX (HO)
 Package auxhook Info: \AddLineBeginMainAux comes a little late,
 (auxhook)             because the main .aux file is already opened on input line 168.
-\BKM@id=\count288
+\BKM@id=\count297
 ))
-\c@lstlisting=\count289
+\c@lstlisting=\count298
  (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/latex_einstellungen/trennung.tex) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/latex_einstellungen/deckblatt.tex
-<abb/regenschirm.png, id=3, 381.46638pt x 381.46638pt>
+<abb/regenschirm.png, id=6, 381.46638pt x 381.46638pt>
 File: abb/regenschirm.png Graphic file (type png)
 <use abb/regenschirm.png>
 Package pdftex.def Info: abb/regenschirm.png  used on input line 6.
@@ -694,46 +747,46 @@ LaTeX Font Info:    Trying to load font information for T1+lmss on input line 1.
  (/home/till/.miktex/texmfs/install/tex/latex/lm/t1lmss.fd
 File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )) [2] (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.toc)
-\tf@toc=\write7
-\openout7 = `Hauptdatei.toc'.
+\tf@toc=\write8
+\openout8 = `Hauptdatei.toc'.
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.168 \newpage
+l.170 \newpage
                [1] (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.lof)
-\tf@lof=\write8
-\openout8 = `Hauptdatei.lof'.
+\tf@lof=\write9
+\openout9 = `Hauptdatei.lof'.
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.ii}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.218 \newpage
+l.220 \newpage
                [2] (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/latex_einstellungen/abkuezungen/abkuerzungen.tex)
 No file Hauptdatei.nls.
 (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/gesamtsystem/Gesamtsystem.tex
-<abb/Gesamtsystem.png, id=109, 508.90125pt x 860.21375pt>
+<abb/Gesamtsystem.png, id=96, 508.90125pt x 860.21375pt>
 File: abb/Gesamtsystem.png Graphic file (type png)
 <use abb/Gesamtsystem.png>
 Package pdftex.def Info: abb/Gesamtsystem.png  used on input line 6.
 (pdftex.def)             Requested size: 256.07741pt x 432.87535pt.
 )
-Overfull \hbox (24.33136pt too wide) in paragraph at lines 11--238
+Overfull \hbox (24.33136pt too wide) in paragraph at lines 11--240
 \T1/lmr/m/n/12 Binär Format zur Verfügung. Diese werden heruntergeladen und in der Datenaufbereitung
  []
 
 
-Overfull \hbox (24.80095pt too wide) in paragraph at lines 11--238
+Overfull \hbox (24.80095pt too wide) in paragraph at lines 11--240
 \T1/lmr/m/n/12 Datenbeschaffung |& Vorverarbeitung, Vorhersage und App |& Datenbankhandling
  []
 
 
-Overfull \hbox (26.5015pt too wide) in paragraph at lines 11--238
+Overfull \hbox (26.5015pt too wide) in paragraph at lines 11--240
 \T1/lmr/m/n/12 aufgeteilt. Die Komponente Datenbeschaffung |& Vorverarbeitung reicht vom Download
  []
 
 
-Overfull \hbox (9.0235pt too wide) in paragraph at lines 11--238
+Overfull \hbox (9.0235pt too wide) in paragraph at lines 11--240
 \T1/lmr/m/n/12 der Binär - Daten beim DWD bis zu den daraus generierten PNG's. In der Komponente
  []
 
@@ -747,12 +800,12 @@ Overfull \hbox (90.04134pt too wide) in paragraph at lines 2--3
 \T1/lmr/m/n/12 über 2000 Bodenniederschlagsstationen (https://www.dwd.de/DE/leistungen/radolan/radolan.html).
  []
 
-<abb/daten_stationsuebersicht.png, id=115, 782.925pt x 558.085pt>
+<abb/daten_stationsuebersicht.png, id=102, 782.925pt x 558.085pt>
 File: abb/daten_stationsuebersicht.png Graphic file (type png)
 <use abb/daten_stationsuebersicht.png>
 Package pdftex.def Info: abb/daten_stationsuebersicht.png  used on input line 6.
 (pdftex.def)             Requested size: 256.07741pt x 182.53362pt.
-<abb/radolan_koordinatensystem_aufbau.png, id=116, 709.65125pt x 495.8525pt>
+<abb/radolan_koordinatensystem_aufbau.png, id=103, 709.65125pt x 495.8525pt>
 File: abb/radolan_koordinatensystem_aufbau.png Graphic file (type png)
 <use abb/radolan_koordinatensystem_aufbau.png>
 Package pdftex.def Info: abb/radolan_koordinatensystem_aufbau.png  used on input line 16.
@@ -761,7 +814,7 @@ Package pdftex.def Info: abb/radolan_koordinatensystem_aufbau.png  used on input
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [2 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/daten_stationsuebersicht.png (PNG copy)>]
-<abb/karte_abdeckung_daten.png, id=122, 665.48625pt x 605.26125pt>
+<abb/karte_abdeckung_daten.png, id=109, 665.48625pt x 605.26125pt>
 File: abb/karte_abdeckung_daten.png Graphic file (type png)
 <use abb/karte_abdeckung_daten.png>
 Package pdftex.def Info: abb/karte_abdeckung_daten.png  used on input line 26.
@@ -777,33 +830,10 @@ Overfull \hbox (35.2702pt too wide) in paragraph at lines 2--5
  []
 
 [3 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/radolan_koordinatensystem_aufbau.png> </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/karte_abdeckung_daten.png (PNG copy)>]
-<abb/datenaufbereitung_beispiel.png, id=129, 652.4375pt x 439.6425pt>
-File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
-<use abb/datenaufbereitung_beispiel.png>
-Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 8.
-(pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
-File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
-<use abb/datenaufbereitung_beispiel.png>
-Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 17.
-(pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
- [4 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/datenaufbereitung_beispiel.png (PNG copy)>]
-File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
-<use abb/datenaufbereitung_beispiel.png>
-Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 27.
-(pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
-File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
-<use abb/datenaufbereitung_beispiel.png>
-Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 34.
-(pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
- [5]
 Overfull \hbox (6.05615pt too wide) in paragraph at lines 39--41
 \T1/lmr/m/n/12 dargestellt werden kann. Der folgende Plot zeigt die Verteilung der noch verbleibenden
  []
 
-File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
-<use abb/datenaufbereitung_beispiel.png>
-Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 44.
-(pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
 
 Overfull \hbox (7.19662pt too wide) in paragraph at lines 49--51
 []\T1/lmr/m/n/12 Noch immer befindet sich der gröÿte Teil der Datenpunkte im kleinem Wertebereich.
@@ -814,21 +844,8 @@ Overfull \hbox (19.47406pt too wide) in paragraph at lines 49--51
 \T1/lmr/m/n/12 noch höher ist, als die der menschlichen Wahrnehmung. Radardaten welche transformiert
  []
 
-File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
-<use abb/datenaufbereitung_beispiel.png>
-Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 54.
-(pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
-[6]
-File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
-<use abb/datenaufbereitung_beispiel.png>
-Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 63.
-(pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
-File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
-<use abb/datenaufbereitung_beispiel.png>
-Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 72.
-(pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
-) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/neuronale_netze/die_neuronalen_netze.tex) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/app_datenbank.tex [7] (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/app_datenbank_uebersicht.tex
-<abb/app_datenbank_komponente_uebersicht.png, id=146, 769.87625pt x 237.88875pt>
+[4]) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/neuronale_netze/die_neuronalen_netze.tex) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/app_datenbank.tex (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/app_datenbank_uebersicht.tex
+<abb/app_datenbank_komponente_uebersicht.png, id=120, 769.87625pt x 237.88875pt>
 File: abb/app_datenbank_komponente_uebersicht.png Graphic file (type png)
 <use abb/app_datenbank_komponente_uebersicht.png>
 Package pdftex.def Info: abb/app_datenbank_komponente_uebersicht.png  used on input line 6.
@@ -843,8 +860,8 @@ Overfull \hbox (22.05084pt too wide) in paragraph at lines 2--1
 \T1/lmr/m/n/12 überschritten, sind die kosten von der tatsächlichen Nutzung abhängig. In der kostenlosen
  []
 
-[8 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/app_datenbank_komponente_uebersicht.png>]
-<abb/datenbank_aufbau_Ã¼bersicht.png, id=153, 813.0375pt x 357.335pt>
+[5 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/app_datenbank_komponente_uebersicht.png>]
+<abb/datenbank_aufbau_Ã¼bersicht.png, id=127, 813.0375pt x 357.335pt>
 File: abb/datenbank_aufbau_Ã¼bersicht.png Graphic file (type png)
 <use abb/datenbank_aufbau_Ã¼bersicht.png>
 Package pdftex.def Info: abb/datenbank_aufbau_Ã¼bersicht.png  used on input line 8.
@@ -874,7 +891,7 @@ Overfull \hbox (5.36716pt too wide) in paragraph at lines 13--1
 \T1/lmr/m/n/12 vorhersagen wird vom Server ein Dokument in RainWarningPushNotification gepusht.
  []
 
-) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/die_app.tex
+[6 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/datenbank_aufbau_Ã¼bersicht.png>]) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/die_app.tex
 Overfull \hbox (6.51495pt too wide) in paragraph at lines 2--1
 \T1/lmr/m/n/12 Mit der Serverkomponente ist der Teil des Servers gemeint, der für die Kommunikation
  []
@@ -889,23 +906,22 @@ Overfull \hbox (17.6757pt too wide) in paragraph at lines 2--1
 \T1/lmr/m/n/12 haben, werden die daraus resultierenden Vorhersage Bilder in den Firestore hochgeladen.
  []
 
-[9 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/datenbank_aufbau_Ã¼bersicht.png>]
-<abb/screenshot_forecast_list.jpg, id=162, 722.7pt x 1284.8pt>
+<abb/screenshot_forecast_list.jpg, id=135, 722.7pt x 1284.8pt>
 File: abb/screenshot_forecast_list.jpg Graphic file (type jpg)
 <use abb/screenshot_forecast_list.jpg>
 Package pdftex.def Info: abb/screenshot_forecast_list.jpg  used on input line 15.
 (pdftex.def)             Requested size: 128.0387pt x 227.6272pt.
-<abb/screenshot_forecast_map.jpg, id=163, 722.7pt x 1284.8pt>
+<abb/screenshot_forecast_map.jpg, id=136, 722.7pt x 1284.8pt>
 File: abb/screenshot_forecast_map.jpg Graphic file (type jpg)
 <use abb/screenshot_forecast_map.jpg>
 Package pdftex.def Info: abb/screenshot_forecast_map.jpg  used on input line 16.
 (pdftex.def)             Requested size: 128.0387pt x 227.6272pt.
-<abb/screenshot_settings.jpg, id=164, 722.7pt x 1284.8pt>
+<abb/screenshot_settings.jpg, id=137, 722.7pt x 1284.8pt>
 File: abb/screenshot_settings.jpg Graphic file (type jpg)
 <use abb/screenshot_settings.jpg>
 Package pdftex.def Info: abb/screenshot_settings.jpg  used on input line 17.
 (pdftex.def)             Requested size: 128.0387pt x 227.6272pt.
- [10]
+[7]
 Overfull \hbox (13.46078pt too wide) in paragraph at lines 22--25
 \T1/lmr/m/n/12 Auf diesem Screen werden die von den Netzen berechneten Regenvorhersagen angezeigt.
  []
@@ -940,18 +956,18 @@ Overfull \hbox (36.0837pt too wide) in paragraph at lines 36--46
 \T1/lmr/m/n/12 gespeichert. Diese Variablen sind dafür entscheidend, welche Einstellungen wiederhergestellt
  []
 
-[11 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/screenshot_forecast_list.jpg> </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/screenshot_forecast_map.jpg> </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/screenshot_settings.jpg>]
-<abb/sequence_diagram_change_settings.png, id=180, 766.865pt x 695.59875pt>
+[8 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/screenshot_forecast_list.jpg> </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/screenshot_forecast_map.jpg> </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/screenshot_settings.jpg>]
+<abb/sequence_diagram_change_settings.png, id=152, 766.865pt x 695.59875pt>
 File: abb/sequence_diagram_change_settings.png Graphic file (type png)
 <use abb/sequence_diagram_change_settings.png>
 Package pdftex.def Info: abb/sequence_diagram_change_settings.png  used on input line 49.
 (pdftex.def)             Requested size: 341.43437pt x 309.70499pt.
-<abb/sequence_diagram_app_start.png, id=181, 971.63pt x 644.4075pt>
+<abb/sequence_diagram_app_start.png, id=153, 971.63pt x 644.4075pt>
 File: abb/sequence_diagram_app_start.png Graphic file (type png)
 <use abb/sequence_diagram_app_start.png>
 Package pdftex.def Info: abb/sequence_diagram_app_start.png  used on input line 56.
 (pdftex.def)             Requested size: 341.43437pt x 226.4408pt.
- [12 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/sequence_diagram_change_settings.png>]
+ [9 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/sequence_diagram_change_settings.png>]
 Overfull \hbox (12.44916pt too wide) in paragraph at lines 62--75
 \T1/lmr/m/n/12 Architektur nicht für eine solche Anwendung ausgelegt war, mussten einige Änderungen
  []
@@ -961,7 +977,7 @@ Overfull \hbox (10.19371pt too wide) in paragraph at lines 76--80
 \T1/lmr/m/n/12 Es wird eine Liste mit ForecastListItem Objekten erstellt. Diese wird global gespeichert
  []
 
-<abb/listen_pixel_berechnung.png, id=188, 472.76625pt x 118.4425pt>
+<abb/listen_pixel_berechnung.png, id=162, 472.76625pt x 118.4425pt>
 File: abb/listen_pixel_berechnung.png Graphic file (type png)
 <use abb/listen_pixel_berechnung.png>
 Package pdftex.def Info: abb/listen_pixel_berechnung.png  used on input line 93.
@@ -971,7 +987,7 @@ Overfull \hbox (7.16032pt too wide) in paragraph at lines 82--96
 \T1/lmr/m/n/12 Breitengrad Informationen, und der Abbildung dieser Position auf den Vorhersagebild.
  []
 
-[13 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/sequence_diagram_app_start.png>]
+[10 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/sequence_diagram_app_start.png>]
 Overfull \hbox (9.73058pt too wide) in paragraph at lines 107--123
 \T1/lmr/m/n/12 oder ist das Gerät auf dem sie verwendet wird eine Neuanschaffung kann es ausreichend
  []
@@ -986,8 +1002,8 @@ Overfull \hbox (21.84724pt too wide) in paragraph at lines 107--123
 \T1/lmr/m/n/12 Begriff Flutter abgebildet. Das in Kombination mit eigenem Interesse an dem Framework,
  []
 
-[14 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/listen_pixel_berechnung.png>]
-<abb/flutter_google_trends.png, id=201, 1124.2pt x 238.8925pt>
+[11 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/listen_pixel_berechnung.png>]
+<abb/flutter_google_trends.png, id=175, 1124.2pt x 238.8925pt>
 File: abb/flutter_google_trends.png Graphic file (type png)
 <use abb/flutter_google_trends.png>
 Package pdftex.def Info: abb/flutter_google_trends.png  used on input line 126.
@@ -997,7 +1013,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 140--146
 
  []
 
-[15 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/flutter_google_trends.png (PNG copy)>]
+[12 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/flutter_google_trends.png (PNG copy)>]
 Underfull \hbox (badness 10000) in paragraph at lines 148--151
 
  []
@@ -1017,8 +1033,8 @@ Overfull \hbox (22.19362pt too wide) in paragraph at lines 158--171
 \T1/lmr/m/n/12 Gerät gespeichert wurden. Je nach dem zu welchem Zeitpunkt ein User die Regenwarnung
  []
 
-[16]
-<abb/funktionsweise_pushnachrichten_senden.png, id=211, 648.17157pt x 392.96812pt>
+[13]
+<abb/funktionsweise_pushnachrichten_senden.png, id=184, 648.17157pt x 392.96812pt>
 File: abb/funktionsweise_pushnachrichten_senden.png Graphic file (type png)
 <use abb/funktionsweise_pushnachrichten_senden.png>
 Package pdftex.def Info: abb/funktionsweise_pushnachrichten_senden.png  used on input line 174.
@@ -1038,32 +1054,32 @@ Underfull \hbox (badness 10000) in paragraph at lines 180--185
 
  []
 
-)) [17 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/funktionsweise_pushnachrichten_senden.png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 253.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 253.
+)) [14 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/funktionsweise_pushnachrichten_senden.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 255.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 255.
  (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 253.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 253.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 255.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 255.
 Package rerunfilecheck Info: File `Hauptdatei.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 253.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 255.
  ) 
 Here is how much of TeX's memory you used:
- 14225 strings out of 482730
- 245619 string characters out of 2949056
- 784805 words of memory out of 3000000
- 29569 multiletter control sequences out of 15000+200000
+ 16101 strings out of 482730
+ 284842 string characters out of 2949056
+ 837559 words of memory out of 3000000
+ 31387 multiletter control sequences out of 15000+200000
  572066 words of font info for 52 fonts, out of 3000000 for 9000
  4 hyphenation exceptions out of 8191
  50i,11n,93p,10175b,538s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/home/till/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-ec.enc}</home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmbx12.pfb></home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmr10.pfb></home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmr12.pfb></home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmr17.pfb></home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmssbx10.pfb>
-Output written on /home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.pdf (21 pages, 2225821 bytes).
+Output written on /home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.pdf (18 pages, 2179253 bytes).
 PDF statistics:
- 311 PDF objects out of 1000 (max. 8388607)
- 71 named destinations out of 1000 (max. 500000)
- 241 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 282 PDF objects out of 1000 (max. 8388607)
+ 60 named destinations out of 1000 (max. 500000)
+ 248 words of extra memory for PDF output out of 10000 (max. 10000000)
 

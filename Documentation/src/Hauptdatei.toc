@@ -4,18 +4,18 @@
 \contentsline {section}{\numberline {1}Gesamtsystem}{1}{section.1}%
 \contentsline {section}{\numberline {2}Die Daten}{2}{section.2}%
 \contentsline {section}{\numberline {3}Die Datenaufbereitung}{4}{section.3}%
-\contentsline {section}{\numberline {4}Die neuronalen Netze}{8}{section.4}%
-\contentsline {section}{\numberline {5}Die DeepRainApp und das Datenbankhandling}{8}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Übersicht}{8}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Firebase}{8}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Datenbank und Cloudspeicher}{9}{subsection.5.3}%
-\contentsline {subsection}{\numberline {5.4}Server}{10}{subsection.5.4}%
-\contentsline {subsection}{\numberline {5.5}Die App}{10}{subsection.5.5}%
-\contentsline {subsubsection}{\numberline {5.5.1}Funktionen der App}{10}{subsubsection.5.5.1}%
-\contentsline {subsubsection}{\numberline {5.5.2}Screens der App}{10}{subsubsection.5.5.2}%
-\contentsline {subsubsection}{\numberline {5.5.3}Framework Entscheidung}{14}{subsubsection.5.5.3}%
-\contentsline {subsubsection}{\numberline {5.5.4}Technischer Aufbau von Flutter}{15}{subsubsection.5.5.4}%
-\contentsline {subsubsection}{\numberline {5.5.5}Projektstruktur}{16}{subsubsection.5.5.5}%
-\contentsline {subsection}{\numberline {5.6}Cloudfunktionen}{16}{subsection.5.6}%
-\contentsline {subsubsection}{\numberline {5.6.1}Push Benachrichtigungen}{16}{subsubsection.5.6.1}%
-\contentsline {subsubsection}{\numberline {5.6.2}Vorgehen bei Entwicklung}{17}{subsubsection.5.6.2}%
+\contentsline {section}{\numberline {4}Die neuronalen Netze}{5}{section.4}%
+\contentsline {section}{\numberline {5}Die DeepRainApp und das Datenbankhandling}{5}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Übersicht}{5}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Firebase}{5}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Datenbank und Cloudspeicher}{6}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Server}{7}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}Die App}{7}{subsection.5.5}%
+\contentsline {subsubsection}{\numberline {5.5.1}Funktionen der App}{7}{subsubsection.5.5.1}%
+\contentsline {subsubsection}{\numberline {5.5.2}Screens der App}{8}{subsubsection.5.5.2}%
+\contentsline {subsubsection}{\numberline {5.5.3}Framework Entscheidung}{11}{subsubsection.5.5.3}%
+\contentsline {subsubsection}{\numberline {5.5.4}Technischer Aufbau von Flutter}{12}{subsubsection.5.5.4}%
+\contentsline {subsubsection}{\numberline {5.5.5}Projektstruktur}{13}{subsubsection.5.5.5}%
+\contentsline {subsection}{\numberline {5.6}Cloudfunktionen}{13}{subsection.5.6}%
+\contentsline {subsubsection}{\numberline {5.6.1}Push Benachrichtigungen}{13}{subsubsection.5.6.1}%
+\contentsline {subsubsection}{\numberline {5.6.2}Vorgehen bei Entwicklung}{14}{subsubsection.5.6.2}%
