@@ -33,6 +33,8 @@ String AppRegionCity;
 List<String> AppCoordinateList;
 List<String> AppLatitudeList;
 List<String> AppLongitudeList;
+//demo mode activated or deactivated
+bool AppSwitchDemoMode;
 var AppPixel;
 
 class GlobalValues{
@@ -245,6 +247,19 @@ class GlobalValues{
     print('Ich berechne jetzt den Pixel! 5');
 
     return pixels;
+  }
+
+  //Variable which store if demo mode is activated or deactivated
+  setAppSwitchDemoMode(bool SwitchDemoMode) async{
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('AppSwitchRainWarning', SwitchDemoMode);
+
+  }
+  getAppSwitchDemoMode(){
+    if(AppSwitchDemoMode != null){
+      return AppSwitchDemoMode;
+    }
+    return true;
   }
 
 }
