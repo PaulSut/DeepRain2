@@ -33,16 +33,17 @@ Mit dem Aktualisieren Button in der Actionbar können die neusten Bilder vom Ser
 Im Normalfall werden die Bilder einmalig bei dem App Start heruntergeladen.  
 
 \subsubsection*{Einstellungen}
-Auf diesem Screen können alle relevanten Einstellungen gemacht werden. Dazu gehört z.B. die Sprache der Benutzeroberfläche. Außerdem kann die Region 
-eingestellt werden. Die hier ausgewählte Region wird standardmäßig auf der Karte angezeigt und nur für diese Region werden Regenwarnungen gesendet. 
+Auf diesem Screen können alle relevanten Einstellungen gemacht werden. Dazu gehört z.B. die Sprache der Benutzeroberfläche. 
+Außerdem kann die Region eingestellt werden. 
+Die hier ausgewählte Region wird standardmäßig auf der Karte angezeigt und nur für diese Region werden Regenwarnungen gesendet. 
 Unter der Benachrichtigung’s Kategorie können die Regenwarnungen Aktiviert werden sowie der Zeitpunkt der Regenwarnung eingestellt werden. 
-Jede Aktion in dieser Kategorie löst eine Datenbankaktion aus. Wenn die Regenwarnung aktiviert wird, wird der Device Token von dem Gerät in die 
-Datenbank hochgeladen, beim Deaktivieren wird der Device Token gelöscht. Wenn der Zeitpunkt der Regenwarnung verändert wird, wird der Device 
-Token in der Datenbank von einer Kollektion in eine andere Kollektion verschoben.   
-Alle gemachten Einstellungen werden in sogenannten Shared Preferences gespeichert, damit sie auch nach App Start immer noch vorhanden sind. 
-Die Shared Preferences sind eine Key-Value Datenbank die auf dem Gerät gespeichert wird. Bei App Start werden die Einstellungen aus den Shared 
-Preferences gelesen und auf globale Variablen gespeichert. Diese Variablen sind dafür entscheidend, welche Einstellungen wiederhergestellt werden. 
-In der folgenden Abbildung kann der Datenfluss nachdem der Zeitpunkt der Regenwarnung verändert wurde nachvollzogen werden.  
+Jede Aktion in dieser Kategorie löst eine Datenbankaktion aus. 
+Wenn die Regenwarnung aktiviert wird, wird der Device Token von dem Gerät in die Datenbank hochgeladen, beim Deaktivieren wird der Device Token gelöscht. 
+Wenn der Zeitpunkt der Regenwarnung verändert wird, wird der Device Token in der Datenbank von einer Kollektion in eine andere Kollektion verschoben.   
+Alle gemachten Einstellungen werden in sogenannten Shared Preferences gespeichert, damit sie auch nach App Start immer noch vorhanden sind.   
+In Abbildung \ref*{fig:sequence_diagram_change_settings} ist der Datenfluss beim anpassen des Zeitpunktes für die Regenwarnung 
+nachvollzogen werden. 
+In der folgenden Abbildung kann der Datenfluss nachdem der Zeitpunkt der Regenwarnung verändert wurde nachvollzogen werden.
 
 \begin{figure}[H]
  \centering
@@ -52,7 +53,15 @@ In der folgenden Abbildung kann der Datenfluss nachdem der Zeitpunkt der Regenwa
 \end{figure}
 
 \subsubsection{Der Appstart}
-Hier alles beschreiben was beim starten der App passiert. 
+Während dem Appstart wird die App für die Verwendung vorbereitet, Einstellungen werden wieder hergestellt und
+die aktuellen Regenvorhersagen werden aus der Datenbank heruntergeladen. 
+Die Einstellungen können dabei aus den Shared Preferences ausgelesen werden. 
+Die Shared Preferences sind eine lokale Key-Value Datenbank, in der alle benutzerspezifischen Daten gespeichert werden. 
+Bei dem App Start werden die Einstellungen aus den Shared Preferences gelesen und auf globale Variablen gespeichert, somit
+sind sie während der Laufzeit der App dynamisch verfügbar. 
+Außerdem wird bei dem ersten Appstart die Position in dem Vorhersage Bild berechnet. 
+Diese wird benötigt um aus den Vorhersage Bildern den richtigen Pixel auszulesen und in der Vorhersageliste anzuzeigen.
+Der Appstart ist in folgender Abbildung schematisch dargestellt. 
 
 \begin{figure}[H]
  \centering
@@ -61,7 +70,7 @@ Hier alles beschreiben was beim starten der App passiert.
 \label{fig:sequence_diagram_app_start}
 \end{figure}
 
-\subsubsection*{Die Berechnung der Regenintensität}
+\subsubsection{Die Berechnung der Regenintensität}
 Zu beginn wurde angenommen, dass die App nur in Konstanz verwendet werden soll. 
 Im Laufe des Projektes stellte sich jedoch heraus, dass die entwickeleten Netze in der Lage sind, Vorhersagen 
 für ganz Deutschland zu machen. Da die Software Architektur nicht für eine solche Anwendung ausgelegt war, 
@@ -81,7 +90,7 @@ in dem entsprechnden Pixel berechnet.
 Es wird eine Liste mit ForecastListItem Objekten erstellt. Diese wird global gespeichert und in der Vorhersage Liste angezeigt. 
 Aktuell können nur beim App Start und durch manuelles auslösen eines Updates die Vorhersage Daten aktualisiert werden.   
 
-\subsubsection*{Berechnung des Pixels} \label{sec: pixel_berechnung}
+\subsubsection{Berechnung des Pixels} \label{sec: pixel_berechnung}
 Um die Regensituation an dem jeweiligen Ort des Users auszuwerten, muss der Pixel in dem Vorhersagebild berechnet werden. 
 Hierfür dienen drei verschiedene Listen. Diese Listen wurden in Python mit der Wradlib erstellt, und anschließend 
 im JSON Format in die App übertragen. 
@@ -148,29 +157,41 @@ Keine weiteren Frameworks nötig\\
 Alles dabei, UI, Widgets, Animationen\\
 
 \subsubsection{Projektstruktur}
+Der gesamte Code der App ist in die fünf Ordner DataObjects, global, screens, services und Widgets aufgeteilt. 
+Die erste verwendete Datei ist main.dart. In dieser wird festgelegt welcher Screen als erstes nach dem Start 
+aufgerufen wird und die Bottom Navigation wird konfiguriert. 
+Für jeden Screen der App gibt es eine .dart datei in dem Ordner Screens. 
 Welche Files gibt es? \\
 Welche Klassen gibt es? \\
 Wie arbeitet was zusammen? \\
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth,angle=0]{abb/projektstruktur}
+  \caption{Die Projektstruktur der App}
+ \label{fig:projektstruktur_app}
+ \end{figure}
 
 \subsection{Cloudfunktionen}
-Was ist eine Cloudfunktion? \\
-Was macht die Cloudfunktion? \\
-Wie funktioniert eine Cloudfunktion? \\
+Mit den Cloud Funktionen von Firebase kann Backend-Code direkt auf den Servern von Google gespeichert und ausgeführt werden. 
+Dabei ist es möglich, auf bestimmte Datenbank Aktionen zu reagieren. 
+Diese Funktionalität wird verwendet, um Push Benachrichtigungen zu senden. 
+Der Code wird in Java Script geschrieben und anschließend als Cloud Funktion hochgeladen. 
 
 \subsubsection{Push Benachrichtigungen}\label{sec:Pushbenachrichtigungen}
-Zum Warnen der Benutzer, wenn es eine Regenvorhersage gibt werden Push Nachrichten verwendet. Der Zeitpunkt der Push Benachrichtigungen kann in der App 
-eingestellt werden. So kann man sich zwischen 5 und 30 Minuten vor dem bevorstehenden Regen warnen lassen.  
-Um eine Push Benachrichtigung zu versenden speichert der Server ein Dokument in der Firebase welches alle für die Push Benachrichtigung relevanten Informationen 
-enthält. Dazu gehört zum Beispiel Der Titel, der Text und wie lange es noch bis zu dem Regen braucht.   
-Es wurde eine Cloud Funktion in der Firebase hinterlegt, welche darauf reagiert, dass ein neues Dokument vom Server gespeichert wurde. 
-Daraufhin liest die Cloud Funktion aus gesonderten Kollektionen die Device Tokens aus, für welche die Push Benachrichtigung gedacht ist.   
-Dafür wurden verschiedene Kollektionen angelegt in welchen die Device Tokens von jedem Gerät gespeichert wurden. 
-Je nach dem zu welchem Zeitpunkt ein User die Regenwarnung erhalten möchte, wird sein Device Token in eine andere Kollektion gespeichert.   
-Die Cloud Funktion liest also aus dem Dokument vom Server, welches alle Informationen zu der Push Benachrichtigung enthält, aus, wie langes 
-es noch bis zu Regen dauert. Daraufhin liest es aus der Kollektion für den jeweiligen Zeitpunkt alle Device Tokens aus die nun benachrichtigt 
-werden müssen und schickt die Push Benachrichtigung raus.   
-Wenn der Benutzer den Zeitpunkt zu dem er benachrichtigt werden möchte verändert, wird sein Device Token aus der einen Kollektion gelöscht, 
-und zu einer anderen hinzugefügt.
+Zum Warnen der Benutzer, wenn es eine Regenvorhersage gibt, werden Push Nachrichten verwendet. 
+Der Zeitpunkt der Push Benachrichtigungen kann in der App eingestellt werden. 
+So kann man sich zwischen 5 und 60 Minuten vor dem bevorstehenden Regen warnen lassen.  
+Um eine Push Benachrichtigung zu versenden speichert der Server ein Dokument in der Firebase welches alle für die 
+Push Benachrichtigung relevanten Informationen enthält. 
+Dazu gehört zum Beispiel der Push Benachrichtigungs Titel und Text, sowie die Zeit bis der Regen eintritt.
+Sobald das neue Dokument mit den Informationen für die Push Benachrichtigung hochgeladen wurde, wird eine Callback 
+Funktion in form einer Cloudfunktion aufgerufen.
+Je nach dem zu welchem Zeitpunkt ein User die Regenwarnung erhalten möchte, wird sein Device Token in eine andere 
+Kollektion gespeichert.   
+Außerdem wird je nach Region in der sich der User befindet, sein Token in einer anderen Kollektion gespeichert. 
+Nur die Tokens, die sowohl mit dem Zeitpunkt, als auch mit der Region, aus dem vom Server hochgeladenen Dokument übereinstimmen, 
+sollen eine Push Benachrichtigung erhalten. 
+Die Funktion findet diese Schnittmenge und weiß somit, welche Geräte eine Pushbenachrichtigung erhalten sollen. 
 
 \begin{figure}[h]
  \centering
@@ -179,12 +200,16 @@ und zu einer anderen hinzugefügt.
 \label{fig:funktionsweise_pushnachrichten_senden}
 \end{figure}
 
-\subsubsection{Vorgehen bei Entwicklung}
-Da für die Entwicklung einer IOS App MacOS benötigt werden, wurde die komplette App unter Linux entwickelt und während dem Entwicklungsprozess nur auf 
-Android Geräten getestet. Als die Grundfunktionalitäten verfügbar waren wurde die App mithilfe einer VirtualBox auf der MacOS installiert wurde auf einem 
-IPhone installiert.\\   
-Softwaretests   \\
-Welche Tests und warum? \\   
+\subsection{Vorgehen bei Entwicklung}
+In Flutter entwickelte Apps können sowohl auf Android als auch auf IOS ausgeführt werden. 
+Um eine Flutter App auf einem IPhone auszuführen, wird allerdings MacOS als Betriebssystem benötigt. 
+Da während des Entwicklungsprozesses nur ein Linux Rechner zur Verfügung stand, wurde die App lange Zeit nur unter
+Android getestet. 
+Erst gegen ende des Projektes wurde der Code für IOS kompiliert und für das IPhone angepasst.  
+Da die gesamte Pipeline zu beginn noch nicht funktioniert hat, wurde der für die App relevante Teil der Pipeline simuliert.
+Dazu wurde ein Python Programm geschrieben, welches reale Daten in die Firebase pushed. 
+Somit war es möglich, gekapselt vom rest des Projektes zu arbeiten, und die App fertig zu stellen. 
+ 
 
 
     
