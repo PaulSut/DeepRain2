@@ -1,5 +1,5 @@
 \section{Gesamtsystem}\label{gesamtsystem}
-Die komplette Datenpipeline von dem Server des DWD bis zur Darstellung in der App sieht wie folgend aus.  
+In folgender Abbildung ist die komplette Datenpipeline von dem Server des DWD bis zur Darstellung in der App zu sehen.  
 
 \begin{figure}[htb]
  \centering
@@ -8,9 +8,10 @@ Die komplette Datenpipeline von dem Server des DWD bis zur Darstellung in der Ap
 \label{fig:Beschreibung}
 \end{figure}
 
-Der DWD stellt alle fünf Minuten die neusten Regendaten für Deutschland im Binär Format zur Verfügung. Diese werden heruntergeladen und in der Datenaufbereitung 
-verwendet um PNGs zu generieren (Siehe Kapitel “Datenaufbereitung”). Dieses PNGs werden im Anschluss verwendet um eine Regenvorhersage zu machen 
-(Siehe Kapitel “Regenvorhersage / Netze”). Der Output der Regenvorhersage ist wieder ein PNG. 
+Der DWD stellt alle fünf Minuten die neusten Regendaten für Deutschland im Binär Format auf dem Opendata Server des DWD zur Verfügung. 
+Diese werden heruntergeladen und in der Datenaufbereitung verwendet um PNGs zu generieren (Siehe Kapitel “Datenaufbereitung”). 
+Dieses PNGs werden im Anschluss verwendet um eine Regenvorhersage zu machen (Siehe Kapitel “Regenvorhersage / Netze”). 
+Der Output der Regenvorhersage ist wieder ein PNG. 
 Dieses PNG wird in der Firebase gespeichert und auf allen Geräten mit der installierten App angezeigt (Siehe Kapitel “App und Datenbank”). 
 Der Übersichtlichkeit halber haben wir das gesamte Projekt in die drei Komponenten “Datenbeschaffung |\& Vorverarbeitung”, “Vorhersage” und 
 “App |\& Datenbankhandling” aufgeteilt.  

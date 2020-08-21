@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7445) (preloaded format=pdflatex 2020.6.21)  19 AUG 2020 11:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7445) (preloaded format=pdflatex 2020.6.21)  20 AUG 2020 12:30
 entering extended mode
 **/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.tex
 (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.tex
@@ -718,55 +718,42 @@ File: abb/Gesamtsystem.png Graphic file (type png)
 Package pdftex.def Info: abb/Gesamtsystem.png  used on input line 6.
 (pdftex.def)             Requested size: 256.07741pt x 432.87535pt.
 )
-Overfull \hbox (24.33136pt too wide) in paragraph at lines 11--238
-\T1/lmr/m/n/12 Binär Format zur Verfügung. Diese werden heruntergeladen und in der Datenaufbereitung
+Overfull \hbox (20.66014pt too wide) in paragraph at lines 11--238
+\T1/lmr/m/n/12 daraus generierten PNG's. In der Komponente Vorhersage werden die Regenvorhersage
  []
 
 
-Overfull \hbox (24.80095pt too wide) in paragraph at lines 11--238
-\T1/lmr/m/n/12 Datenbeschaffung |& Vorverarbeitung, Vorhersage und App |& Datenbankhandling
- []
-
-
-Overfull \hbox (26.5015pt too wide) in paragraph at lines 11--238
-\T1/lmr/m/n/12 aufgeteilt. Die Komponente Datenbeschaffung |& Vorverarbeitung reicht vom Download
- []
-
-
-Overfull \hbox (9.0235pt too wide) in paragraph at lines 11--238
-\T1/lmr/m/n/12 der Binär - Daten beim DWD bis zu den daraus generierten PNG's. In der Komponente
+Overfull \hbox (32.30849pt too wide) in paragraph at lines 11--238
+\T1/lmr/m/n/12 mithilfe von neuronalen Netzen gemacht. In der Komponente App |& Datenbankhandling
  []
 
 [1 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/Gesamtsystem.png>] (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/daten/die_daten.tex
-Overfull \hbox (6.95851pt too wide) in paragraph at lines 2--3
+Overfull \hbox (6.95851pt too wide) in paragraph at lines 2--5
 \T1/lmr/m/n/12 Aneichungs verfahren (RADOLAN) zur Verfügung gestellt. Das RADOLAN verfahren
  []
 
 
-Overfull \hbox (90.04134pt too wide) in paragraph at lines 2--3
+Overfull \hbox (90.04134pt too wide) in paragraph at lines 2--5
 \T1/lmr/m/n/12 über 2000 Bodenniederschlagsstationen (https://www.dwd.de/DE/leistungen/radolan/radolan.html).
  []
 
 <abb/daten_stationsuebersicht.png, id=122, 782.925pt x 558.085pt>
 File: abb/daten_stationsuebersicht.png Graphic file (type png)
 <use abb/daten_stationsuebersicht.png>
-Package pdftex.def Info: abb/daten_stationsuebersicht.png  used on input line 6.
+Package pdftex.def Info: abb/daten_stationsuebersicht.png  used on input line 8.
 (pdftex.def)             Requested size: 256.07741pt x 182.53362pt.
 <abb/radolan_koordinatensystem_aufbau.png, id=123, 709.65125pt x 495.8525pt>
 File: abb/radolan_koordinatensystem_aufbau.png Graphic file (type png)
 <use abb/radolan_koordinatensystem_aufbau.png>
-Package pdftex.def Info: abb/radolan_koordinatensystem_aufbau.png  used on input line 16.
+Package pdftex.def Info: abb/radolan_koordinatensystem_aufbau.png  used on input line 25.
 (pdftex.def)             Requested size: 341.43437pt x 238.57394pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
 [2 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/daten_stationsuebersicht.png (PNG copy)>]
 <abb/karte_abdeckung_daten.png, id=129, 665.48625pt x 605.26125pt>
 File: abb/karte_abdeckung_daten.png Graphic file (type png)
 <use abb/karte_abdeckung_daten.png>
-Package pdftex.def Info: abb/karte_abdeckung_daten.png  used on input line 26.
+Package pdftex.def Info: abb/karte_abdeckung_daten.png  used on input line 40.
 (pdftex.def)             Requested size: 256.07741pt x 232.90161pt.
-) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/datenaufbereitung/die_datenaufbereitung.tex
+) [3 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/radolan_koordinatensystem_aufbau.png>] (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/datenaufbereitung/die_datenaufbereitung.tex
 Overfull \hbox (16.7671pt too wide) in paragraph at lines 2--5
 \T1/lmr/m/n/12 Regentage abbilden als es tatsächlich regnet. Daraufhin wurde das bisher vorgenommene
  []
@@ -776,26 +763,26 @@ Overfull \hbox (35.2702pt too wide) in paragraph at lines 2--5
 \T1/lmr/m/n/12 welcher durch den Maximalwert der Radardaten geteilt wurde. So erhält man transformierte
  []
 
-[3 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/radolan_koordinatensystem_aufbau.png> </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/karte_abdeckung_daten.png (PNG copy)>]
 <abb/datenaufbereitung_beispiel.png, id=136, 652.4375pt x 439.6425pt>
 File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
 <use abb/datenaufbereitung_beispiel.png>
 Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 8.
 (pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
+[4 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/karte_abdeckung_daten.png (PNG copy)>]
 File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
 <use abb/datenaufbereitung_beispiel.png>
 Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 17.
 (pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
- [4 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/datenaufbereitung_beispiel.png (PNG copy)>]
 File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
 <use abb/datenaufbereitung_beispiel.png>
 Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 27.
 (pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
+ [5 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/datenaufbereitung_beispiel.png (PNG copy)>]
 File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
 <use abb/datenaufbereitung_beispiel.png>
 Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 34.
 (pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
- [5]
+
 Overfull \hbox (6.05615pt too wide) in paragraph at lines 39--41
 \T1/lmr/m/n/12 dargestellt werden kann. Der folgende Plot zeigt die Verteilung der noch verbleibenden
  []
@@ -804,7 +791,7 @@ File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
 <use abb/datenaufbereitung_beispiel.png>
 Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 44.
 (pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
-
+[6]
 Overfull \hbox (7.19662pt too wide) in paragraph at lines 49--51
 []\T1/lmr/m/n/12 Noch immer befindet sich der gröÿte Teil der Datenpunkte im kleinem Wertebereich.
  []
@@ -818,22 +805,22 @@ File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
 <use abb/datenaufbereitung_beispiel.png>
 Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 54.
 (pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
-[6]
 File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
 <use abb/datenaufbereitung_beispiel.png>
 Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 63.
 (pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
+[7]
 File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
 <use abb/datenaufbereitung_beispiel.png>
 Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 72.
 (pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
-) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/neuronale_netze/die_neuronalen_netze.tex) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/app_datenbank.tex [7] (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/app_datenbank_uebersicht.tex
+) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/neuronale_netze/die_neuronalen_netze.tex) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/app_datenbank.tex (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/app_datenbank_uebersicht.tex
 <abb/app_datenbank_komponente_uebersicht.png, id=153, 1046.91125pt x 251.94125pt>
 File: abb/app_datenbank_komponente_uebersicht.png Graphic file (type png)
 <use abb/app_datenbank_komponente_uebersicht.png>
 Package pdftex.def Info: abb/app_datenbank_komponente_uebersicht.png  used on input line 6.
 (pdftex.def)             Requested size: 256.07741pt x 61.62427pt.
-
+ [8]
 Overfull \hbox (0.86182pt too wide) in paragraph at lines 11--16
 []\T1/lmr/m/n/12 Die App dient zur Visualisierung der Daten und macht somit die Regenvorhersagen
  []
@@ -843,8 +830,8 @@ Overfull \hbox (16.47157pt too wide) in paragraph at lines 11--16
 \T1/lmr/m/n/12 und das senden der Push Benachrichtigungen, welche für die Regenwarnungen gebraucht
  []
 
-) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/firebase.tex) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/datenbank_und_cloudspeicher.tex [8 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/app_datenbank_komponente_uebersicht.png>]
-<abb/datenbank_aufbau_Ã¼bersicht.png, id=160, 813.0375pt x 357.335pt>
+) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/firebase.tex) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/datenbank_und_cloudspeicher.tex
+<abb/datenbank_aufbau_Ã¼bersicht.png, id=159, 813.0375pt x 357.335pt>
 File: abb/datenbank_aufbau_Ã¼bersicht.png Graphic file (type png)
 <use abb/datenbank_aufbau_Ã¼bersicht.png>
 Package pdftex.def Info: abb/datenbank_aufbau_Ã¼bersicht.png  used on input line 8.
@@ -854,7 +841,7 @@ Overfull \hbox (25.92523pt too wide) in paragraph at lines 2--12
 \T1/lmr/m/n/12 NOSQL Datenbanksystem. Die Daten werden in sogenannte Kollektionen und Dokumente
  []
 
-) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/server.tex
+[9 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/app_datenbank_komponente_uebersicht.png>]) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/server.tex
 Overfull \hbox (10.85368pt too wide) in paragraph at lines 13--1
 \T1/lmr/m/n/12 gespeichert wird. Die Eine Kollektion steht für den Zeitpunkt in dem die Regenwarnung
  []
@@ -875,8 +862,8 @@ Overfull \hbox (6.51495pt too wide) in paragraph at lines 2--1
  []
 
 
-Overfull \hbox (5.55637pt too wide) in paragraph at lines 2--1
-\T1/lmr/m/n/12 zu den Netzen entwickelt werden. Wenn die Netze eine neue Regenvorhersage getroffen
+Overfull \hbox (10.45232pt too wide) in paragraph at lines 2--1
+\T1/lmr/m/n/12 zu den Netzen entwickelt werden. Wenn die Netze eine neue Regenvorhersage berechnet
  []
 
 
@@ -884,28 +871,28 @@ Overfull \hbox (17.6757pt too wide) in paragraph at lines 2--1
 \T1/lmr/m/n/12 haben, werden die daraus resultierenden Vorhersage Bilder in den Firestore hochgeladen.
  []
 
-[9 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/datenbank_aufbau_Ã¼bersicht.png>]
-<abb/screenshot_forecast_list.jpg, id=169, 722.7pt x 1284.8pt>
+[10 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/datenbank_aufbau_Ã¼bersicht.png>]
+<abb/screenshot_forecast_list.jpg, id=173, 722.7pt x 1284.8pt>
 File: abb/screenshot_forecast_list.jpg Graphic file (type jpg)
 <use abb/screenshot_forecast_list.jpg>
 Package pdftex.def Info: abb/screenshot_forecast_list.jpg  used on input line 15.
 (pdftex.def)             Requested size: 128.0387pt x 227.6272pt.
-<abb/screenshot_forecast_map.jpg, id=170, 722.7pt x 1284.8pt>
+<abb/screenshot_forecast_map.jpg, id=174, 722.7pt x 1284.8pt>
 File: abb/screenshot_forecast_map.jpg Graphic file (type jpg)
 <use abb/screenshot_forecast_map.jpg>
 Package pdftex.def Info: abb/screenshot_forecast_map.jpg  used on input line 16.
 (pdftex.def)             Requested size: 128.0387pt x 227.6272pt.
-<abb/screenshot_settings.jpg, id=171, 722.7pt x 1284.8pt>
+<abb/screenshot_settings.jpg, id=175, 722.7pt x 1284.8pt>
 File: abb/screenshot_settings.jpg Graphic file (type jpg)
 <use abb/screenshot_settings.jpg>
 Package pdftex.def Info: abb/screenshot_settings.jpg  used on input line 17.
 (pdftex.def)             Requested size: 128.0387pt x 227.6272pt.
- [10]
+
 Overfull \hbox (13.46078pt too wide) in paragraph at lines 22--25
 \T1/lmr/m/n/12 Auf diesem Screen werden die von den Netzen berechneten Regenvorhersagen angezeigt.
  []
 
-
+[11 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/screenshot_forecast_list.jpg> </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/screenshot_forecast_map.jpg> </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/screenshot_settings.jpg>]
 Overfull \hbox (7.65926pt too wide) in paragraph at lines 27--34
 \T1/lmr/m/n/12 Einstellungen eingestellt wurde. Mit dem Slider kann der Zeitpunkt eingestellt werden,
  []
@@ -925,13 +912,12 @@ Overfull \hbox (39.30873pt too wide) in paragraph at lines 36--47
 \T1/lmr/m/n/12 Regenwarnung eingestellt werden. Jede Aktion in dieser Kategorie löst eine Datenbankaktion
  []
 
-[11 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/screenshot_forecast_list.jpg> </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/screenshot_forecast_map.jpg> </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/screenshot_settings.jpg>]
-<abb/sequence_diagram_change_settings.png, id=187, 766.865pt x 695.59875pt>
+<abb/sequence_diagram_change_settings.png, id=184, 766.865pt x 695.59875pt>
 File: abb/sequence_diagram_change_settings.png Graphic file (type png)
 <use abb/sequence_diagram_change_settings.png>
 Package pdftex.def Info: abb/sequence_diagram_change_settings.png  used on input line 50.
 (pdftex.def)             Requested size: 341.43437pt x 309.70499pt.
-
+[12]
 Overfull \hbox (20.55174pt too wide) in paragraph at lines 56--65
 \T1/lmr/m/n/12 werden wieder hergestellt und die aktuellen Regenvorhersagen werden aus der Datenbank
  []
@@ -946,23 +932,23 @@ Overfull \hbox (37.74655pt too wide) in paragraph at lines 56--65
 \T1/lmr/m/n/12 benutzerspezifischen Daten gespeichert werden. Bei dem App Start werden die Einstellungen
  []
 
-[12 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/sequence_diagram_change_settings.png>]
-<abb/sequence_diagram_app_start.png, id=193, 1391.1975pt x 1410.26875pt>
+<abb/sequence_diagram_app_start.png, id=192, 1391.1975pt x 1410.26875pt>
 File: abb/sequence_diagram_app_start.png Graphic file (type png)
 <use abb/sequence_diagram_app_start.png>
 Package pdftex.def Info: abb/sequence_diagram_app_start.png  used on input line 68.
 (pdftex.def)             Requested size: 341.43437pt x 346.11064pt.
-
+[13 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/sequence_diagram_change_settings.png>]
 Overfull \hbox (12.44916pt too wide) in paragraph at lines 74--87
 \T1/lmr/m/n/12 Architektur nicht für eine solche Anwendung ausgelegt war, mussten einige Änderungen
  []
 
-[13 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/sequence_diagram_app_start.png>]
+
 Overfull \hbox (10.19371pt too wide) in paragraph at lines 88--92
 \T1/lmr/m/n/12 Es wird eine Liste mit ForecastListItem Objekten erstellt. Diese wird global gespeichert
  []
 
-<abb/listen_pixel_berechnung.png, id=200, 472.76625pt x 118.4425pt>
+[14 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/sequence_diagram_app_start.png>]
+<abb/listen_pixel_berechnung.png, id=204, 472.76625pt x 118.4425pt>
 File: abb/listen_pixel_berechnung.png Graphic file (type png)
 <use abb/listen_pixel_berechnung.png>
 Package pdftex.def Info: abb/listen_pixel_berechnung.png  used on input line 105.
@@ -987,18 +973,18 @@ Overfull \hbox (21.84724pt too wide) in paragraph at lines 119--135
 \T1/lmr/m/n/12 Begriff Flutter abgebildet. Das in Kombination mit eigenem Interesse an dem Framework,
  []
 
-[14 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/listen_pixel_berechnung.png>]
-<abb/flutter_google_trends.png, id=206, 1124.2pt x 238.8925pt>
+[15 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/listen_pixel_berechnung.png>]
+<abb/flutter_google_trends.png, id=211, 1124.2pt x 238.8925pt>
 File: abb/flutter_google_trends.png Graphic file (type png)
 <use abb/flutter_google_trends.png>
 Package pdftex.def Info: abb/flutter_google_trends.png  used on input line 138.
 (pdftex.def)             Requested size: 341.43437pt x 72.55408pt.
- [15 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/flutter_google_trends.png (PNG copy)>]
+ [16 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/flutter_google_trends.png (PNG copy)>]
 Underfull \hbox (badness 10000) in paragraph at lines 152--158
 
  []
 
-<abb/projektstruktur.png, id=212, 254.9525pt x 460.72125pt>
+<abb/projektstruktur.png, id=216, 254.9525pt x 460.72125pt>
 File: abb/projektstruktur.png Graphic file (type png)
 <use abb/projektstruktur.png>
 Package pdftex.def Info: abb/projektstruktur.png  used on input line 169.
@@ -1008,12 +994,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 160--172
 
  []
 
-[16]
+
 Overfull \hbox (26.58992pt too wide) in paragraph at lines 175--179
 \T1/lmr/m/n/12 Benachrichtigungen zu senden. Der Code wird in Java Script geschrieben und anschlieÿend
  []
 
-
+[17 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/projektstruktur.png (PNG copy)>]
 Overfull \hbox (19.39818pt too wide) in paragraph at lines 181--195
 \T1/lmr/m/n/12 Zum Warnen der Benutzer, wenn es eine Regenvorhersage gibt, werden Push Nachrichten
  []
@@ -1023,7 +1009,7 @@ Overfull \hbox (5.04637pt too wide) in paragraph at lines 181--195
 \T1/lmr/m/n/12 Dokument übereinstimmen, sollen eine Push Benachrichtigung erhalten. Die Funktion
  []
 
-<abb/funktionsweise_pushnachrichten_senden.png, id=217, 648.17157pt x 392.96812pt>
+<abb/funktionsweise_pushnachrichten_senden.png, id=221, 648.17157pt x 392.96812pt>
 File: abb/funktionsweise_pushnachrichten_senden.png Graphic file (type png)
 <use abb/funktionsweise_pushnachrichten_senden.png>
 Package pdftex.def Info: abb/funktionsweise_pushnachrichten_senden.png  used on input line 198.
@@ -1033,7 +1019,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 199--199
 [][][]|\T1/lmr/m/n/12 Funktionsweise des Prozesses zum senden von Push -
  []
 
-[17 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/projektstruktur.png (PNG copy)>])) [18 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/funktionsweise_pushnachrichten_senden.png>]
+[18 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/funktionsweise_pushnachrichten_senden.png>])) [19]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 253.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 253.
  (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.aux)
@@ -1048,17 +1034,17 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 253.
  ) 
 Here is how much of TeX's memory you used:
- 14239 strings out of 482730
- 245900 string characters out of 2949056
+ 14240 strings out of 482730
+ 245907 string characters out of 2949056
  784805 words of memory out of 3000000
  29580 multiletter control sequences out of 15000+200000
  572066 words of font info for 52 fonts, out of 3000000 for 9000
  4 hyphenation exceptions out of 8191
  50i,11n,93p,10175b,538s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/home/till/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-ec.enc}</home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmbx12.pfb></home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmr10.pfb></home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmr12.pfb></home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmr17.pfb></home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmssbx10.pfb>
-Output written on /home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.pdf (22 pages, 2303660 bytes).
+Output written on /home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.pdf (23 pages, 2304477 bytes).
 PDF statistics:
- 332 PDF objects out of 1000 (max. 8388607)
- 73 named destinations out of 1000 (max. 500000)
+ 336 PDF objects out of 1000 (max. 8388607)
+ 74 named destinations out of 1000 (max. 500000)
  270 words of extra memory for PDF output out of 10000 (max. 10000000)
 
