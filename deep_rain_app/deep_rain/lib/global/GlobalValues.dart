@@ -34,7 +34,7 @@ List<String> AppCoordinateList;
 List<String> AppLatitudeList;
 List<String> AppLongitudeList;
 //demo mode activated or deactivated
-bool AppSwitchDemoMode;
+bool AppSwitchDemoMode = false; 
 var AppPixel;
 
 class GlobalValues{
@@ -251,6 +251,7 @@ class GlobalValues{
 
   //Variable which store if demo mode is activated or deactivated
   setAppSwitchDemoMode(bool SwitchDemoMode) async{
+    AppSwitchDemoMode = SwitchDemoMode;
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool('AppSwitchRainWarning', SwitchDemoMode);
 

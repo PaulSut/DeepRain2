@@ -79,6 +79,7 @@ flutter:
   assets:
     - assets/
     - assets/ForecastList/
+    - assets/DemoImages/
     - assets/data/listCoordinates.json
     - assets/data/listLatitudeComplete.json
     - assets/data/listLongitudeComplete.json
@@ -98,7 +99,6 @@ flutter:
   fonts:
       - family:  MyFlutterApp
         fonts:
-         - asset: assets/fonts/MyFlutterApp.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

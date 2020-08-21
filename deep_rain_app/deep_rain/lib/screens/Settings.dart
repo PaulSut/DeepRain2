@@ -206,11 +206,6 @@ class _LoadingState extends State<Settings> {
                 switchValue: _globalValues.getAppSwitchDemoMode(),
                 onToggle: (bool value) {
                   setState(() {
-                    if(value == true){
-                      print('Set false');
-                    }else if(value == false){
-                      print('Set true');
-                    }
                     _globalValues.setAppSwitchDemoMode(!_globalValues.getAppSwitchDemoMode());
                   });
                 },
