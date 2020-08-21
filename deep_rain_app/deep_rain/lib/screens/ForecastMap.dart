@@ -29,6 +29,8 @@ class _ForecastMapState extends State<ForecastMap> {
 
   List<String> time_steps = ['loading', 'loading'];
 
+  List<String> demo_images = ['1702031500.png', '1702031505.png', '1702031510.png', '1702031515.png', '1702031520.png', '1702031525.png', '1702031530.png', '1702031535.png', '1702031540.png', '1702031545.png', '1702031550.png', '1702031555.png', '1702031600.png', '1702031605.png', '1702031610.png', '1702031615.png', '1702031620.png', '1702031625.png', '1702031630.png', '1702031635.png', '1702031635.png'];
+
   @override
   Widget build(BuildContext context) {
 
@@ -42,7 +44,7 @@ class _ForecastMapState extends State<ForecastMap> {
     } else {
       // set the imageFile to the Image from the DataHolder
       this.setState(() {
-        imageFile = imageData[currentDivison];
+          imageFile = imageData[currentDivison];
       });
     }
 
@@ -79,7 +81,7 @@ class _ForecastMapState extends State<ForecastMap> {
                   OverlayImage(
                     bounds: LatLngBounds(LatLng(54.5790457, 2.0735617), LatLng(47.07113758, 14.6087025)),
                     opacity: 0.8,
-                    imageProvider: imageFile == null ? AssetImage('assets/error.png') : Image.memory(imageFile).image,
+                    imageProvider: AppSwitchDemoMode == true ? AssetImage('assets/DemoImages/' + demo_images[currentDivison]) : (imageFile == null ? AssetImage('assets/error.png') : Image.memory(imageFile).image),
                   ),
                 ],
                 ),
@@ -95,6 +97,7 @@ class _ForecastMapState extends State<ForecastMap> {
                   rating = newRating;
                   currentDivison = newRating ~/ (1 / numberOfDivisions);
                 });
+                print(currentDivison);
               },
               divisions: numberOfDivisions-1,
               label: time_steps[(rating*(numberOfDivisions-1)).toInt()],
