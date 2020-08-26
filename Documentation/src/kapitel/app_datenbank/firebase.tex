@@ -1,3 +1,15 @@
 \subsection{Firebase}\label{firebase}
-Firebase ist eine Entwicklungsplattform für mobile Apps. Diese stellt verschiedene Services zur Verfügung welche es ermöglichen effizient Apps für IOS und Android zu entwickeln. Die Firebase ist ein zentraler Baustein der Komponente und wird in jeder Unterkomponente verwendet, weshalb hier einführend ein Überblick gegeben werden soll. Firebase eine Datenbank und einen Cloudspeicher zur Verfügung welcher genutzt wird um die Regendaten und Vorhersage PNGs auf den Geräten anzuzeigen und mit dem Server zu synchronisieren. Abgesehen von dem Datenbankservice übernimmt Firebase auch die Authentifizierung der einzelnen Geräte und es wäre möglich das Usermanagement zu handhaben, was in deepRain aber nicht benötigt wird. Des Weiteren werden die In-App Messaging dienste von Firebase verwendet um die Regenwarnungen in Form von Push Benachrichtigungen zu senden. Die genaue Funktionsweise wird in dem Kapitel “Push Nachrichten” beschrieben.   
-Firebase ist bis zu einem gewissen Punkt der Verwendung komplett kostenlos. Wird dieser Punkt überschritten, sind die kosten von der tatsächlichen Nutzung abhängig. In der kostenlosen Version enthalten sind 1 GB Cloudspeicher, von welchem aktuell nur ein Bruchteil für die 20 PNGs verwendet wird. Des Weiteren können am Tag bis zu 20.000 Dokumente geschrieben werden, aktuell werden ca. 400 Dokumente geschrieben. Außerdem können 125.000 Dokumente gelesen werden, was ca. 2500 Appstarts am Tag entspricht und ca. 10.000 Push Benachrichtigungen im Monat versend werden.   
+Firebase ist eine Entwicklungsplattform für mobile Apps. 
+Diese stellt verschiedene Services zur Verfügung, welche es ermöglichen, effizient Apps für IOS und Android zu entwickeln. 
+Die Firebase ist ein zentraler Baustein der Komponente und wird in jeder Unterkomponente verwendet, weshalb hier einführend 
+ein Überblick gegeben werden soll. 
+Firebase stellt eine Datenbank und einen Cloud-Speicher zur Verfügung, welcher genutzt wird, um die User zu verwalten und die 
+Vorhersage PNGs auf den Geräten anzuzeigen.
+Des Weiteren werden die In-App Messaging Dienste von Firebase verwendet, um die Regenwarnungen in Form von Push Benachrichtigungen zu senden. 
+Die genaue Funktionsweise wird in dem Kapitel “Push Nachrichten” beschrieben.   
+Firebase ist bis zu einem gewissen Punkt der Verwendung komplett kostenlos. 
+Wird dieser Punkt überschritten, sind die Kosten von der tatsächlichen Nutzung abhängig. 
+In der kostenlosen Version enthalten sind 1 GB Cloud-Speicher, von welchem aktuell nur ein Bruchteil für die 20 PNGs 
+verwendet wird. Des Weiteren können am Tag bis zu 20.000 Dokumente geschrieben und 125.000 Dokumente gelesen werden. 
+Durch die komplett überarbeitete Datenbank und Softwarearchitektur wurden die Datenbanknutzung so weit verringert, 
+dass diese Limitierungen bei Weitem nicht erreicht werden sollten.
