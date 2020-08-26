@@ -13,6 +13,7 @@
 \label{fig:daten_stationsuebersicht}
 \end{figure}
 
+\noindent
 Die RADOLAN Daten für die Netze werden über den Opendata Server vom DWD zur Verfügung gestellt. 
 Die Binärdaten werden je nach Jahr in Form eines 1100x900 oder 900x900 Pixel Gitter über Deutschland gelegt.  
 Dabei entspricht jeder Pixel 1km x 1km. Jeder Pixel in dem Pixel Koordinatensystem hat dabei zugehörige Höhen und 
@@ -42,19 +43,24 @@ Das Gleiche ist auch bei den Höhengraden zu beobachten. Die Ursache hierfür is
 Um die Qualität der aus den RADAR Daten gewonnenen PNGs zu überprüfen, wurden die PNGs mit den Niederschlagsdaten von der 
 Bodenstation in Konstanz verglichen. 
 Die Daten der Station stehen in ein und zehnminütiger Auflösung zur Verfügung. 
-Da sich herausstellte, dass bei der einminütigen Auflösung Daten Fehlen, wurden die Daten der zehnminütigen Auflösung verwendet.
-Im ersten Schritt sollte die bereits berechnete Position von Konstanz in dem Vorhersage PNG bestätigt werden.
+Da bei der einminütigen Auflösung Daten Fehlen, wurden die Daten der zehnminütigen Auflösung verwendet.
+Dafür musste aus den RADAR Daten jeder zweite Datensatz entfernt werden. 
+Im ersten Schritt sollte die bereits berechnete Position von Konstanz, in dem Vorhersage PNG, bestätigt werden.
 Dazu wurde die Korrelation zwischen der Regenstation in Konstanz und allen Pixel berechnet. 
-Diese Korrelationen sind in Abbildung \ref{fig:karte_korrelation} grafisch dargestellt. 
+Diese Korrelationen sind in Abbildung \ref{fig:karte_korrelation} grafisch dargestellt.
+Dabei stellen hellere Farben eine höhere Korrelation dar. 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth,angle=0]{abb/Korrelation_Karte}
     \caption[Korrelationen der Regendaten in Kartenform]{Korrelation der Regendaten in Konstanz mit jedem Pixel}
    \label{fig:karte_korrelation}
 \end{figure}
+
+\noindent 
 Das rote Quadrat stellt den Pixel mit der größten Korrelation dar, das blaue Quadrat den bisher berechneten Pixel von Konstanz. 
 Die Abweichung dieser beiden Pixel voneinander lässt sich durch die kleine, für die Korrelation verwendete Datenmenge erklären. 
 Wie man an der Position von Konstanz sieht, ist das Vorhersage PNG um 180° an der vertikalen Achse gespiegelt.
+
 
 \noindent
 Um sicherzugehen, dass die für die Vorhersage verwendeten Daten mit dem tatsächlichen Niederschlag in Konstanz übereinstimmen, wurden sie grafisch veranschaulicht. 
@@ -62,8 +68,8 @@ In Abbildung \ref{fig:radar_station_daten_vergleich} ist der Niederschlag aus de
 Es ist zu erkennen, dass die Regenstärke tendenziell leicht abweicht, während der Zeitpunkt des Regens sehr gut übereinstimmt.  
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth,angle=0]{abb/radar_station_daten_vergleich}
-    \caption[Radar und Stationsdaten]{Die Radar und Stationsdaten für 3 Monate im Vergleich}
+    \includegraphics[width=1\textwidth,angle=0]{abb/radar_station_daten_vergleich_June}
+    \caption[Radar und Stationsdaten]{Die Radar und Stationsdaten für Juni im Vergleich}
    \label{fig:radar_station_daten_vergleich}
 \end{figure}
  

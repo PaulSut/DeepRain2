@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7445) (preloaded format=pdflatex 2020.6.21)  21 AUG 2020 15:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7445) (preloaded format=pdflatex 2020.6.21)  26 AUG 2020 07:57
 entering extended mode
 **/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.tex
 (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.tex
@@ -780,39 +780,35 @@ Package pdftex.def Info: abb/daten_stationsuebersicht.png  used on input line 11
 <abb/radolan_koordinatensystem_aufbau.png, id=130, 709.65125pt x 495.8525pt>
 File: abb/radolan_koordinatensystem_aufbau.png Graphic file (type png)
 <use abb/radolan_koordinatensystem_aufbau.png>
-Package pdftex.def Info: abb/radolan_koordinatensystem_aufbau.png  used on input line 22.
+Package pdftex.def Info: abb/radolan_koordinatensystem_aufbau.png  used on input line 23.
 (pdftex.def)             Requested size: 341.43437pt x 238.57394pt.
 [2 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/daten_stationsuebersicht.png (PNG copy)>]
 <abb/karte_abdeckung_daten.png, id=136, 665.48625pt x 605.26125pt>
 File: abb/karte_abdeckung_daten.png Graphic file (type png)
 <use abb/karte_abdeckung_daten.png>
-Package pdftex.def Info: abb/karte_abdeckung_daten.png  used on input line 36.
+Package pdftex.def Info: abb/karte_abdeckung_daten.png  used on input line 37.
 (pdftex.def)             Requested size: 256.07741pt x 232.90161pt.
 <abb/Korrelation_Karte.png, id=138, 925.4575pt x 1111.15125pt>
 File: abb/Korrelation_Karte.png Graphic file (type png)
 <use abb/Korrelation_Karte.png>
-Package pdftex.def Info: abb/Korrelation_Karte.png  used on input line 51.
+Package pdftex.def Info: abb/Korrelation_Karte.png  used on input line 54.
 (pdftex.def)             Requested size: 341.43437pt x 409.94965pt.
  [3 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/radolan_koordinatensystem_aufbau.png> </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/karte_abdeckung_daten.png (PNG copy)>]
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 57.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 62.
  (/home/till/.miktex/texmfs/install/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-Overfull \hbox (18.2644pt too wide) in paragraph at lines 55--58
-\T1/lmr/m/n/12 Pixel voneinander lässt sich durch die kleine, für die Korrelation verwendete Datenmenge
- []
+) [4 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/Korrelation_Karte.png>]
+<abb/radar_station_daten_vergleich_June.png, id=151, 552.0625pt x 459.7175pt>
+File: abb/radar_station_daten_vergleich_June.png Graphic file (type png)
+<use abb/radar_station_daten_vergleich_June.png>
+Package pdftex.def Info: abb/radar_station_daten_vergleich_June.png  used on input line 71.
+(pdftex.def)             Requested size: 426.79135pt x 355.41457pt.
 
-<abb/radar_station_daten_vergleich.png, id=146, 1847.90375pt x 593.21625pt>
-File: abb/radar_station_daten_vergleich.png Graphic file (type png)
-<use abb/radar_station_daten_vergleich.png>
-Package pdftex.def Info: abb/radar_station_daten_vergleich.png  used on input line 65.
-(pdftex.def)             Requested size: 426.79135pt x 137.00713pt.
-
-Overfull \hbox (17.24901pt too wide) in paragraph at lines 59--68
+Overfull \hbox (17.24901pt too wide) in paragraph at lines 65--74
 \T1/lmr/m/n/12 Um sicherzugehen, dass die für die Vorhersage verwendeten Daten mit dem tatsächlichen
  []
 
-[4 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/Korrelation_Karte.png>]) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/datenaufbereitung/die_datenaufbereitung.tex
+) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/datenaufbereitung/die_datenaufbereitung.tex
 Overfull \hbox (16.7671pt too wide) in paragraph at lines 2--5
 \T1/lmr/m/n/12 Regentage abbilden als es tatsächlich regnet. Daraufhin wurde das bisher vorgenommene
  []
@@ -822,21 +818,21 @@ Overfull \hbox (35.2702pt too wide) in paragraph at lines 2--5
 \T1/lmr/m/n/12 welcher durch den Maximalwert der Radardaten geteilt wurde. So erhält man transformierte
  []
 
-<abb/datenaufbereitung_beispiel.png, id=153, 652.4375pt x 439.6425pt>
+[5 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/radar_station_daten_vergleich_June.png>]
+<abb/datenaufbereitung_beispiel.png, id=158, 652.4375pt x 439.6425pt>
 File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
 <use abb/datenaufbereitung_beispiel.png>
 Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 8.
 (pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
-[5 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/radar_station_daten_vergleich.png>]
 File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
 <use abb/datenaufbereitung_beispiel.png>
 Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 17.
 (pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
+ [6 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/datenaufbereitung_beispiel.png (PNG copy)>]
 File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
 <use abb/datenaufbereitung_beispiel.png>
 Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 27.
 (pdftex.def)             Requested size: 256.07741pt x 172.56006pt.
- [6 </home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/abb/datenaufbereitung_beispiel.png (PNG copy)>]
 File: abb/datenaufbereitung_beispiel.png Graphic file (type png)
 <use abb/datenaufbereitung_beispiel.png>
 Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 34.
@@ -878,15 +874,10 @@ Package pdftex.def Info: abb/datenaufbereitung_beispiel.png  used on input line 
 File: abb/app_datenbank_komponente_uebersicht.png Graphic file (type png)
 <use abb/app_datenbank_komponente_uebersicht.png>
 Package pdftex.def Info: abb/app_datenbank_komponente_uebersicht.png  used on input line 6.
-(pdftex.def)             Requested size: 256.07741pt x 61.62427pt.
+(pdftex.def)             Requested size: 426.79135pt x 102.70839pt.
  [9]
-Overfull \hbox (0.86182pt too wide) in paragraph at lines 11--16
+Overfull \hbox (0.86182pt too wide) in paragraph at lines 11--17
 []\T1/lmr/m/n/12 Die App dient zur Visualisierung der Daten und macht somit die Regenvorhersagen
- []
-
-
-Overfull \hbox (18.36488pt too wide) in paragraph at lines 11--16
-\T1/lmr/m/n/12 und das Senden der Push Benachrichtigungen, welche für die Regenwarnungen gebraucht
  []
 
 ) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/firebase.tex) (/home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/kapitel/app_datenbank/datenbank_und_cloudspeicher.tex
@@ -1137,14 +1128,14 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 254.
  ) 
 Here is how much of TeX's memory you used:
  15129 strings out of 482730
- 261636 string characters out of 2949056
+ 261681 string characters out of 2949056
  803625 words of memory out of 3000000
  30435 multiletter control sequences out of 15000+200000
  572441 words of font info for 53 fonts, out of 3000000 for 9000
  4 hyphenation exceptions out of 8191
  67i,12n,117p,10175b,537s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/home/till/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-ec.enc}{/home/till/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-ts1.enc}</home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmbx12.pfb></home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmr10.pfb></home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmr12.pfb></home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmr17.pfb></home/till/.miktex/texmfs/install/fonts/type1/public/lm/lmssbx10.pfb>
-Output written on /home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.pdf (24 pages, 2618380 bytes).
+Output written on /home/till/Dokumente/Teamprojekt/git_neuste_version/Documentation/src/Hauptdatei.pdf (24 pages, 2586408 bytes).
 PDF statistics:
  359 PDF objects out of 1000 (max. 8388607)
  78 named destinations out of 1000 (max. 500000)
