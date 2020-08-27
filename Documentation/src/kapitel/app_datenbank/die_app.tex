@@ -34,20 +34,20 @@ um die aktuelle Regensituation an jedem beliebigen Ort zu prüfen.
 Dabei wird standardmäßig der Kartenausschnitt von der Region angezeigt, die in den Einstellungen eingestellt wurde. 
 Mit dem Slider kann der Zeitpunkt eingestellt werden, in dem die Regenvorhersage angezeigt werden soll. 
 Mit dem Aktualisieren Button in der Actionbar können die neusten Bilder vom Server heruntergeladen werden. 
+Aufgrund der verhältnismäßig großen Datenmenge werden die neuen Vorhersagen nicht automatisch vom Server heruntergeladen. 
 Im Normalfall werden die Bilder einmalig bei dem App Start heruntergeladen.
 
 \subsubsection*{Einstellungen}
 Auf diesem Screen können alle relevanten Einstellungen gemacht werden. Dazu gehört z.B. die Sprache der Benutzeroberfläche. 
 Außerdem kann die Region eingestellt werden. 
 Die hier ausgewählte Region wird standardmäßig auf der Karte angezeigt und nur für diese Region werden Regenwarnungen gesendet. 
-Unter der Benachrichtigungs Kategorie können die Regenwarnungen aktiviert werden sowie der Zeitpunkt der Regenwarnung eingestellt werden. 
-Jede Aktion in dieser Kategorie löst eine Datenbankaktion aus. 
+Unter der Benachrichtigungs Kategorie können die Regenwarnungen aktiviert und der Zeitpunkt der Regenwarnung eingestellt werden. 
+Jede Aktion in dieser Kategorie löst verschiedene Datenbankaufrufe aus. 
 Wenn die Regenwarnung aktiviert wird, wird der Devicetoken von dem Gerät in die Datenbank hochgeladen, beim Deaktivieren wird der Devicetoken gelöscht. 
 Wenn der Zeitpunkt der Regenwarnung verändert wird, wird der Devicetoken in der Datenbank von einer Kollektion in eine andere Kollektion verschoben.   
 Alle gemachten Einstellungen werden in sogenannten Shared Preferences gespeichert, damit sie auch nach Appstart noch vorhanden sind.   
 In Abbildung \ref*{fig:sequence_diagram_change_settings} ist der Datenfluss beim Anpassen des Zeitpunktes für die Regenwarnung 
 dargestellt. 
-In der folgenden Abbildung kann der Datenfluss, nachdem der Zeitpunkt der Regenwarnung verändert wurde, nachvollzogen werden.
 
 \begin{figure}[H]
  \centering
@@ -86,7 +86,7 @@ Hat die App bspw. 1000 Nutzer in verschiedenen Regionen,
 müssen für jeden der 1000 Nutzer alle fünf Minuten 20 Vorhersage Daten hochgeladen werden. 
 Daher musste der Datenfluss so umstrukturiert werden, dass der neue Regenwert direkt in der App berechnet wird. 
 Dabei muss das Handy den entsprechenden, eigenen Pixel auf der Karte berechnen. 
-Die Berechnung hierfür ist verhältnismäßig aufwendig, da mit großen Listen (810.000) Einträgen gearbeitet werden muss.
+Die Berechnung hierfür ist verhältnismäßig aufwendig, da mit großen Listen (810.000 Einträge) gearbeitet werden muss.
 Auf diese Berechnung wird in Abschnitt \ref{sec: pixel_berechnung} eingegangen. 
 
 Wenn die Bilder beim Appstart oder bei einem Vorhersageupdate heruntergeladen werden, wird von jedem Bild der Regenwert 
