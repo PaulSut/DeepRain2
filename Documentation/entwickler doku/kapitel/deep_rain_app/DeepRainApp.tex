@@ -1,0 +1,43 @@
+\section{deep\_rain\_app}
+In diesem Ordner befindet sich der gesamte Code, der für jegliche Funktionalitäten der App benötigt wird. 
+Dazu gehört der Eigentliche App Code (deep\_rain), die Cloudfunction, welche für die Pushbenachrichtigung benötigt wird (FlutterCloudFunction),
+sowie der Serversimulator (deeprainFireBase). 
+
+\subsection{deep\_rain}
+Die relevanten Ordner sind lib und assets. 
+\subsubsection{assets}
+Hier befinden sich alle in der App benötigten Bilder, sowie andere statische Daten. 
+Dazu gehören zum Beispiel die Listen mit hilfe welcher der Pixel in den Vorhersage PNGs berechnet werden kann (data). 
+
+\subsubsection{lib}
+In diesem Ordner befindet sich der komplette, selbst geschriebene, Flutter Code. 
+\subsubsection*{DataObjects}
+In diesem Ordner befinden sich die Klasse, welche die Vorhersage PNGs speichert (DataHolder), sowie
+die Klasse die das Objekt beschreibt, welches in der Liste angezeigt wird (ForecastListItem).
+\subsubsection*{global}
+In diesem Ordner befinden sich zwei Datenklassen welche von der gesamten App verwendet werden. 
+In der Datei GlobalValues befinden sich alle global gespeicherten Variablen.
+In der Datei UIText befinden sich alle angezeigten Texte in verschiedenen Sprachen. 
+\subsubsection*{screens}
+Es gibt für jeden Screen eine Datei in dem Ordner screens. Diese werden über die Datei main.dart verwaltet. 
+\subsubsection*{Services}
+Database.dart kümmert sich um die Kommunktion mit der Datenbank und ist die einzige Klasse, welche direkt mit der Datenbank 
+kommuniziert. Alle Datenbank aktionen laufen über diese Klasse. 
+FindPixel.dart stellt eine Funktion zur Verfügung, mit welcher es möglich ist, den eigenen Pixel im Vorhersage PNG zu finden. 
+ProvideForecastData stellt die aktuellen ForecastListItems für die Forecast List zur verfügung. 
+In PushNotification.dart wird festgelegt, wie sich die App bei dem öffnen und erhalten einer Pushbenachrichtigung verhalten soll. 
+\subsubsection*{Widgets}
+Die beiden .dart Dateien in diesem Ordner legen fest, wie die ForecastListe aussehen soll. forecast\_list\_widget stellt 
+dabei die gesamte Liste dar, forecast\_tile nur eine Zeile aus der Liste. 
+
+\subsection{deepRainFireBase}
+Database.py simuliert den Server, wenn dieser nicht aktiv ist. 
+Es werden Regenvorhersagen in die Datenbank geladen und Push Benachrichtigungen getriggert.
+Viele Teile dieser Klasse sind später auch Teil der verwendeten Pipeline geworden. 
+Diese Klasse ist nur ein Werkzeug, um die weiterentwicklung der App zu vereinfachen. 
+
+\subsection{FlutterCloudFunction}
+In dem Ordner functions, befindet sich in der Datei index.js die eigentliche CloudFunktion.
+Die Funktionsweise dieser Funktion ist in der Hauptdokumentation ausgeführt. 
+Um die änderungen an der CloudFunktion zu veröffentlichen und anzuwenden, muss diese zuerst über die Konsole 
+deployed werden. 
