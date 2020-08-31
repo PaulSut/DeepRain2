@@ -1,4 +1,5 @@
 import 'package:deep_rain/DataObjects/ForecastListItem.dart';
+//This class provide all the dataobjects for the forecast list. It is called, when new images are downloaded.
 
 //The list which is shown in the list of forecasts
 List<ForecastListItem> forecast_list;

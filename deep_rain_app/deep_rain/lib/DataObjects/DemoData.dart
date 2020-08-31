@@ -1,4 +1,7 @@
 import 'ForecastListItem.dart';
+/*
+If the demo mode is activated, the following data is shown in the list.
+ */
 
 List<ForecastListItem> DemoList = [
   ForecastListItem(time: '17:50', rainIntense: 20),
