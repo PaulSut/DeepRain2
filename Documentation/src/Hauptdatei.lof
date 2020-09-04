@@ -1,0 +1,18 @@
+\babel@toc {ngerman}{}
+\contentsline {figure}{\numberline {1}{\ignorespaces Das Gesamtsystem}}{1}{figure.caption.6}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Stationen Übersicht}}{2}{figure.caption.7}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Aufbau des Koordinatensystems von Binärdaten}}{3}{figure.caption.8}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Von Daten abgedeckte Fläche}}{3}{figure.caption.9}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Skizzierung der Vorhersage\relax }}{6}{figure.caption.10}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Klassifikationsschicht, $n$ variiert hierbei je nach Verteilung. Für die Zero-Inflated Poisson Verteilung ist $n$ gleich 2, für die Zero-Inflated Negativ Binomial Verteilung ist $n$ gleich 3, und für die Multinomiale Verteilung ist $n$ gleich 7 \relax }}{7}{figure.caption.11}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Abgespekte Version des Unets \relax }}{8}{figure.caption.12}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Aufbau der von uns verwendeten Inception Layer, angelehnt an die inception Layer im Paper \relax }}{8}{figure.caption.13}%
+\contentsline {figure}{\numberline {9}{\ignorespaces LSTM Architektur\relax }}{9}{figure.caption.14}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Komponentenübersicht App und Datenbankhandling}}{10}{figure.caption.15}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Datenbankarchitektur}}{11}{figure.caption.16}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Die drei Hauptscreens der App\relax }}{13}{figure.caption.17}%
+\contentsline {figure}{\numberline {13}{\ignorespaces Sequencediagram Einstellungen ändern}}{14}{figure.caption.21}%
+\contentsline {figure}{\numberline {14}{\ignorespaces Sequencediagram Appstart}}{15}{figure.caption.22}%
+\contentsline {figure}{\numberline {15}{\ignorespaces Der Exemplarische Aufbau der Listen zur Berechnung des eigenen Pixels\relax }}{16}{figure.caption.25}%
+\contentsline {figure}{\numberline {16}{\ignorespaces Entwicklung von Flutter}}{17}{figure.caption.26}%
+\contentsline {figure}{\numberline {17}{\ignorespaces Funktionsweise von Pushbenachrichtigungen}}{19}{figure.caption.27}%

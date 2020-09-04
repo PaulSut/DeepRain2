@@ -1,0 +1,600 @@
+% Festlegung des Allgemeinen Dokumentenformats
+\documentclass[a4paper,12pt,headsepline]{scrartcl}
+
+% Umlaute unter UTF8 nutzen
+\usepackage[utf8]{inputenc}
+
+% Variablen
+\input{latex_einstellungen/variablen}
+
+% weitere Pakete
+% Grafiken aus PNG Dateien einbinden
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subfig}
+%\usepackage{wrapfig}
+% aus SVG
+\usepackage{svg}
+
+% Deutsche Sonderzeichen und Silbentrennung nutzen
+\usepackage[ngerman]{babel}
+
+% Eurozeichen einbinden
+\usepackage[right]{eurosym}
+
+% Zeichenencoding
+\usepackage[T1]{fontenc}
+
+\usepackage{lmodern}
+
+% floatende Bilder ermöglichen
+%\usepackage{floatflt}
+
+% mehrseitige Tabellen ermöglichen
+\usepackage{longtable}
+
+% Unterstützung für Schriftarten
+%\newcommand{\changefont}[3]{ 
+%\fontfamily{#1} \fontseries{#2} \fontshape{#3} \selectfont}
+
+% Packet für Seitenrandabständex und Einstellung für Seitenränder
+\usepackage{geometry}
+\geometry{left=3cm, right=3cm, top=2.5cm, bottom=2cm}
+
+% Paket für Boxen im Text
+\usepackage{fancybox}
+
+% bricht lange URLs "schön" um
+\usepackage[hyphens,obeyspaces,spaces]{url}
+
+% Paket für Textfarben
+\usepackage{color}
+
+% Mathematische Symbole importieren
+\usepackage{amssymb}
+
+% auf jeder Seite eine Überschrift (alt, zentriert)
+%\pagestyle{headings}
+
+% erzeugt Inhaltsverzeichnis mit Querverweisen zu den Abschnitten (PDF Version)
+\usepackage[bookmarksnumbered,pdftitle={\titleDocument},hyperfootnotes=false]{hyperref}
+%\hypersetup{colorlinks, citecolor=red, linkcolor=blue, urlcolor=black}
+%\hypersetup{colorlinks, citecolor=black, linkcolor= black, urlcolor=black}
+
+% neue Kopfzeilen mit fancypaket
+\usepackage{fancyhdr} %Paket laden
+\pagestyle{fancy} %eigener Seitenstil
+\fancyhf{} %alle Kopf- und Fußzeilenfelder bereinigen
+\fancyhead[L]{\nouppercase{\leftmark}} %Kopfzeile links
+\fancyhead[C]{} %zentrierte Kopfzeile
+\fancyhead[R]{\thepage} %Kopfzeile rechts
+\renewcommand{\headrulewidth}{0.2pt} %obere Trennlinie
+%\fancyfoot[C]{\thepage} %Seitennummer
+%\renewcommand{\footrulewidth}{0.4pt} %untere Trennlinie
+
+% für Tabellen
+\usepackage{array}
+
+% Runde Klammern für Zitate
+%\usepackage[numbers,round]{natbib}
+
+% Festlegung Art der Zitierung - Havardmethode: Abkuerzung Autor + Jahr
+\bibliographystyle{alphadin}
+
+% Schaltet den zusätzlichen Zwischenraum ab, den LaTeX normalerweise nach einem Satzzeichen einfügt.
+%\frenchspacing
+
+% Paket für Zeilenabstand
+\usepackage{setspace}
+
+% für Bildbezeichner
+\usepackage{capt-of}
+
+% für Stichwortverzeichnis
+\usepackage{makeidx}
+
+% für Listings
+\usepackage{listings}
+\lstset{numbers=left, numberstyle=\tiny, numbersep=5pt, keywordstyle=\color{black}\bfseries, stringstyle=\ttfamily,showstringspaces=false,basicstyle=\footnotesize,captionpos=b}
+\lstset{language=java}
+
+% Indexerstellung
+\makeindex
+
+% Abkürzungsverzeichnis
+\usepackage[german]{nomencl}
+\let\abbrev\nomenclature
+
+% Abkürzungsverzeichnis LiveTex Version
+% Titel des Abkürzungsverzeichnisses
+\renewcommand{\nomname}{Abkürzungsverzeichnis}
+% Abstand zwischen Abkürzung und Erläuterung
+\setlength{\nomlabelwidth}{.25\textwidth}
+% Zwischenraum zwischen Abkürzung und Erläuterung mit Punkten
+\renewcommand{\nomlabel}[1]{#1 \dotfill}
+% Variation des Abstandes der einzelnen Abkürzungen zu einander
+\setlength{\nomitemsep}{-\parsep}
+% Index mit Abkürzungen erzeugen
+\makenomenclature
+%\makeglossary
+
+% Abkürzungsverzeichnis TeTEX Version
+% \usepackage[german]{nomencl}
+% \makenomenclature
+% %\makeglossary
+% \renewcommand{\nomname}{Abkürzungsverzeichnis}
+% \AtBeginDocument{\setlength{\nomlabelwidth}{.25\columnwidth}}
+% \renewcommand{\nomlabel}[1]{#1 \dotfill}
+% \setlength{\nomitemsep}{-\parsep}
+
+% Optional: Einzelne Zeilen am Anfang einer Seite unterdrücken (Schusterjungen)
+% \clubpenalty = 10000
+% Optional: Einzelne Zeilen am Ende einer Seite unterdrücken (Hurenkinder)
+% \widowpenalty = 10000
+% \displaywidowpenalty = 10000
+
+
+
+\usepackage{tikz}
+
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,petri, decorations.pathreplacing,shadows,calc}
+
+\definecolor{echoreg}{HTML}{2cb1e1}
+\definecolor{sublimedg}{HTML}{171813}
+\definecolor{lgry}{HTML}{aaaaaa}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+  
+
+\tikzset{%
+  cascaded/.style = {%
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -1ex,
+      shadow yshift = 1ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -1ex,
+      shadow yshift = 1ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -.5ex,
+      shadow yshift = .5ex,
+      draw=black,
+      thick,
+      fill = white},
+    fill = white, 
+    draw,
+    thick}}
+    
+\tikzset{%
+  cascadedd/.style = {%
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -4.5ex,
+      shadow yshift = 4.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -4ex,
+      shadow yshift = 4ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -3.5ex,
+      shadow yshift = 3.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -3ex,
+      shadow yshift = 3ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -2.5ex,
+      shadow yshift = 2.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -2ex,
+      shadow yshift = 2ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -1.5ex,
+      shadow yshift = 1.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -1ex,
+      shadow yshift = 1ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -.5ex,
+      shadow yshift = .5ex,
+      draw=black,
+      thick,
+      fill = white},
+    fill = white, 
+    draw,
+    thick}}
+    
+\tikzset{%
+  cascadeddd/.style = {%
+  	general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -9ex,
+      shadow yshift = 9ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -8.5ex,
+      shadow yshift = 8.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -8ex,
+      shadow yshift = 8ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -7.5ex,
+      shadow yshift = 7.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -7ex,
+      shadow yshift = 7ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -6.5ex,
+      shadow yshift = 6.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -6ex,
+      shadow yshift = 6ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -5.5ex,
+      shadow yshift = 5.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -5ex,
+      shadow yshift = 5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -4.5ex,
+      shadow yshift = 4.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -4ex,
+      shadow yshift = 4ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -3.5ex,
+      shadow yshift = 3.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -3ex,
+      shadow yshift = 3ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -2.5ex,
+      shadow yshift = 2.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -2ex,
+      shadow yshift = 2ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -1.5ex,
+      shadow yshift = 1.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -1ex,
+      shadow yshift = 1ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -.5ex,
+      shadow yshift = .5ex,
+      draw=black,
+      thick,
+      fill = white},
+    fill = white, 
+    draw,
+    thick}}
+
+
+\tikzset{%
+  cascaded3/.style = {%
+  	general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -9ex,
+      shadow yshift = 9ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -8.5ex,
+      shadow yshift = 8.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -8ex,
+      shadow yshift = 8ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -7.5ex,
+      shadow yshift = 7.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -7ex,
+      shadow yshift = 7ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -6.5ex,
+      shadow yshift = 6.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -6ex,
+      shadow yshift = 6ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -5.5ex,
+      shadow yshift = 5.5ex,
+      draw=black,
+      thick,
+      fill = white},
+
+    fill = white, 
+    draw,
+    thick}}
+
+
+\tikzset{
+test/.style = {%
+  	general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -9ex,
+      shadow yshift = 9ex,
+      draw=black,
+      thick,
+      fill = white}
+      }}
+
+
+\tikzset{
+slimconv/.style = {rectangle, 
+	dashed,
+	draw=sublimedg, 
+	fill=cyan,  
+	fill opacity=0.5,
+	very thin, 
+	minimum width=0.1em, 
+	minimum height=12em
+      }}
+
+
+\let\oldquote\quote
+\let\endoldquote\endquote
+\renewenvironment{quote}[2][]
+  {\if\relax\detokenize{#1}\relax
+     \def\quoteauthor{#2}%
+   \else
+     \def\quoteauthor{#2~---~#1}%
+   \fi
+   \oldquote}
+  {\par\nobreak\smallskip\hfill(\quoteauthor)%
+   \endoldquote\addvspace{\bigskipamount}}
+   %\usepackage{wrapfig}
+
+\newpage
+
+\begin{document}
+% hier werden die Trennvorschläge inkludiert
+\input{latex_einstellungen/trennung}
+
+% Schriftart Helvetica verwenden
+%\usepackage{helvet}
+%\renewcommand\familydefault{\sfdefault}
+
+% Titelseite %
+\input{latex_einstellungen/deckblatt}
+
+% römische Numerierung
+\pagenumbering{roman}
+
+% 1.5 facher Zeilenabstand
+\onehalfspacing
+
+\newpage
+
+
+% Einleitung / Abstract
+\thispagestyle{empty}
+\input{abstract}
+
+% einfacher Zeilenabstand
+\singlespacing
+
+\newpage
+% Seitenzählung bei Inhaltsverzeichnis beginnen
+\setcounter{page}{1}
+
+% Inhaltsverzeichnis anzeigen
+\thispagestyle{empty}
+\tableofcontents
+
+\newpage
+% das Abbildungsverzeichnis
+% Abbildungsverzeichnis soll im Inhaltsverzeichnis auftauchen
+\addcontentsline{toc}{section}{Abbildungsverzeichnis}
+% Verion 1: Abbildungsverzeichnis MIT führender Nummberierung endgueltig anzeigen
+\listoffigures
+
+% Verion 2: Abbildungsverzeichnis OHNE führende Nummberierung endgueltig anzeigen
+%\begingroup
+%\renewcommand\numberline[1]{}
+%\listofs
+%\endgroup
+
+
+% das Tabellenverzeichnis
+%\newpage
+% Tabellenverzeichnis soll im Inhaltsverzeichnis auftauchen
+%\addcontentsline{toc}{section}{Tabellenverzeichnis}
+% \fancyhead[L]{Abbildungsverzeichnis / Abkürzungsverzeichnis} %Kopfzeile links
+% Tabellenverzeichnis endgültig anzeigen
+%\listoftables
+
+%% WORKAROUND für Listings
+%\makeatletter% --> De-TeX-FAQ
+%\renewcommand*{\lstlistoflistings}{%
+%  \begingroup
+%    \if@twocolumn
+%      \@restonecoltrue\onecolumn
+%    \else
+%      \@restonecolfalse
+%    \fi
+%    \lol@heading
+%    \setlength{\parskip}{\z@}%
+%    \setlength{\parindent}{\z@}%
+%    \setlength{\parfillskip}{\z@ \@plus 1fil}%
+%    \@starttoc{lol}%
+%    \if@restonecol\twocolumn\fi
+%  \endgroup
+%}
+%\makeatother% --> \makeatletter
+% das Listingverzeichnis
+%\newpage
+% Listingverzeichnis soll im Inhaltsverzeichnis auftauchen
+%\addcontentsline{toc}{section}{Listingverzeichnis}
+%\fancyhead[L]{Listingverzeichnis} %Kopfzeile links
+%\renewcommand{\lstlistlistingname}{Listingverzeichnis}
+%\lstlistoflistings
+%%%%
+
+% das Abkürzungsverzeichnis
+\newpage
+% Abkürzungsverzeichnis soll im Inhaltsverzeichnis auftauchen
+\addcontentsline{toc}{section}{Abkürzungsverzeichnis}
+% das Abkürzungsverzeichnis ausgeben
+\fancyhead[L]{Abkürzungsverzeichnis} %Kopfzeile links
+\input{latex_einstellungen/abkuezungen/abkuerzungen}
+\printnomenclature[3cm]
+
+
+%%%%%%% EINLEITUNG %%%%%%%%%%%%
+\newpage
+\fancyhead[L]{\nouppercase{\leftmark}} %Kopfzeile links
+
+% 1,5 facher Zeilenabstand
+\onehalfspacing
+
+% arabische Seitennummerierung ab hier
+\pagenumbering{arabic}
+
+\input{kapitel/gesamtsystem/Gesamtsystem}
+
+\input{kapitel/daten/die_daten}
+
+\input{kapitel/datenaufbereitung/die_datenaufbereitung}
+
+\input{kapitel/neuronale_netze/die_neuronalen_netze}
+
+\input{kapitel/app_datenbank/app_datenbank}
+
+
+% In dieser Datei ist viel Beispielcode für alle möglichen Arten von Formattierungen usw.
+%\input{beispiel_text}
+
+
+\end{document}

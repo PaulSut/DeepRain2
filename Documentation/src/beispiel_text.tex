@@ -1,0 +1,48 @@
+% einzelne Kapitel werden hier eingebunden
+\input{1_einleitung}
+\newpage
+
+\input{2_kap1}
+\newpage
+
+\input{3_kap2}
+\newpage
+
+% hier können weitere Kapitel angelegt und eingetragen werden
+% ....
+
+\input{7_ausblick}
+\newpage
+
+\input{8_fazit}
+
+\input{beispiel}
+
+% einfacher Zeilenabstand
+\singlespacing
+% Literaturliste soll im Inhaltsverzeichnis auftauchen
+\newpage
+\addcontentsline{toc}{section}{Literaturverzeichnis}
+% Literaturverzeichnis anzeigen
+\renewcommand\refname{Literaturverzeichnis}
+\bibliography{Hauptdatei}
+
+%% Index soll Stichwortverzeichnis heissen
+% \newpage
+% % Stichwortverzeichnis soll im Inhaltsverzeichnis auftauchen
+% \addcontentsline{toc}{section}{Stichwortverzeichnis}
+% \renewcommand{\indexname}{Stichwortverzeichnis}
+% % Stichwortverzeichnis endgültig anzeigen
+% \printindex
+
+\onehalfspacing
+% evtl. Anhang
+\newpage
+\addcontentsline{toc}{section}{Anhang}
+\fancyhead[L]{Anhang} %Kopfzeile links
+\input{anhang/anhang}
+
+% Eidesstattliche Erklärung
+\newpage
+\addcontentsline{toc}{section}{Eidesstattliche Erklärung}
+\input{erklaerung}
