@@ -391,7 +391,7 @@ minimum height=21.0em] (duh) at (2.75, -7.25) {};
 
 \newpage
 
-\noindent In der nachfolgenden Abbildung ist die von uns verwendete Architektur zu sehen. Diese Architektur ist angelehnt an die Inception-LSTM Layer des Papers ''Inception-inspired LSTM for Next-frame Video Prediction'' https://arxiv.org/pdf/1909.05622.pdf (VERLINKEN). Wie Eingangs erwähnt beschränkt die Hardware (und auch die größe der Bilder) unsere Architektur und aus diesem Grund werden nicht mehr LSTM-Layer gestackt, wie im Paper von XY beschrieben.
+\noindent In der nachfolgenden Abbildung ist die von uns verwendete Architektur zu sehen. Diese Architektur ist angelehnt an die Inception-LSTM Layer des Papers ''Inception-inspired LSTM for Next-frame Video Prediction'' von \cite{hosseini2019inceptioninspired}. Wie Eingangs erwähnt beschränkt die Hardware (und auch die größe der Bilder) unsere Architektur und aus diesem Grund werden nicht mehr LSTM-Layer gestackt, wie im Paper beschrieben.
 \begin{figure}[h]
  \centering
 \begin{tikzpicture}[thick,scale=0.8, every node/.style={scale=0.8},->,>=stealth',shorten >=1pt,auto,node distance=2cm,
@@ -509,7 +509,7 @@ minimum height=5em] (kl) at (12.5, -13) {Kl-Schicht};
 \noindent Unsere Architektur unterscheidet sich jedoch von der im Paper vorgestellten Architektur insofern, als dass die Inception-Layer nicht in das LSTM-Modul eingebaut sind.
 Wir verwenden hierbei herkömmliche Convolution-LSTM Layer. Die Inception-Layer sind hierbei lediglich vor oder nach den Convolution-LSTM Layern zu finden.
 Der Vorteil von Inception-Layer ist, dass diese in die Breite und nicht so sehr in die Tiefe gehen. Das hat zum Vorteil, dass beim aktualisieren der Gewichte der Gradient nicht so weit in das Netzwerk durchgereicht werden muss. Dadurch soll das Auftreten des vanishing Gradients vermindert werden und das aktualisieren der Gewichte bzw. das lernen verbessert werden.
-\cite{hosseini2019inceptioninspired}
+
 
 %\end{wrapfigure}
 

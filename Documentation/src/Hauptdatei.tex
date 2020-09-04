@@ -79,7 +79,10 @@
 %\usepackage[numbers,round]{natbib}
 
 % Festlegung Art der Zitierung - Havardmethode: Abkuerzung Autor + Jahr
-\bibliographystyle{alphadin}
+
+%\bibliographystyle{alphadin}
+%\bibliography{Hauptdatei}
+
 
 % Schaltet den zusätzlichen Zwischenraum ab, den LaTeX normalerweise nach einem Satzzeichen einfügt.
 %\frenchspacing
@@ -581,6 +584,13 @@ slimconv/.style = {rectangle,
 
 % arabische Seitennummerierung ab hier
 \pagenumbering{arabic}
+
+
+
+\nocite{*} % adds all references without citations to bibliography
+\bibliographystyle{apalike}
+\bibliography{Hauptdatei}
+
 
 \input{kapitel/gesamtsystem/Gesamtsystem}
 
