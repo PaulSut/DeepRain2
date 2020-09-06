@@ -517,38 +517,78 @@ Da der Hauptteil der Regendaten Null ist, also kein Regen vorhanden ist, liegt d
 Die Standardabweichung ist ebenfalls nahe Null, weshalb die Standardabweichung der Daten nicht auf Eins normieren (Dies würde zur Folge haben, dass Werte wesentlich größer als 1 sein können). 
 Die Eingangsdaten werden allerdings auf den Bereich zwischen Null und Eins normiert.\\
 
-\noindent Für den Ausgang der Netzwerke beschränkten wir uns auf einen 64x64 großen Pixelbereich, bei dem Konstanz in der Mitte liegt. Die Eingangsbilder bestehen aus einem 96x96 großen Pixelbereich um Konstanz. Regenfreie Bilder werden aussortiert, da diese Daten keinerlei Informationen beinhalten und das vorhandene Klassenungleichgewicht verstärken.
+\noindent Für den Ausgang der Netzwerke beschränkten wir uns auf einen 64x64 großen Pixelbereich, bei dem Konstanz in der Mitte liegt. Die Eingangsbilder bestehen aus einem 96x96 großen Pixelbereich um Konstanz. Regenfreie Bilder werden aussortiert, da diese Daten keinerlei Informationen beinhalten und das vorhandene Klassenungleichgewicht verstärken. Als Regularisierungsmaßnahme werden die Trainingsdaten pro Epoche um wenige Pixel verschoben, was zur Folge hat, dass das Netzwerk in jeder Epoche auf etwas unterschiedliche Daten trainiert. Als Kostenfunktion verwenden wir die Negative Loglikelihood.
+\\
 
-
-
+\noindent In der Nachfolgenden Abbildung sind die Trainingskurve für die beiden Architekturen zu sehen. Die hierfür Verwendete Verteilung ist die Zero-Inflated negative Binomial Verteilung.
 
 \begin{figure}[htb]
  \centering
  \includegraphics[width=1.0\textwidth,angle=0]{abb/Loss_zinfBinom.png}
- \caption{Skizzierung der Vorhersage}
-\label{fig:Vorhersage_skizze}
+ \caption{Trainingskurven für Zero-Inflated negativ Binomial verteilung}
+\label{fig:Inception-Conv-LSTM}
 \end{figure}
+
+\noindent Zu sehen ist, dass die Unet-Architektur schlechtere Performance als die LSTM-Architektur liefert. In dieser Abbildung scheint der Overfitting bereich noch nicht erreicht worden zu sein.
+Tatsächlich verbessern sich beide Architekturen noch marginal nach weiteren Epochen, aus Darstellungsgründen wurde die X-Achse auf 35 Epochen beschnitten.\\
+
+\noindent Zusätzlich zur Zero-Inflated negative Binomial Verteilung wurden beide Architekturen mit einer weiteren Verteilung trainiert. Hierfür verwenden wir die Multinomiale Verteilung, woebei wir die Daten in Sieben Klassen einteilen. Die geschieht durch logarithmisches skalieren der Daten. Dadurch soll zusätzlich dem Klassenungleichgewicht entgegengesteuert werden (Regenwerte im höheren Bereich kommen seltener vor). 
 
 \begin{figure}[htb]
  \centering
  \includegraphics[width=1.0\textwidth,angle=0]{abb/Categorical.png}
- \caption{Skizzierung der Vorhersage}
-\label{fig:Vorhersage_skizze}
+ \caption{Multinomiale Verteilung}
+\label{fig:multinomialeVerteilung}
 \end{figure}
 
-\begin{figure}[htb]
- \centering
- \includegraphics[width=1.0\textwidth,angle=0]{abb/ROC_ZINFBINOM.png}
- \caption{Skizzierung der Vorhersage}
-\label{fig:Vorhersage_skizze}
+\noindent In der obigen Abbildung sind die Trainingskurven der beiden Architekturen zu sehen. Auch hier ist zu sehen, dass die LSTM-Architektur der Unet-Architektur überlegen ist und dies eine bessere Performance liefert. Vergleicht man die Trainingskurven für beide Verteilungen sieht man, dass der NLL für die Multinomiale Verteilung etwa die Hälfte der Zero-Inflated negative Binomialverteilung entspricht.
+
+\newpage
+\subsection{Auswertung}
+
+
+
+\begin{figure}[h]
+\begin{tabular}{lllllll}
+\includegraphics[width=20mm]{abb/prediction/280_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/281_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/282_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/283_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/284_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/285_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/286_maxCont}
+\end{tabular}
+\caption{Vorhersage für die Zero-Inflated negative Binomialverteilung, erste Zeile entspricht dem momentanen Regen. Zeile zwei entspricht dem Regen in 30 Minuten. Zeile drei ist die 30 Minuten Vorhersage des Unets.
+Die letzte Zeile ist die 30 Minuten Vorhersage der LSTM-Architektur \label{fig:anomerz}}
 \end{figure}
 
-\begin{figure}[htb]
- \centering
- \includegraphics[width=1.0\textwidth,angle=0]{abb/ROC_Categorical.png}
- \caption{Skizzierung der Vorhersage}
-\label{fig:Vorhersage_skizze}
+
+
+
+
+\begin{figure}[h]
+\begin{tabular}{cc}
+\includegraphics[width=80mm]{abb/ROC_ZINFBINOM.png}&
+\includegraphics[width=80mm]{abb/ROC_Categorical.png}
+\end{tabular}
+\caption{ROC/AUR für beide Architekturen und beide Verteilungen. Links für die Zero-Inflated negativ Binomialverteilung und rechts für die Multinomialeverteilung.
+Die Auserwertung erfolgt für 20 verschiedene Thresholds. \label{fig:anomerz}}
 \end{figure}
+
+
+%\begin{figure}[htb]
+% \centering
+% \includegraphics[width=1.0\textwidth,angle=0]{abb/ROC_ZINFBINOM.png}
+% \caption{ROC/AUC für Zero-Inflated negative Binomialverteilung}
+%\label{fig:Vorhersage_skizze}
+%\end{figure}
+
+%\begin{figure}[htb]
+% \centering
+% \includegraphics[width=1.0\textwidth,angle=0]{abb/ROC_Categorical.png}
+% \caption{ROC/AUC für Multinomialeverteilung}
+%\label{fig:Vorhersage_skizze}
+%\end{figure}
 
 
 %\end{wrapfigure}
