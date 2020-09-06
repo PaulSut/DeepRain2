@@ -16,10 +16,10 @@ import os
 from Models.Lstm_conv import *
 
 
-physical_devices = tf.config.list_physical_devices('GPU')
-print("Num GPUs:", len(physical_devices))
-gpu = tf.config.experimental.list_physical_devices('GPU')
-tf.config.experimental.set_memory_growth(gpu[0], True)
+#physical_devices = tf.config.list_physical_devices('GPU')
+#print("Num GPUs:", len(physical_devices))
+#gpu = tf.config.experimental.list_physical_devices('GPU')
+#tf.config.experimental.set_memory_growth(gpu[0], True)
 
 BATCH_SIZE = 50
 DIMENSION = (96,96)
@@ -40,12 +40,14 @@ def getModel(compile_=True):
     if not os.path.exists(modelpath):
         os.mkdir(modelpath)
 
-    
-    y_transform = [cutOut([16,80,16,80])]
-    train,test = getData(BATCH_SIZE,
-                         DIMENSION,CHANNELS,
-                         timeToPred=30,
-                         y_transform=y_transform)
+
+    train = None
+    test = None
+    #y_transform = [cutOut([16,80,16,80])]
+    #train,test = getData(BATCH_SIZE,
+    #                     DIMENSION,CHANNELS,
+    #                     timeToPred=30,
+    #                     y_transform=y_transform)
 
     model = CNN_LSTM((*DIMENSION,CHANNELS))
     if compile_ == False:

@@ -58,7 +58,7 @@ def create_new_pngs(path_to_radar_data, path_to_images):
     return True
 
 def initTranformRadarToPng ():
-    RadarValues99 = np.asanyarray(pickle.load(open("RadarValues99PercentDatapoints.p", "rb")))
+    RadarValues99 = np.asanyarray(pickle.load(open("Utils/Workflow/RadarValues99PercentDatapoints.p", "rb")))
     maxValue = 40 # actual maxVal = maxVal + 99% Quanil (which is 1,39)
     remaining_range = 255-len(RadarValues99)
     scaleFactor = remaining_range/maxValue
