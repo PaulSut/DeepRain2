@@ -3,3 +3,5 @@ Models_weights
 Utils/URL.py
 *logs*
 *znBinom_eval*
+*checkpoints*
+*pycache*
