@@ -1,0 +1,5 @@
+GREEN = "\u001b[32m"
+YELLOW = "\u001b[33m"
+RED = "\u001b[31m"
+CYAN = "\u001b[36m"
+RESET = "\u001b[0m"
