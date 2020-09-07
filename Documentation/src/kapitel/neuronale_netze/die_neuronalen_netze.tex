@@ -546,7 +546,7 @@ Tatsächlich verbessern sich beide Architekturen noch marginal nach weiteren Epo
 \newpage
 \subsection{Auswertung}
 
-Wir beschränken uns zuerst auf die Auswertung der binären Klassifikation von Regen und kein Regen. Später werden wir für die verschiedenen Architekturen und Verteilungen die Klassifikation für die Regenvorhersage begutachten.
+Wir beschränken uns zuerst auf die Auswertung der binären Klassifikation von Regen und kein Regen. Später werden wir für die verschiedenen Architekturen und Verteilungen die Klassifikation für die Regenvorhersage begutachten. Die folgende Abbildung zeigt einen zufälligen Ausschnitt der Regenvorhersage für sieben aufeinanderfolgende Zeitschritte.
 
 \begin{figure}[h]
 \begin{tabular}{lllllll}
@@ -558,10 +558,13 @@ Wir beschränken uns zuerst auf die Auswertung der binären Klassifikation von R
 \includegraphics[width=20mm]{abb/prediction/285_maxCont}&
 \includegraphics[width=20mm]{abb/prediction/286_maxCont}
 \end{tabular}
-\caption{Vorhersage in Abständen von fünf Minuten für die Zero-Inflated negative Binomialverteilung, erste Zeile entspricht dem momentanen Regen. Zeile zwei entspricht dem tatsächlichen Regen in 30 Minuten. Zeile drei ist die 30 Minuten Vorhersage des Unets. Die letzte Zeile ist die 30 Minuten Vorhersage der LSTM-Architektur. Die Bilder sind kontrastmaximiert dargestellt. \label{fig:predNegBin}}
+\caption{Vorhersage in Abständen von fünf Minuten für die Zero-Inflated negative Binomialverteilung, erste Zeile entspricht dem momentanen Regen. Zeile zwei entspricht dem tatsächlichen Regen in 30 Minuten. Zeile drei ist die 30 Minuten Vorhersage des Unets. Zeile vier ist die 30 Minuten Vorhersage der LSTM-Architektur. Die Bilder sind kontrastmaximiert dargestellt. Die letzten beiden Zeilen stellen die korrekte (true positiv) und inkorrekte (false positiv) Regenvorhersage für die Unet- und die LSTM-Architektur (letzte Zeile) dar.\label{fig:predNegBin}}
 \end{figure}
 
-\noindent Anhand der Abbildung \ref{fig:predNegBin} ist zu sehen, dass für beide Architekturen tendenziell zu viel Regen vorhergesagt wird.
+\noindent Anhand der Abbildung \ref{fig:predNegBin} ist zu sehen, dass für beide Architekturen tendenziell zu viel Regen vorhergesagt wird. Hierbei ist anzumerken, dass die dargestellte Sequenz eine zufällig ausgewählte ist und nicht nach bestcase oder worstcase ausgewählt wurde. Zur Beurteilung der Szene ist anzumerken, dass diese eher einem worstcase entsprich, da die Regengebiete kleine Inseln sind, für die die Netzwerke Schwierigkeiten haben eine akurate Vorhersage zu treffen. Große zusammenhängende Regengebiete sind für die Netzwerke hingegen einfacher Vorherzusagen.
+Für die Erzeugung der Bilder wurde der Mittelwert der Verteilung genommen.\\
+
+
 
 
 \begin{figure}[h]
