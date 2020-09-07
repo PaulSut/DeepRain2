@@ -199,7 +199,7 @@ if __name__ == '__main__':
 
     upload_data_to_firbase(forecast_images, time_steps_of_images)
 
-
+    #this is needed to sort the forecasts in the right direction in the app
     abc = ['a', 'b', 'c', 'd','e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't']
     def upload_time_steps(time_steps):
         time_collection = db.collection('TimeSteps')
