@@ -190,8 +190,6 @@ class GlobalValues{
   }
 
   getAppPixel() async{
-    print('APPPIXEL');
-    print(AppPixel);
     // use the already calculated pixel
     if(AppPixel != null){
       return AppPixel;
@@ -204,7 +202,6 @@ class GlobalValues{
 
   // calculate the coordinates of the new pixel, based on AppRegion
   changeAppPixel() async{
-    print('Ich berechne jetzt den Pixel!');
     // get the string with all items of the list
     String coordinateListString = await loadListCoordinates();
     String latitudeListString = await loadListLatitude();
@@ -215,37 +212,18 @@ class GlobalValues{
     var longitudeListVar = await jsonDecode(longitudeListString);
     var latitudeListVar = await jsonDecode(latitudeListString);
 
-    print('TADAAA');
-    print(coordinateListVar[100]);
-    print(longitudeListVar[100]);
-    print(latitudeListVar[100]);
-
     double latitude = AppRegion.latitude;
     double longitude = AppRegion.longitude;
-    print(latitude);
-    print(longitude);
 
-    // here the right pixel should be calculated, not working yez, so always set [300,200]
-    //FindPixel hey = FindPixel();
-//    var longitude_min = longitudeListVar.reduce((curr, next) => curr < next? curr: next);
-//    var longitude_max = longitudeListVar.reduce((curr, next) => curr > next? curr: next);
-//    var latitude_min = latitudeListVar.reduce((curr, next) => curr < next? curr: next);
-//    var latitude_max = latitudeListVar.reduce((curr, next) => curr > next? curr: next);
-    //var pixels = hey.getClosest_Coordinate(longitudeListVar, latitudeListVar, 899, 0, 899, 0, AppRegion.longitude, AppRegion.latitude);
-
-    var pixels = [300,200];
-
-    print('The new Coordinates of the Pixel are: ');
-    print(pixels);
+    // calculate the pixel for the given lat and long values
+    FindPixel find_pixel = FindPixel();
+    var pixels = find_pixel.get_pixel_in_forecast_png(longitudeListVar, latitudeListVar, AppRegion.longitude, AppRegion.latitude);
 
     coordinateListVar = null;
     longitudeListVar = null;
     latitudeListVar  = null;
 
     await setAppPixel(pixels);
-
-    print('Ich berechne jetzt den Pixel! 5');
-
     return pixels;
   }
 

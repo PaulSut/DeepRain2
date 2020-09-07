@@ -49,6 +49,7 @@ dependencies:
   animated_text_kit: ^2.0.0
   image: ^2.1.13
   ml_linalg: ^12.14.0
+  matrix2d: ^0.0.7
 
 
 
