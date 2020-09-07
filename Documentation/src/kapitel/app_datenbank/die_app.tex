@@ -76,7 +76,7 @@ Der Appstart ist in folgender Abbildung schematisch dargestellt.
 
 \subsubsection{Die Berechnung der Regenintensität}
 Zu Beginn wurde angenommen, dass die App nur in Konstanz verwendet werden soll. 
-Im Laufe des Projektes stellte sich jedoch heraus, dass die entwickelten Netze in der Lage sind, Vorhersagen 
+Im Laufe des Projektes stellte sich jedoch heraus, dass die entwickelten Netze in Zukunft auch in der Lage seien könnten, Vorhersagen 
 für ganz Deutschland zu machen. Da die Softwarearchitektur nicht für eine solche Anwendung ausgelegt war, 
 mussten einige Änderungen vorgenommen werden. 
 Bis zu diesem Zeitpunkt wurden die Vorhersage Daten für jeden Pixel auf dem Server berechnet und im Anschluss in 
@@ -92,32 +92,43 @@ Auf diese Berechnung wird in Abschnitt \ref{sec: pixel_berechnung} eingegangen.
 Wenn die Bilder beim Appstart oder bei einem Vorhersageupdate heruntergeladen werden, wird von jedem Bild der Regenwert 
 in dem entsprechenden Pixel berechnet. 
 Es wird eine Liste mit ForecastListItem Objekten erstellt. Diese wird global gespeichert und in der Vorhersage Liste angezeigt. 
-Aktuell können nur beim App Start oder durch manuelles Auslösen eines Updates die Vorhersage Daten aktualisiert werden.  
+Aufgrund der verhältnismäßig hohen Datenmenge der 20 Vorhersage PNGs, werden aktuell nur beim App Start oder durch manuelles Auslösen eines Updates die Vorhersage Daten aktualisiert.
 
 \subsubsection{Berechnung des Pixels} \label{sec: pixel_berechnung}
 Um die Regensituation an dem jeweiligen Ort des Users auszuwerten, muss der Pixel in dem Vorhersagebild berechnet werden. 
-Hierfür dienen drei verschiedene Listen. Diese Listen wurden in Python mit der Wradlib erstellt, und anschließend 
-im JSON Format in die App übertragen. 
-Zwei der Listen enthalten alle Latitude bzw. Longitude Werte.
+Hierfür dienen zwei Listen welche die Latitude und Longitude Werte für jeden Pixel enthalten. 
 Die Koordinaten in den einzelnen Indizes kombiniert geben die Position der einzelnen Pixel im Weltkoordinatensystem an.
-In der dritten Liste steht zu jedem Index die jeweilig zugehörige Pixel Koordinate im Bild. 
-Somit steht jeder Index für eine Position im Weltkoordinatensystem, ausgedrückt durch Höhen und Breitengrad Informationen
-und der Abbildung dieser Position auf den Vorhersagebild.
+Diese Listen wurden in Python mit der Wradlib erstellt, und anschließend im JSON Format in die App übertragen. 
+Somit steht jeder Index für eine Position im Weltkoordinatensystem, ausgedrückt durch Höhen und Breitengrad Informationen.
 Da das Bild eine Auflösung von 900x900 Pixeln hat, sind diese Listen 810.000 Elemente groß.
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth,angle=0]{abb/listen_pixel_berechnung.png}
+  \includegraphics[width=0.6\textwidth,angle=0]{abb/listen_pixel_berechnung.png}
   \caption{Der Exemplarische Aufbau der Listen zur Berechnung des eigenen Pixels}
  \label{fig:sequence_diagram_app_start}
  \end{figure}
- Jeder User hat eine eigene Position in Deutschland, welche in Form von Höhen und Breitengrad angaben bekannt ist. 
- Diese wird durch die in den Einstellungen festgelegte Region bestimmt. 
- Es wird nun also ein Algorithmus gesucht, der mithilfe der Höhen und Breitengrad Informationen den Pixel im Bild findet, 
- der am besten zu diesen Koordinaten passt. 
- Nun wäre es natürlich möglich, durch alle Indizes zu Iterieren und somit den richtigen Pixel zu finden. Dieses Verfahren 
- ist aber sehr Zeit und rechenintensiv und daher nicht geeignet um es auf einem Smartphone auszuführen.
+ \noindent Jeder User hat eine eigene Position in Deutschland, welche in Form von Höhen und Breitengrad angaben bekannt ist. 
+ Diese wird durch die in den Einstellungen festgelegte Region geändert und festgelegt. 
+ Es wird nun ein Algorithmus gesucht der mithilfe von einer Koordinate, bestehend aus Latitude und Longitude werten, den dazugehörigen Pixel in dem Vorhersage PNG findet. 
+ Nun wäre es natürlich möglich, durch alle Indizes zu Iterieren und somit den richtigen Pixel zu finden. 
+ Dieses Verfahren ist aber sehr Zeitaufwändig und daher nicht geeignet um es während der Laufzeit der App anzuwenden.
 
- Wir brauchen noch eine Lösung!! 
+ \noindent Der erste Ansatz basierte auf dem Teile und Herrsche Prinzip. 
+ Dabei wurde das vorhersage PNG in 4 gleichgroße teile aufgeteilt und überprüft in welchem Quadrant sich das Gerät befindet.
+ Alle Quadranten, in denen sich das Gerät nicht befindet, wurden verworfen. 
+ Der übrige Quadrant wurde erneut in vier teile aufgeteilt. 
+ Dieser Vorgang wurde so oft wiederholt, bis nur noch ein Pixel übrig blieb. 
+ Wie bereits in \ref{die daten} beschrieben, ist der abgedeckte Kartenbereich nicht rechteckig. 
+ Die daraus resultierenden nichtlinearität verursachte in bestimmen Fällen fehler. 
+ Daher wurde ein neuer, stabilerer, Algorithmus entwickelt. 
+ 
+ \noindent Das neue Verfahren wird von den Problemen des alten Verfahrens nicht beeinflusst, ist dafür allerdings im durchschnitt ein bisschen langsamer. 
+ Dieser Unterschied ist für unsere Anwendung vernachlässigbar. 
+ Es wird an einem Startpixel gestartet, von dem aus die Distanz zu den Koordinaten des Gerätes berechnet wird. 
+ Dann wird die Distanz der Nachbarpixel zu den Koordinaten des Gerätes berechnet. 
+ Wenn eine verringerung der Distanz durch einen Nachbarpixel erzielt werden kann, wird einer der Nachbarpixel zu dem neuen betrachteten Kästchen. 
+ Von diesem aus werden wieder alle Nachbarpixel überprüft. 
+ Dieser Vorgang wird so oft wiederholt, bis keine Verbesserung der Distanz mehr erzielt werden kann.
 
 \subsubsection{Framework Entscheidung}\label{framework entscheidung}
 Bei der Entwicklung einer App steht die Frage der zu bedienenden Plattformen an erster Stelle. Soll die App zum Beispiel nur unternehmensintern verwendet 
