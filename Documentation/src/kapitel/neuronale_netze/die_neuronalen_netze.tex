@@ -512,7 +512,7 @@ Der Vorteil von Inception-Layer ist, dass diese in die Breite und nicht so sehr 
 
 \subsection{Training}
 Beide Architekturen werden mindestens 35 Epochen trainiert, wobei die Architektur mit den LSTM-Layern 1:30 Stunden benötigt, das Unet hingegen benötigt ca. 10 Minuten pro Epoche.
-Für das Training nutzen wir alle Daten der Jahre 2008 bis einschließlich 2017. Hierbei werden 75\% der Daten für das Training und 25\% der Daten für das Testset verwendet.
+Für das Training nutzen wir alle Daten der Jahre 2008 bis einschließlich 2017. Das entspricht insgesamt ca. 1 051 200 Zeitschritten. Hierbei werden 75\% der Daten für das Training und 25\% der Daten für das Testset verwendet.
 Da der Hauptteil der Regendaten Null ist, also kein Regen vorhanden ist, liegt der Mittelwert der Daten schon nahe Null. Das bedeutet, dass der Mittelwert nicht (wie üblich) auf Null normiert wird.
 Die Standardabweichung ist ebenfalls nahe Null, weshalb die Standardabweichung der Daten nicht auf Eins normieren (Dies würde zur Folge haben, dass Werte wesentlich größer als 1 sein können). 
 Die Eingangsdaten werden allerdings auf den Bereich zwischen Null und Eins normiert.\\
@@ -546,38 +546,50 @@ Tatsächlich verbessern sich beide Architekturen noch marginal nach weiteren Epo
 \newpage
 \subsection{Auswertung}
 
-Wir beschränken uns zuerst auf die Auswertung der binären Klassifikation von Regen und kein Regen. Später werden wir für die verschiedenen Architekturen und Verteilungen die Klassifikation für die Regenvorhersage begutachten. Die folgende Abbildung zeigt einen zufälligen Ausschnitt der Regenvorhersage für sieben aufeinanderfolgende Zeitschritte.
+Wir beschränken uns zuerst auf die Auswertung der binären Klassifikation von Regen und kein Regen. Später werden wir für die verschiedenen Architekturen und Verteilungen die Klassifikation für die Regenvorhersage begutachten.
+
+\subsubsection{Baseline}
+%TODO:
+
+Die folgende Abbildung zeigt einen zufälligen Ausschnitt der Regenvorhersage für sieben aufeinanderfolgende Zeitschritte.\\
 
 \begin{figure}[h]
 \begin{tabular}{lllllll}
-\includegraphics[width=20mm]{abb/prediction/280_maxCont}&
-\includegraphics[width=20mm]{abb/prediction/281_maxCont}&
-\includegraphics[width=20mm]{abb/prediction/282_maxCont}&
-\includegraphics[width=20mm]{abb/prediction/283_maxCont}&
-\includegraphics[width=20mm]{abb/prediction/284_maxCont}&
-\includegraphics[width=20mm]{abb/prediction/285_maxCont}&
-\includegraphics[width=20mm]{abb/prediction/286_maxCont}
+\includegraphics[width=20mm]{abb/prediction/100_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/101_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/102_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/103_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/104_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/105_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/106_maxCont}
 \end{tabular}
-\caption{Vorhersage in Abständen von fünf Minuten für die Zero-Inflated negative Binomialverteilung, erste Zeile entspricht dem momentanen Regen. Zeile zwei entspricht dem tatsächlichen Regen in 30 Minuten. Zeile drei ist die 30 Minuten Vorhersage des Unets. Zeile vier ist die 30 Minuten Vorhersage der LSTM-Architektur. Die Bilder sind kontrastmaximiert dargestellt. Die letzten beiden Zeilen stellen die korrekte (true positiv) und inkorrekte (false positiv) Regenvorhersage für die Unet- und die LSTM-Architektur (letzte Zeile) dar.\label{fig:predNegBin}}
+\caption{Vorhersage in Abständen von fünf Minuten für die Zero-Inflated negative Binomialverteilung. Die erste Zeile entspricht dem momentanen Regen. Zeile zwei entspricht dem tatsächlichen Regen in 30 Minuten. Zeile drei ist die 30 Minuten Vorhersage des Unets. Zeile vier ist die 30 Minuten Vorhersage der LSTM-Architektur. Die Bilder sind kontrastmaximiert dargestellt. Die letzten beiden Zeilen stellen die korrekte bzw. inkorrekte Regenvorhersage für die Unet- und die LSTM-Architektur (letzte Zeile) dar.
+Hierbei entspricht true positiv der Farbe Grün, false positiv Rot, false negativ Blau und true negativ Schwarz .\label{fig:predNegBin}}
 \end{figure}
 
-\noindent Anhand der Abbildung \ref{fig:predNegBin} ist zu sehen, dass für beide Architekturen tendenziell zu viel Regen vorhergesagt wird. Hierbei ist anzumerken, dass die dargestellte Sequenz eine zufällig ausgewählte ist und nicht nach bestcase oder worstcase ausgewählt wurde. Zur Beurteilung der Szene ist anzumerken, dass diese eher einem worstcase entsprich, da die Regengebiete kleine Inseln sind, für die die Netzwerke Schwierigkeiten haben eine akurate Vorhersage zu treffen. Große zusammenhängende Regengebiete sind für die Netzwerke hingegen einfacher Vorherzusagen.
-Für die Erzeugung der Bilder wurde der Mittelwert der Verteilung genommen.\\
+\noindent Anhand der Abbildung \ref{fig:predNegBin} ist zu sehen, dass für beide Architekturen tendenziell zu viel Regen vorhergesagt wird. Anhand der Bilder ist zudem zu sehen, dass Form der Regenfront nicht korrekt vorhergesagt wird. Des weiteren ist zu erkennen, dass false negativ (Blau) einen geringeren Teil der Vorhersage ausmachen. Durch die Kontrastmaximierte Darstellung der Vorhersage, sehen die Bilder so aus, als würden die maximalen Werte der Vorhersage in etwa der maximalen Werte des tatsächlichen Wetters entsprechen. Tatsächlich wird im allgemeinen die Regenmenge unterschätzt. Dies wird in einem späteren Teil der Auswertung dargelegt.\\
 
 
 
 \begin{figure}[h]
 \begin{tabular}{lllllll}
-\includegraphics[width=20mm]{abb/prediction/650_maxCont}&
-\includegraphics[width=20mm]{abb/prediction/651_maxCont}&
-\includegraphics[width=20mm]{abb/prediction/652_maxCont}&
-\includegraphics[width=20mm]{abb/prediction/653_maxCont}&
-\includegraphics[width=20mm]{abb/prediction/654_maxCont}&
-\includegraphics[width=20mm]{abb/prediction/655_maxCont}&
-\includegraphics[width=20mm]{abb/prediction/656_maxCont}
+\includegraphics[width=20mm]{abb/prediction/100_cat_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/101_cat_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/102_cat_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/103_cat_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/104_cat_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/105_cat_maxCont}&
+\includegraphics[width=20mm]{abb/prediction/106_cat_maxCont}
 \end{tabular}
-\caption{Vorhersage in Abständen von fünf Minuten für die Zero-Inflated negative Binomialverteilung, erste Zeile entspricht dem momentanen Regen. Zeile zwei entspricht dem tatsächlichen Regen in 30 Minuten. Zeile drei ist die 30 Minuten Vorhersage des Unets. Zeile vier ist die 30 Minuten Vorhersage der LSTM-Architektur. Die Bilder sind kontrastmaximiert dargestellt. Die letzten beiden Zeilen stellen die korrekte (true positiv) und inkorrekte (false positiv) Regenvorhersage für die Unet- und die LSTM-Architektur (letzte Zeile) dar.\label{fig:predNegBin}}
+\caption{Vorhersage in Abständen von fünf Minuten für die Multinomialeverteilung. Hier sind die Zeilen wie in \ref{fig:predNegBin} dargestellt. Alle Bilder bis auf die Bilder der ersten Zeile sind in sieben Klassen dargestellt.\label{fig:predCat}}
 \end{figure}
+
+
+\noindent Auch bei der Multinomialenverteilung wird tendenziell zu viel Regen vorhergesagt.Des weiteren wird die Form der Regenfront nicht korrekt vorhergesagt. Zudem scheint die Anzahl der false negative (Blau) Vorhersagen höher als bei der Zero-Inflated negative Binomialverteilung. Zusammenfassend ist für die Ausschnitte der Vorhersagen zu sagen, dass die true positive vorhersagen die false negative und false positiv überwiegen. Um eine generelle Aussage treffen zu können wir im weiteren Verlauf die ''receiver operating characteristic'' auch \textbf{ROC} herangezogen.
+\newpage
+
+\noindent In der folgenden Abbildung ist die ROC für beide Architekturen und Verteilungen zu sehen. Die Kurven entstehen indem wir für verschiedene Schwellwerte die binäre Regenvorhersage treffen. Das bedeutet konkret, dass die Wahrscheinlichkeit für kein Regen berechnet wird. Ist diese Wahrscheinlichkeit größer als der Schwellwert so wird auch kein Regen vorhergesagt.
+Die Schwellwerte liegen gleichmäßig verteilt zwischen Null und Eins.
 
 
 \begin{figure}[h]
@@ -586,11 +598,39 @@ Für die Erzeugung der Bilder wurde der Mittelwert der Verteilung genommen.\\
 \includegraphics[width=70mm]{abb/ROC_Categorical.png}
 \end{tabular}
 \caption{ROC/AUR für beide Architekturen und beide Verteilungen. Links für die Zero-Inflated negativ Binomialverteilung und rechts für die Multinomialeverteilung.
-Die Auserwertung erfolgt für 20 verschiedene Thresholds. \label{fig:anomerz}}
+Die Auserwertung erfolgt für 20 verschiedene Schwellwerte. \label{fig:anomerz}}
 \end{figure}
 
+\noindent Wie Anhand der Kurven zu erkennen ist, ist die ROC für die Multinomialeverteilung gleichmäßiger als die für die Zero-Inflated negativ Binomialverteilung. 
+Auch die Fläche unter der Kurve (''area under curve'' \textbf{AUC}) ist für die Multinomialeverteilung marginal größer. Interessanterweise ist die Performance des Unets bei beiden Verteilungen besser (auch hier nur marginal) als für die LSTM-Architektur.\\
+
+\noindent Für den Schwellwert 0.5 erhalten wir in beiden Fällen ein relativ gutes Verhältnis von true positiv zu false positiv. In den Nachfolgenden Abbildungen ist die Confusionmatrix für diesen Schwellwert zu sehen.
 
 
 
+\begin{figure}[h]
+\begin{tabular}{ccc}
+\includegraphics[width=45mm]{abb/simpleBaseLine.png}&
+\includegraphics[width=45mm]{abb/znBinomConfusion_LSTM.png}&
+\includegraphics[width=45mm]{abb/znBinomConfusion_UNET.png}
+\end{tabular}
+\caption{Confusionmatrix für die Zero-Inflated negativ Binomialverteilung und dem Schwellwert 0.5. Links die einfache Baseline, mittig für die LSTM-Architektur und rechts für die Unet-Architektur. \label{fig:confusionmatrix_binom}}
+\end{figure}
+
+\noindent Anhand der Confusionmatrix ist zu sehen, dass die Netzwerke in beiden Fällen eine bessere Vorhersage liefern als die einfache Baseline. 
+Anhand der Confusionmatrix wird das ungleichgewicht zwischen Regen und kein Regen deutlich. 
+
+\begin{figure}[h]
+\begin{tabular}{ccc}
+\includegraphics[width=45mm]{abb/simpleBaseLine.png}&
+\includegraphics[width=45mm]{abb/categoricalConfusion_LSTM.png}&
+\includegraphics[width=45mm]{abb/categoricalConfusion_UNET.png}
+\end{tabular}
+\caption{Confusionmatrix für die Multinomialeverteilung und dem Schwellwert 0.5. Links die einfache Baseline, mittig für die LSTM-Architektur und rechts für die Unet-Architektur. \label{fig:confusionmatrix_cat}}
+\end{figure}
+
+\noindent Auch für die Multinomialeverteilung erhalten wir eine bessere Vorhersage als mit der einfachen Baseline.
+Vergleichen wir die Confusionmatrix beider Verteilungen, so lässt sich feststellen, dass die Verteilungen in verschiedenen Bereichen andere Vorteile aufweisen.
+So ist die Regenvorhersage für die Multinomialeverteilung etwas besser als für die Zero-Inflated negativ Binomialverteilung. Letztere (insbesondere die Unet-Variante) produziert mehr true negative und weniger false positiv Vorhersagen als die Multinomialeverteilung.
 
 \newpage
