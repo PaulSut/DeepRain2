@@ -631,6 +631,24 @@ Anhand der Confusionmatrix wird das ungleichgewicht zwischen Regen und kein Rege
 
 \noindent Auch für die Multinomialeverteilung erhalten wir eine bessere Vorhersage als mit der einfachen Baseline.
 Vergleichen wir die Confusionmatrix beider Verteilungen, so lässt sich feststellen, dass die Verteilungen in verschiedenen Bereichen andere Vorteile aufweisen.
-So ist die Regenvorhersage für die Multinomialeverteilung etwas besser als für die Zero-Inflated negativ Binomialverteilung. Letztere (insbesondere die Unet-Variante) produziert mehr true negative und weniger false positiv Vorhersagen als die Multinomialeverteilung.
+So ist die Regenvorhersage für die Multinomialeverteilung etwas besser als für die Zero-Inflated negativ Binomialverteilung. Letztere (insbesondere die Unet-Variante) produziert mehr true negative und weniger false positiv Vorhersagen als die Multinomialeverteilung.\\
+
+\noindent Für die tatsächliche Regenvorhersage ist jedoch interessant, in wie vielen Fällen eine Person Nass wird obwohl kein Regen vorhergesagt wird.
+Dazu wird die untere Zeile der Confusionmatrix mit einem Faktor multipliziert, sodass deren Summe 100 ergibt.\\
+\begin{table}[h]
+\begin{tabular}[h]{l|c|c}
+Verteilung & Person wird Nass & Person wird nicht Nass  \\
+\hline
+Multinomialeverteilung & \textbf{39,9} \% & \textbf{60,1} \%  \\
+Zero-Inflated negativ Binomialverteilung &43,0 \% & 57,0 \%  \\
+Einfache Baseline & 44,8 \% & 55,2 \% 
+\end{tabular}
+\caption{\label{tab:nass}}
+\end{table}
+
+\noindent Aus der Tabelle \ref{tab:nass} hervorgeht, wird die Person die sich auf die Vorhersage verlässt mit einer Wahrscheinlichkeit von 39,1 (im besten Fall) \% Nass.
+Dies ist zwar nicht überragend, es ist jedoch besser als würde sich die Person darauf verlassen, dass das Wetter so bleibt wie es ist.
+
+
 
 \newpage
