@@ -5,6 +5,7 @@ from datetime import datetime
 from PIL import Image
 import numpy as np
 import time
+import os
 
 # list for all latitudes and longitudes which are already calulated
 # [latitude, longitude, pixels]
@@ -57,7 +58,8 @@ def upload_time_steps(time_steps, firestore_client):
 
 def upload_data_to_firbase(forecast_images, time_of_forecasts, coordinate_lists):
     # Never, ever upload this Certificate file to git
-    cred = credentials.Certificate('./deeprain-firebase-adminsdk-xpcbj-bcbc99b37e.json')
+    cred = credentials.Certificate(os.path.join(os.path.abspath(os.getcwd()), 'Utils/Workflow/ServiceAccountKey.json'))
+    #cred = credentials.Certificate('./deeprain-firebase-adminsdk-xpcbj-bcbc99b37e.json')
     default_app = firebase_admin.initialize_app(cred, {'storageBucket': 'deeprain.appspot.com'})
     bucket = storage.bucket()
     db = firestore.client()
@@ -65,7 +67,7 @@ def upload_data_to_firbase(forecast_images, time_of_forecasts, coordinate_lists)
     # list for all latitudes and longitudes which are already calulated
     # [latitude, longitude, pixels]
     global latitude_longitude_pixels
-    f = open('latitude_longitude_pixels.pckl', 'rb')
+    f = open('Utils/Workflow/latitude_longitude_pixels.pckl', 'rb')
     latitude_longitude_pixels = pickle.load(f)
     f.close()
 
@@ -118,7 +120,7 @@ def upload_data_to_firbase(forecast_images, time_of_forecasts, coordinate_lists)
         upload_time_steps(formatted_time_steps, db)
 
     #store the already calculated latitude longitude pixel context
-    with open('latitude_longitude_pixels.pckl', 'wb') as f:
+    with open('Utils/Workflow/latitude_longitude_pixels.pckl', 'wb') as f:
         pickle.dump(latitude_longitude_pixels, f)
 
     firebase_admin.delete_app(default_app)

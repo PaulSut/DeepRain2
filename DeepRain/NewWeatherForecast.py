@@ -5,6 +5,7 @@ from Utils.Workflow.dwd_data import get_new_radar_pngs
 from  Utils.Workflow.CreateRainPNG import create_rain_image, resize_images, take_slice_of_image, create_rain_intensity_values
 from Utils.Workflow.NeuralNetwork import predict_weather_several_models
 from Utils.Workflow.Database import replace_forecast_in_firebase
+import Utils.Workflow.forecast_database_uploader as rain_intense_uploader
 import PIL
 from time import sleep
 import os
@@ -21,6 +22,8 @@ RESIZE = None
 
 # Konstanz: 56, 456
 SLICES = [ 8, 104, 438, 534]
+SLICES = [ 750, 846, 150, 246]
+SLICES = [ 750, 846, 250, 346]
 
 
 TARGET_DIMENSION = [900, 900]
@@ -58,7 +61,6 @@ if __name__ == '__main__':
     laststate = getBestState(modelpath_lstm, history_path)
     epoch = laststate["epoch"]
 
-    print(laststate)
     LSTM_model.load_weights(laststate["modelpath"])
 
     models.append(LSTM_model)
@@ -95,10 +97,7 @@ if __name__ == '__main__':
 
         historical_images_time = os.listdir(HISTORICAL_PICTURE_PATH)
         historical_images_time.sort()
-        print(historical_images_time)
         historical_images_time = historical_images_time[-5:]
-        print('Moin1')
-        print(historical_images_time)
 
 
         historical_images = []
@@ -111,8 +110,6 @@ if __name__ == '__main__':
                 PIL.Image.fromarray(create_rain_image(img, img_rgba, TARGET_DIMENSION, IMAGE_POS), mode='RGBA'))
             rain_intensity_values.append(create_rain_intensity_values(img, TARGET_DIMENSION, IMAGE_POS))
             time_stamps.append(historical_images_time[i][15:-8])
-
-        print(time_stamps)
         # historical_images.reverse()
 
         forecast_images = []
@@ -134,11 +131,15 @@ if __name__ == '__main__':
             time_stamps.append(str(hours)+str(minutes))
 
 
-        print(time_stamps)
-
-
 
 
         print('Upload forecast images')
         replace_forecast_in_firebase(historical_images, forecast_images, PATH_TO_FORECAST_DIR)
+
+
+        print('Upload rain intensity values')
+
+        #uploade forecat rain intense data to firebase
+        rain_intense_uploader.upload_data_to_firbase(rain_intensity_values, time_stamps, coordinate_lists)
+
         print('Done. Weather Forecast is up to date')
