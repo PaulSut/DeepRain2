@@ -124,8 +124,8 @@ def upload_data_to_firbase(forecast_images, time_of_forecasts, coordinate_lists)
                     is_pushnotification_sended = True
         is_pushnotification_sended == False
 
-        # the time which will be used for the slider.
-        upload_time_steps(formatted_time_steps, db)
+    # the time which will be used for the slider.
+    upload_time_steps(formatted_time_steps, db)
 
     #store the already calculated latitude longitude pixel context
     with open('Utils/Workflow/latitude_longitude_pixels.pckl', 'wb') as f:

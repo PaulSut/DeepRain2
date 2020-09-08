@@ -59,6 +59,8 @@ def predict_weather(model, number_of_input_images, number_of_predictions, path_t
 
         forecast = model.predict(input_data)
 
+
+
         #if transform_output is not None:
         #    for operation in transform_output:
         #        forecast = operation(forecast)

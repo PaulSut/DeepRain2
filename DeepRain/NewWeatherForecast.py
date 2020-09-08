@@ -22,8 +22,7 @@ RESIZE = None
 
 # Konstanz: 56, 456
 SLICES = [ 8, 104, 438, 534]
-SLICES = [ 750, 846, 150, 246]
-SLICES = [ 750, 846, 250, 346]
+#SLICES = [ 750, 846, 250, 346]
 
 
 TARGET_DIMENSION = [900, 900]
@@ -52,20 +51,21 @@ if __name__ == '__main__':
     # get the models
     models = []
     model_prediction_time = []
+    model_paths = [    'Models_weights/10min_LSTM_znBinomial/10min_LSTM_znBinomial-033-0.647808-0.696726.h5', 'Models_weights/20min_LSTM_znBinomial/20min_LSTM_znBinomial-019-0.722603-0.775276.h5', 'Models_weights/30min_LSTM_znBinomial/30min_LSTM_znBinomial-026-0.760087-0.825096.h5']
+    model_prediction_time = ['10_minutes','20_minutes','30_minutes']
+
+
     get_LSTM_Model = getModel
     MODELNAME_LSTM = MODELNAME
 
     LSTM_model, checkpoint_lstm, modelpath_lstm, train, test = get_LSTM_Model()
 
-    history_path = os.path.join(modelpath_lstm, MODELNAME_LSTM + "_history")
-    laststate = getBestState(modelpath_lstm, history_path)
-    epoch = laststate["epoch"]
+    for path in model_paths:
+        LSTM_model.load_weights(path)
+        models.append(LSTM_model)
 
-    LSTM_model.load_weights(laststate["modelpath"])
 
-    models.append(LSTM_model)
-    model_prediction_time.append('30_minutes')
-
+    # get input data
     new_radar_data_downloaded = False
     while True:
         while not new_radar_data_downloaded:
@@ -121,16 +121,16 @@ if __name__ == '__main__':
             rain_intensity_values.append(create_rain_intensity_values(img, TARGET_DIMENSION, IMAGE_POS))
             #calc next time step (each time + 10 min)
             last_time_step = time_stamps[-1]
-            if int(last_time_step[-2:]) + 10 > 60:
+            if int(last_time_step[-2:]) + 10 > 59:
                 hours = int(last_time_step[:-2])+1
                 minutes = int(last_time_step[-2:]) - 50
             else:
                 hours = int(last_time_step[:-2])
                 minutes = int(last_time_step[-2:]) + 10
-
-            time_stamps.append(str(hours)+str(minutes))
-
-
+            if minutes<10:
+                time_stamps.append(str(hours) +'0' +str(minutes))
+            else:
+                time_stamps.append(str(hours)+str(minutes))
 
 
         print('Upload forecast images')
@@ -139,7 +139,7 @@ if __name__ == '__main__':
 
         print('Upload rain intensity values')
 
-        #uploade forecat rain intense data to firebase
+        #uploade forecast rain intense data to firebase
         rain_intense_uploader.upload_data_to_firbase(rain_intensity_values, time_stamps, coordinate_lists)
 
         print('Done. Weather Forecast is up to date')

@@ -22,7 +22,7 @@ def replace_image_in_firebase(image, index, mode, bucket, path_to_forecast_dir):
         filename = f'{index+1}'
     elif mode == 'forecast':
         minutes = (index+1)*5
-        filename = f'{index+11}'
+        filename = f'{index+6}'
     else:
         print('ERROR in replace_image_in_firebase, mode is wrong: ',mode)
 

@@ -16,6 +16,7 @@ def create_rain_image(prediction, prediction_rgba, target_dim, image_pos):
 
     img_hight = len(prediction)
     img_width = len(prediction[0])
+
     prediction = np.reshape(prediction, img_hight * img_width)
     prediction_rgba = np.reshape(prediction_rgba, (img_hight * img_width, 4))
     prediction_rgba_copy = prediction_rgba.copy()
@@ -76,6 +77,7 @@ def create_rain_intensity_values(prediction, target_dimension, image_pos):
 
 def fit_image_to_map(target_dimension, image_pos, image_array):
     TRANSPARENT = np.asanyarray([0, 0, 0, 0])
+
 
     above_y = target_dimension[0] - (target_dimension[0]-image_pos[0])
     above_x = target_dimension[1]
