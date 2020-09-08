@@ -20,7 +20,7 @@ FORECAST_GRAYSCALE_PATH = 'Data/DWD/forecast_grayscale/'
 HISTORICAL_RADAR_DATA_PATH = 'Data/DWD/historical_data/bin/'
 RESIZE = None
 
-# Konstanz: 56, 456
+#Pixel of Konstanz: 56, 456
 SLICES = [ 8, 104, 438, 534]
 #SLICES = [ 750, 846, 250, 346]
 
@@ -60,11 +60,6 @@ if __name__ == '__main__':
 
     LSTM_model, checkpoint_lstm, modelpath_lstm, train, test = get_LSTM_Model()
 
-    for path in model_paths:
-        LSTM_model.load_weights(path)
-        models.append(LSTM_model)
-
-
     # get input data
     new_radar_data_downloaded = False
     while True:
@@ -83,7 +78,7 @@ if __name__ == '__main__':
             resize_images(DIMENSION, SCLICE_PICTURE_PATH, FORECAST_GRAYSCALE_PATH, NUMBER_OF_HISTORICAL_IMAGES, reverse=SLICES is None)
 
         print('Predicting the weather')
-        predict_weather_several_models(models, model_prediction_time, NUMBER_OF_INPUT_IMAGES,
+        predict_weather_several_models(model_paths, LSTM_model, model_prediction_time, NUMBER_OF_INPUT_IMAGES,
                                        SCLICE_PICTURE_PATH, FORECAST_GRAYSCALE_PATH)
 
         print('Create forecast images')

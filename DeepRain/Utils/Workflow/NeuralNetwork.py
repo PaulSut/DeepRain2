@@ -7,11 +7,12 @@ import cv2
 from DeepRain.Utils.transform import *
 import datetime
 
-def predict_weather_several_models(models, model_prediction_time,number_of_input_images, path_to_input_images, path_to_forecast_grayscale, transform_input=None, transform_output=None):
+def predict_weather_several_models(weights_paths,model, model_prediction_time,number_of_input_images, path_to_input_images, path_to_forecast_grayscale, transform_input=None, transform_output=None):
 
-    for index, model in enumerate(models):
+    for index, weights_path in enumerate(weights_paths):
         print(model_prediction_time[index] + ' prediction')
 
+        model.load_weights(weights_path)
         #generate input
         input_data_filenames = os.listdir(path_to_input_images)
         input_data_filenames.sort(reverse=True)

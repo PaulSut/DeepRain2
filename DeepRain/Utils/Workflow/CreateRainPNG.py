@@ -78,7 +78,6 @@ def create_rain_intensity_values(prediction, target_dimension, image_pos):
 def fit_image_to_map(target_dimension, image_pos, image_array):
     TRANSPARENT = np.asanyarray([0, 0, 0, 0])
 
-
     above_y = target_dimension[0] - (target_dimension[0]-image_pos[0])
     above_x = target_dimension[1]
 
