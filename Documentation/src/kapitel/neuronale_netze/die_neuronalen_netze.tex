@@ -2,7 +2,7 @@
 
 \section{Die neuronalen Netze}\label{die neuronalen netze}
 
-Die Regenvorhersage mit Hilfe von künstlichen neuronalen Netzen möchten wir mit einem Zitat einführen.
+Die Regenvorhersage mit Hilfe von künstlichen neuronalen Netzen (KNN) möchten wir mit einem Zitat einführen.
 Der Nobelpreisträge Richard P. Feynman ist in einem Gespräch mit einem nicht namentlich erwähnten Laien wobei es um die Existenz fliegender Untertassen geht. Feynman trifft die Aussage, dass es sehr unwahrscheinlich ist, dass es fliegende Untertassen gibt. Der Laie antwortet darauf, dass das sehr unwissenschaftlich sei, worauf Feynman erwiedert:
 
 \begin{quote}{Richard P. Feynman}
@@ -23,9 +23,9 @@ Der Nobelpreisträge Richard P. Feynman ist in einem Gespräch mit einem nicht n
 
 \noindent Wie aus Abbildung \ref{fig:Vorhersage_skizze} hervorgeht, besteht der Ausgang des KNN aus einem Feld von Verteilungen. Diese Verteilungen nehmen wir als unabhängig an.
 Die zu schätzende Verteilung ist im vornherein nicht klar, weshalb wir eingangs drei Verteilungen begutachten.
-Wir schauen uns die Multinomiale, die Poisson und die negativ Binomial Verteilung an.
-Die Poisson und die negativ Binomialverteilung wird allerdings mit der Multinomialen Verteilung gemischt, sodass wir die ''Zero-Inflated negativ Binomial'' bzw. ''Zero-Inflated Poisson'' Verteilung erhalten.
-Dies kann so aufgefasst werden, dass wir eine Bernoulli-Verteilung für die binäre Entscheidung über Regen oder kein Regen erhalten. Für den Fall dass Regen vorhergesagt wird, greifen wir auf die Negativ Binomial bzw. Poisson Verteilung zurück.
+Wir schauen uns die Multinomiale, und die negativ Binomial Verteilung an.
+Die negativ Binomialverteilung wird allerdings mit der Multinomialen Verteilung gemischt, sodass wir die ''Zero Inflated negativ Binomial'' Verteilung (ZINB) erhalten.
+Dies kann so aufgefasst werden, dass wir eine Bernoulli-Verteilung für die binäre Entscheidung über Regen oder kein Regen erhalten. Für den Fall dass Regen vorhergesagt wird, greifen wir auf die Negativ Binomialverteilung zurück.
 \\
 
 \subsection{Netzwerk Topologie}
@@ -520,19 +520,19 @@ Die Eingangsdaten werden allerdings auf den Bereich zwischen Null und Eins normi
 \noindent Für den Ausgang der Netzwerke beschränkten wir uns auf einen 64x64 großen Pixelbereich, bei dem Konstanz in der Mitte liegt. Die Eingangsbilder bestehen aus einem 96x96 großen Pixelbereich um Konstanz. Regenfreie Bilder werden aussortiert, da diese Daten keinerlei Informationen beinhalten und das vorhandene Klassenungleichgewicht verstärken. Als Regularisierungsmaßnahme werden die Trainingsdaten pro Epoche um wenige Pixel verschoben, was zur Folge hat, dass das Netzwerk in jeder Epoche auf etwas unterschiedliche Daten trainiert. Als Kostenfunktion verwenden wir die Negative Loglikelihood.
 \\
 
-\noindent In der Nachfolgenden Abbildung sind die Trainingskurve für die beiden Architekturen zu sehen. Die hierfür Verwendete Verteilung ist die Zero-Inflated negative Binomial Verteilung.
+\noindent In der Nachfolgenden Abbildung sind die Trainingskurve für die beiden Architekturen zu sehen. Die hierfür Verwendete Verteilung ist die ZINB.
 
 \begin{figure}[htb]
  \centering
  \includegraphics[width=0.9\textwidth,angle=0]{abb/Loss_zinfBinom.png}
- \caption{Trainingskurven für Zero-Inflated negativ Binomial verteilung}
+ \caption{Trainingskurven für ZINB}
 \label{fig:Inception-Conv-LSTM}
 \end{figure}
 
 \noindent Zu sehen ist, dass die Unet-Architektur schlechtere Performance als die LSTM-Architektur liefert. In dieser Abbildung scheint der Overfitting bereich noch nicht erreicht worden zu sein.
 Tatsächlich verbessern sich beide Architekturen noch marginal nach weiteren Epochen, aus Darstellungsgründen wurde die X-Achse auf 35 Epochen beschnitten.\\
 
-\noindent Zusätzlich zur Zero-Inflated negative Binomial Verteilung wurden beide Architekturen mit einer weiteren Verteilung trainiert. Hierfür verwenden wir die Multinomiale Verteilung, woebei wir die Daten in Sieben Klassen einteilen. Die geschieht durch logarithmisches skalieren der Daten. Dadurch soll zusätzlich dem Klassenungleichgewicht entgegengesteuert werden (Regenwerte im höheren Bereich kommen seltener vor). 
+\noindent Zusätzlich zur ZINB wurden beide Architekturen mit einer weiteren Verteilung trainiert. Hierfür verwenden wir die Multinomiale Verteilung, woebei wir die Daten in Sieben Klassen einteilen. Die geschieht durch logarithmisches skalieren der Daten. Dadurch soll zusätzlich dem Klassenungleichgewicht entgegengesteuert werden (Regenwerte im höheren Bereich kommen seltener vor). 
 
 \begin{figure}[htb]
  \centering
@@ -541,7 +541,7 @@ Tatsächlich verbessern sich beide Architekturen noch marginal nach weiteren Epo
 \label{fig:multinomialeVerteilung}
 \end{figure}
 
-\noindent In der obigen Abbildung sind die Trainingskurven der beiden Architekturen zu sehen. Auch hier ist zu sehen, dass die LSTM-Architektur der Unet-Architektur überlegen ist und dies eine bessere Performance liefert. Vergleicht man die Trainingskurven für beide Verteilungen sieht man, dass der NLL für die Multinomiale Verteilung etwa die Hälfte der Zero-Inflated negative Binomialverteilung entspricht.
+\noindent In der obigen Abbildung sind die Trainingskurven der beiden Architekturen zu sehen. Auch hier ist zu sehen, dass die LSTM-Architektur der Unet-Architektur überlegen ist und dies eine bessere Performance liefert. Vergleicht man die Trainingskurven für beide Verteilungen sieht man, dass der NLL für die Multinomiale Verteilung etwa die Hälfte der ZINB entspricht.
 
 \newpage
 \subsection{Auswertung}
@@ -564,7 +564,7 @@ Die folgende Abbildung zeigt einen zufälligen Ausschnitt der Regenvorhersage f�
 \includegraphics[width=20mm]{abb/prediction/105_maxCont}&
 \includegraphics[width=20mm]{abb/prediction/106_maxCont}
 \end{tabular}
-\caption{Vorhersage in Abständen von fünf Minuten für die Zero-Inflated negative Binomialverteilung. Die erste Zeile entspricht dem momentanen Regen. Zeile zwei entspricht dem tatsächlichen Regen in 30 Minuten. Zeile drei ist die 30 Minuten Vorhersage des Unets. Zeile vier ist die 30 Minuten Vorhersage der LSTM-Architektur. Für die Vorhersage wurde der Mittelwert der Verteilung berechnet. Die Bilder sind kontrastmaximiert dargestellt. Die letzten beiden Zeilen stellen die korrekte bzw. inkorrekte Regenvorhersage für die Unet- und die LSTM-Architektur (letzte Zeile) dar.
+\caption{Vorhersage in Abständen von fünf Minuten für die ZINB. Die erste Zeile entspricht dem momentanen Regen. Zeile zwei entspricht dem tatsächlichen Regen in 30 Minuten. Zeile drei ist die 30 Minuten Vorhersage des Unets. Zeile vier ist die 30 Minuten Vorhersage der LSTM-Architektur. Für die Vorhersage wurde der Mittelwert der Verteilung berechnet. Die Bilder sind kontrastmaximiert dargestellt. Die letzten beiden Zeilen stellen die korrekte bzw. inkorrekte Regenvorhersage für die Unet- und die LSTM-Architektur (letzte Zeile) dar.
 Hierbei entspricht true positiv der Farbe Grün, false positiv Rot, false negativ Blau und true negativ Schwarz .\label{fig:predNegBin}}
 \end{figure}
 
@@ -586,7 +586,7 @@ Hierbei entspricht true positiv der Farbe Grün, false positiv Rot, false negati
 \end{figure}
 
 
-\noindent Auch bei der Multinomialenverteilung wird tendenziell zu viel Regen vorhergesagt. Für die Vorhersage wird das Label mit der größten Wahrscheinlichkeit herangezogen. Es ist erkennbar, dass die Form der Regenfront nicht korrekt vorhergesagt. Zudem scheint die Anzahl der false negative (Blau) Vorhersagen höher als bei der Zero-Inflated negative Binomialverteilung. Zusammenfassend ist für die Ausschnitte der Vorhersagen zu sagen, dass die true positive vorhersagen die false negative und false positiv überwiegen. Um eine generelle Aussage treffen zu können wir im weiteren Verlauf die ''receiver operating characteristic'' auch \textbf{ROC} herangezogen.
+\noindent Auch bei der Multinomialenverteilung wird tendenziell zu viel Regen vorhergesagt. Für die Vorhersage wird das Label mit der größten Wahrscheinlichkeit herangezogen. Es ist erkennbar, dass die Form der Regenfront nicht korrekt vorhergesagt. Zudem scheint die Anzahl der false negative (Blau) Vorhersagen höher als bei der ZINB. Zusammenfassend ist für die Ausschnitte der Vorhersagen zu sagen, dass die true positive vorhersagen die false negative und false positiv überwiegen. Um eine generelle Aussage treffen zu können wir im weiteren Verlauf die ''receiver operating characteristic'' auch \textbf{ROC} herangezogen.
 
 
 \noindent In der folgenden Abbildung ist die ROC für beide Architekturen und Verteilungen zu sehen. Die Kurven entstehen indem wir für verschiedene Schwellwerte die binäre Regenvorhersage treffen. Das bedeutet konkret, dass die Wahrscheinlichkeit für kein Regen berechnet wird. Ist diese Wahrscheinlichkeit größer als der Schwellwert so wird auch kein Regen vorhergesagt.
@@ -598,11 +598,11 @@ Die Schwellwerte liegen gleichmäßig verteilt zwischen Null und Eins.
 \includegraphics[width=70mm]{abb/ROC_ZINFBINOM.png}&
 \includegraphics[width=70mm]{abb/ROC_Categorical.png}
 \end{tabular}
-\caption{ROC/AUR für beide Architekturen und beide Verteilungen. Links für die Zero-Inflated negativ Binomialverteilung und rechts für die Multinomialeverteilung.
+\caption{ROC/AUR für beide Architekturen und beide Verteilungen. Links für die ZINB und rechts für die Multinomialeverteilung.
 Die Auserwertung erfolgt für 20 verschiedene Schwellwerte. \label{fig:anomerz}}
 \end{figure}
 
-\noindent Wie Anhand der Kurven zu erkennen ist, ist die ROC für die Multinomialeverteilung gleichmäßiger als die für die Zero-Inflated negativ Binomialverteilung. 
+\noindent Wie Anhand der Kurven zu erkennen ist, ist die ROC für die Multinomialeverteilung gleichmäßiger als die für die ZINB. 
 Auch die Fläche unter der Kurve (''area under curve'' \textbf{AUC}) ist für die Multinomialeverteilung marginal größer. Interessanterweise ist die Performance des Unets bei beiden Verteilungen besser (auch hier nur marginal) als für die LSTM-Architektur.\\
 
 \noindent Für den Schwellwert 0.5 erhalten wir in beiden Fällen ein relativ gutes Verhältnis von true positiv zu false positiv. In den Nachfolgenden Abbildungen ist die Confusionmatrix für diesen Schwellwert zu sehen.
@@ -615,7 +615,7 @@ Auch die Fläche unter der Kurve (''area under curve'' \textbf{AUC}) ist für di
 \includegraphics[width=45mm]{abb/znBinomConfusion_LSTM.png}&
 \includegraphics[width=45mm]{abb/znBinomConfusion_UNET.png}
 \end{tabular}
-\caption{Confusionmatrix für die Zero-Inflated negativ Binomialverteilung und dem Schwellwert 0.5. Links die einfache Baseline, mittig für die LSTM-Architektur und rechts für die Unet-Architektur. \label{fig:confusionmatrix_binom}}
+\caption{Confusionmatrix für die ZINB und dem Schwellwert 0.5. Links die einfache Baseline, mittig für die LSTM-Architektur und rechts für die Unet-Architektur. \label{fig:confusionmatrix_binom}}
 \end{figure}
 
 \noindent Anhand der Confusionmatrix ist zu sehen, dass die Netzwerke in beiden Fällen eine bessere Vorhersage liefern als die einfache Baseline. 
@@ -632,7 +632,7 @@ Anhand der Confusionmatrix wird das ungleichgewicht zwischen Regen und kein Rege
 
 \noindent Auch für die Multinomialeverteilung erhalten wir eine bessere Vorhersage als mit der einfachen Baseline.
 Vergleichen wir die Confusionmatrix beider Verteilungen, so lässt sich feststellen, dass die Verteilungen in verschiedenen Bereichen andere Vorteile aufweisen.
-So ist die Regenvorhersage für die Multinomialeverteilung etwas besser als für die Zero-Inflated negativ Binomialverteilung. Letztere (insbesondere die Unet-Variante) produziert mehr true negative und weniger false positiv Vorhersagen als die Multinomialeverteilung.\\
+So ist die Regenvorhersage für die Multinomialeverteilung etwas besser als für die ZINB. Letztere (insbesondere die Unet-Variante) produziert mehr true negative und weniger false positiv Vorhersagen als die Multinomialeverteilung.\\
 
 \noindent Für die tatsächliche Regenvorhersage ist jedoch interessant, in wie vielen Fällen eine Person Nass wird obwohl kein Regen vorhergesagt wird.
 Dazu wird die untere Zeile der Confusionmatrix mit einem Faktor multipliziert, sodass deren Summe 100 ergibt.\\
@@ -641,10 +641,10 @@ Dazu wird die untere Zeile der Confusionmatrix mit einem Faktor multipliziert, s
 Verteilung & Person wird Nass & Person wird nicht Nass  \\
 \hline
 Multinomialeverteilung & \textbf{39,9} \% & \textbf{60,1} \%  \\
-Zero-Inflated negativ Binomialverteilung &43,0 \% & 57,0 \%  \\
+ZINB &43,0 \% & 57,0 \%  \\
 Einfache Baseline & 44,8 \% & 55,2 \% 
 \end{tabular}
-\caption{\label{tab:nass}}
+\caption{Wahrscheinlichkeit trocken zu bleiben\label{tab:nass}}
 \end{table}
 
 \noindent Aus der Tabelle \ref{tab:nass} hervorgeht, wird die Person die sich auf die Vorhersage verlässt mit einer Wahrscheinlichkeit von 39,1 (im besten Fall) \% Nass.
@@ -652,7 +652,7 @@ Dies ist zwar nicht überragend, es ist jedoch besser als würde sich die Person
 
 \newpage
 \subsubsection{Auswertung der Regenvorhersage}
-\noindent Ein weiterer interessanter Aspekt ist die Genauigkeit der Vorhersage für den Regenfall. Hierfür betrachten wir zuerst die Zero-Inflated negativ Binomialverteilung.
+\noindent Ein weiterer interessanter Aspekt ist die Genauigkeit der Vorhersage für den Regenfall. Hierfür betrachten wir zuerst die ZINB.
 Hierfür berechnen wir das Konfidenzintervall der Verteilung welches 97,5\% der Daten umschließt. Daraufhin zählen wir wie oft der wahre Wert innerhalb des Konfidenzintervalls liegt.
 In der folgenden Abbildung sind die zwei 97,5 \% Konfidenzintervalle für die beiden Architekturen zu sehen.\\
 
@@ -664,7 +664,7 @@ In der folgenden Abbildung sind die zwei 97,5 \% Konfidenzintervalle für die be
 \includegraphics[width=120mm]{abb/quantile_UNET.png}\\
 (b) \small{UNET}
 \end{tabular}
-\caption{Konfidenzintervall für die Zero-Inflated negativ Binomialverteilung, Oben für die LSTM-Architektur, unten für das UNET. \label{fig:konfidenzintervall}}
+\caption{Konfidenzintervall für die ZINB, Oben für die LSTM-Architektur, unten für das UNET. \label{fig:konfidenzintervall}}
 \end{figure}
 
 \noindent Die Konfidenzintervalle sind hierbei über eine Sequenz eines zufälligen Ausschnitts eines Pixels berechnet. Sie sind deshalb nicht aussagekräftig für die Vorhersage, sondern sollen lediglich die Erklärung für das Vorgehen vereinfachen. Anhand der Abbildungen ist zu sehen, dass die Konfidenzintervalle in etwa dem ''wahren'' Wert folgen. Allerdings ist auch zu sehen, dass Extremwerte meist außerhalb des Intervalls liegen. Zählen wir nun die Anzahl der Vorhersagen, bei denen der wahre Wert im Konfidenzintervall liegt, so ergibt sich folgendes Histogramm.\\
@@ -705,7 +705,7 @@ LSTM &92,0 \% & 71,0 \% & 97,5 \% \\
 Für die Spalte ''inklusive Regen'' ist der Unterschied nur marginal. Für die Spalte ''exklusive Regen'' ist ein großer Sprung zwischen dem 97,5 \% und dem 95 \% Konvidenzintervall zu sehen.
 Dies kann so interpretiert werden, dass die ground truth für diese Fälle nicht im ''Zentrum'' des Konfidenzintervalls liegt (bzw. weiter entfernt vom Zentrum). Der Mittelwert ist für diese Fälle eine schlechte Schätzung für die ground truth.\\
 
-\noindent Schauen wir uns nun die Multinomialeverteilung an. Wir gehen ähnlich vor wie bei der Zero-Inflated negativ Binomialverteilung vor und stellen die Anzahl der korrekten Vorhersagen gegenüber der Anzahl der ground truth (pro label). Um dies mit der Zero-Inflated negativ Binomialverteilung vergleichen zu können, skalieren wir die Vorhersage der Zero-Inflated negativ Binomialverteilung logarithmisch und stellen dies ebenfalls als Histogramm dar. Die folgende Abbildung zeigt das Ergebnis dieser Vorgehensweise.\\
+\noindent Schauen wir uns nun die Multinomialeverteilung an. Wir gehen ähnlich vor wie bei der ZINB vor und stellen die Anzahl der korrekten Vorhersagen gegenüber der Anzahl der ground truth (pro label). Um dies mit der ZINB vergleichen zu können, skalieren wir die Vorhersage der ZINB logarithmisch und stellen dies ebenfalls als Histogramm dar. Die folgende Abbildung zeigt das Ergebnis dieser Vorgehensweise.\\
 
 \begin{figure}[h]
 \centering
@@ -717,10 +717,10 @@ Dies kann so interpretiert werden, dass die ground truth für diese Fälle nicht
 \includegraphics[width=80mm]{abb/dist_cat_lstm.png}&
 \includegraphics[width=80mm]{abb/dist_cat_unet.png}\\
 \end{tabular}
-\caption{Histogramm der Vorhersagen für beide Verteilungen und Architekturen. Die erste Zeile entspricht der Zero-Inflated negativ Binomialverteilung, die letzte der Multinomialverteilung \label{fig:logDist}}
+\caption{Histogramm der Vorhersagen für beide Verteilungen und Architekturen. Die erste Zeile entspricht der ZINB, die letzte der Multinomialverteilung \label{fig:logDist}}
 \end{figure}
 
-\noindent Anhand des Histogramms ist zu erkennen, dass die Zero-Inflated negativ Binomialverteilung eine leicht bessere Vorhersage liefert. Das Histogramm wurde in Richtung y-achse bei 0.2 begrenzt um eine bessere Darstellung zu erreichen. Stellt man die Beziehung in einer Tabelle dar, so kommt man zu folgendem Ergebnis.\\
+\noindent Anhand des Histogramms ist zu erkennen, dass die ZINB eine leicht bessere Vorhersage liefert. Das Histogramm wurde in Richtung y-achse bei 0.2 begrenzt um eine bessere Darstellung zu erreichen. Stellt man die Beziehung in einer Tabelle dar, so kommt man zu folgendem Ergebnis.\\
 
 \begin{table}[h]
 \centering
@@ -735,8 +735,14 @@ ZINB & 26 \% & 27 \% & 78 \% & 78 \% \\
 Multinom & 21 \% & 22 \% & 88 \% & 88 \% \\
 \hline
 \end{tabular}
-\caption{\label{tab:raintable}}
+\caption{Relative Anzahl der korrekt vorhergesagten Regenwerte\label{tab:raintable}}
 \end{table}
+
+\noindent Anhand der Tabelle \ref{tab:raintable} ist ersichtlich, dass die ZINB eine bessere Vorhersage für die Regenstärke liefert. Die Multinomialeverteilung hingegen liefert eine bessere Vorhersage im allgemeinen.
+
+\subsubsection{Fazit der Auswertung}
+
+Für die binäre Regenvorhersage ist Multinomialverteilung die Verteilung welche die besten Resultate liefert. Laut Tabelle \ref{tab:nass} bleibt eine Person zu 60,1 \% trocken, wenn sie sich auf die Vorhersage verlässt. Hierbei spielt es keine Rolle ob die UNET oder die LSTM-Architektur verwendet wird. Da der Loss für die LSTM-Architektur besser als für die Unet-Architektur ist(siehe Abbildung \ref{fig:multinomialeVerteilung}), bevorzugen wir hier die LSTM-Architektur. Für die Klassifikation der Regenvorhersage liefert die Verteilung der ZINB die besten Resultate (siehe Tabelle \ref{tab:raintable}). Hier ist laut Tabelle \ref{tab:raintable} die Unet-Architektur marginal besser. Jedoch ist der Loss der LSTM-Architektur besser (siehe Abbildung \ref{fig:Inception-Conv-LSTM}). Zudem liegt laut Tabelle \ref{tab:konv} die ground truth für kleinere Konfidenzintervalle öfters in eben diesen Intervallen. Daraus schließen wir, dass der Mittelwert näher an der ground truth liegt und dieser dadurch eine bessere Vorhersage liefert. Für unsere Vorhersage wäre es optimal, wenn wir für die binäre Regenvorhersage die Multinomialverteilung und für die Regenklassifikation die ZINB in Kombination mit der LSTM-Architektur verwenden. Da dies nicht praktisch ist verwenden wir für die Vorhersage die LSTM-Architektur mit der ZINB.
 
 
 
