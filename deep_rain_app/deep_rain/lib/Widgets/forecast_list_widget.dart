@@ -20,14 +20,11 @@ class _ForecastListWidgetState extends State<ForecastListWidget> {
   @override
   Widget build(BuildContext context) {
 
-    ProvideForecastData provider = ProvideForecastData();
-    final forecasts = provider.getForecast();
-
     if(AppSwitchDemoMode == false){
       return ListView.builder(
-        itemCount: forecasts == null ? 0 : forecasts.length,
+        itemCount: forecast_list == null ? 0 : forecast_list.length,
         itemBuilder: (context, index) {
-          return ForecastTile(forecast: forecasts[index]);
+          return ForecastTile(forecast: forecast_list[index]);
         },
       );
     }
