@@ -102,6 +102,7 @@ class _ForecastMapState extends State<ForecastMap> {
               },
               divisions: numberOfDivisions-1,
               label: time_steps[(rating*(numberOfDivisions-1)).toInt()],
+              activeColor: currentDivison > 4 ? Colors.green : Colors.blueGrey,
             ),
           ),
         ],
