@@ -44,10 +44,13 @@ def return_rain_intense_from_forecast_by_latlng(latitude, longitude, image, coor
     return rain_intense
 
 def upload_time_steps(time_steps, firestore_client):
+
+
     # unique, sortable ID for the time steps
     abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't']
 
     time_collection = firestore_client.collection('TimeSteps')
+    delete_collection(time_collection)
     id = 0
     for time in time_steps:
         doc_ref = time_collection.document(abc[id])
@@ -55,6 +58,11 @@ def upload_time_steps(time_steps, firestore_client):
             'time': time
         })
         id = id + 1
+
+def delete_collection(coll_ref):
+    docs = coll_ref.stream()
+    for doc in docs:
+        doc.reference.delete()
 
 def upload_data_to_firbase(forecast_images, time_of_forecasts, coordinate_lists):
     # Never, ever upload this Certificate file to git
