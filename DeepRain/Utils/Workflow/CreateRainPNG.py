@@ -41,6 +41,38 @@ def create_rain_image(prediction, prediction_rgba, target_dim, image_pos):
 
     return final_image
 
+def create_rain_intensity_values(prediction, target_dimension, image_pos):
+    TRANSPARENT = 0
+
+    above_y = target_dimension[0] - (target_dimension[0] - image_pos[0])
+    above_x = target_dimension[1]
+
+    left_y = prediction.shape[0]
+    left_x = target_dimension[1] - (target_dimension[1] - image_pos[1])
+
+    right_y = prediction.shape[0]
+    right_x = target_dimension[1] - (image_pos[1] + prediction.shape[1])
+
+    below_y = target_dimension[0] - (image_pos[0] + prediction.shape[0])
+    below_x = target_dimension[1]
+
+    above_image = np.full((above_y, above_x), TRANSPARENT)
+    left_of_image = np.full((left_y, left_x), TRANSPARENT)
+    right_of_image = np.full((right_y, right_x), TRANSPARENT)
+    below_of_image = np.full((below_y, below_x), TRANSPARENT)
+
+    middle_section_with_image = np.concatenate((left_of_image, prediction, right_of_image), axis=1)
+    rain_intensity_values = np.asanyarray(np.concatenate((above_image, middle_section_with_image, below_of_image)),
+                                  dtype=np.uint8)
+
+    rain_intensity_values = np.reshape(rain_intensity_values, (target_dimension[0], target_dimension[1]))
+
+    rain_intensity_values_img = PIL.Image.fromarray(rain_intensity_values)
+    rain_intensity_values_img_final = np.asanyarray(rain_intensity_values_img.resize((900,900)))
+
+    return rain_intensity_values_img_final
+
+
 
 def fit_image_to_map(target_dimension, image_pos, image_array):
     TRANSPARENT = np.asanyarray([0, 0, 0, 0])
