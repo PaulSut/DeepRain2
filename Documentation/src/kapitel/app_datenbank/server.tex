@@ -1,6 +1,0 @@
-\subsection{Server}\label{server}
-Mit der Serverkomponente ist der Teil des Servers gemeint, der für die Kommunikation mit der Firebase verantwortlich ist. Dazu gehört das bereitstellen der aktuellsten Regendaten im Bildformat sowie das triggern von Push Benachrichtigungen. 
-Da zu beginn des Projektes noch keine Vorhersagen von den Netzen zur Verfügung stand, wurde ein Programm entwickelt, dass den Server simuliert und zufällig generierte Regendaten in der Firebase speichert. Somit konnte die App unabhängig und parallel zu den Netzen entwickelt werden.
-Wenn die Netze eine neue Regenvorhersage getroffen haben, werden die daraus resultierenden Vorhersage Bilder in den Firestore hochgeladen. 
-Um die Pushbenachrichtigungen auszulösen, muss für jede Region in der sich ein Nutzer befindet, der Pixel der Region berechnet werden. 
-Dafür werden für alle vorhandenen Regionen, in denen Device Tokens gespeichert sind, es also Nutzer in der Region gibt, über den jeweiligen Breiten und Höhengrad der dazugehörige Pixel für die Region berechnet. Der Wert der jeweiligen Pixel wird ausgelesen. Liegt dieser Farb, oder auch Regenwert, über einem bestimmten Grenzwert, wird ein Dokument in der Kollektion RainWarningPushNotification gespeichert. Hierdurch wird eine Cloudfunktion getriggert, welche sich um das senden der Pushbenachrichtigungen kümmert. 
