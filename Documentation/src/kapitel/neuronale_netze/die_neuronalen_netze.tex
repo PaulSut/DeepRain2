@@ -649,25 +649,50 @@ Einfache Baseline & 44,8 \% & 55,2 \%
 \noindent Aus der Tabelle \ref{tab:nass} hervorgeht, wird die Person die sich auf die Vorhersage verlässt mit einer Wahrscheinlichkeit von 39,1 (im besten Fall) \% Nass.
 Dies ist zwar nicht überragend, es ist jedoch besser als würde sich die Person darauf verlassen, dass das Wetter so bleibt wie es ist.
 
+\newpage
+\noindent Ein weiterer interessanter Aspekt ist die Genauigkeit der Vorhersage für den Regenfall. Hierfür betrachten wir zuerst die Zero-Inflated negativ Binomialverteilung.
+Hierfür berechnen wir das Konfidenzintervall der Verteilung welches 90\% der Daten umschließt. Daraufhin zählen wir wie oft der wahre Wert innerhalb des Konfidenzintervalls liegt.
+In der folgenden Abbildung sind die zwei 90 \% Konfidenzintervalle für die beiden Architekturen zu sehen.\\
+
 \begin{figure}[h]
 \centering
 \begin{tabular}{c}
 \includegraphics[width=120mm]{abb/quantile_LSTM.png}\\
-\includegraphics[width=120mm]{abb/quantile_UNET.png}
+(a) \small{LSTM-Architektur}\\
+\includegraphics[width=120mm]{abb/quantile_UNET.png}\\
+(b) \small{UNET}
 \end{tabular}
-\caption{Konfidenzintervall. \label{fig:quantiles}}
+\caption{Konfidenzintervall für die Zero-Inflated negativ Binomialverteilung, Oben für die LSTM-Architektur, unten für das UNET. \label{fig:konfidenzintervall}}
 \end{figure}
+
+\noindent Die Konfidenzintervalle sind hierbei über eine Sequenz eines zufälligen Ausschnitts eines Pixels berechnet. Sie sind deshalb nicht aussagekräftig für die Vorhersage, sondern sollen lediglich die Erklärung für das Vorgehen vereinfachen. Anhand der Abbildungen ist zu sehen, dass die Konfidenzintervalle in etwa dem ''wahren'' Wert folgen. Allerdings ist auch zu sehen, dass Extremwerte meist außerhalb des Intervalls liegen. Zählen wir nun die Anzahl der Vorhersagen, bei denen der wahre Wert im Konfidenzintervall liegt, so ergibt sich folgendes Histogramm.\\
 
 
 \begin{figure}[h]
 \centering
 \begin{tabular}{cc}
 \includegraphics[width=80mm]{abb/dist_LSTM.png}&
-\includegraphics[width=80mm]{abb/dist_UNET.png}
+\includegraphics[width=80mm]{abb/dist_UNET.png}\\
+(a) \small{LSTM-Architektur} & (b) \small{UNET}
 \end{tabular}
-\caption{Konfidenzintervall. \label{fig:quantiles}}
+\caption{Relative Anzahl der ground truth im Konfidenzintervall. \label{fig:dist}}
 \end{figure}
 
+\noindent Anhand der Diagramme ist zu sehen, dass der ''wahre'' Wert in den meisten Fällen von der Verteilung umschlossen wird. Für die Diagramme wurde der Balken der kein Regen repräsentiert weggelassen. Für größere Regenwerte sieht man hingegen, dass der ''wahre'' Wert außerhalb der Konfidenzintervalle liegt. Das bedeutet, dass für die extremen Werte (die auch seltener vorkommen)
+die Vorhersage ungenauer wird.
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}[h]{l|c|c}
+Verteilung & inklusive Regen & exklusive Regen  \\
+\hline
+UNET & \textbf{93,0} \% & \textbf{73,0} \%  \\
+LSTM-Architektur &92,0 \% & 71,0 \%  \\
+
+\end{tabular}
+\caption{\label{tab:nass}}
+\end{table}
 
 \begin{figure}[h]
 \centering
