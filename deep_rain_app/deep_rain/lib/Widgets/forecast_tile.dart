@@ -12,20 +12,39 @@ class ForecastTile extends StatelessWidget {
   UIText _uiText = UIText();
 
   //returns a string with the rain intense
+  // these big values are the pixel values of the png forecast images
   String getRainIntenseString(int rainIntense){
-    if(rainIntense < 5){
+    if(rainIntense < 2951124605){
       return _uiText.forecastListRainIntenseNoRain;
     }
-    else if(rainIntense < 30){
+    else if(rainIntense == 2951124605){
       return _uiText.forecastListRainIntenseSomeRain;
     }
-    else if(rainIntense < 60){
+    else if(rainIntense == 2951439430){
       return _uiText.forecastListRainIntenseMediumRain;
     }
-    else if(rainIntense < 100){
+    else if(rainIntense == 2952725805){
       return _uiText.forecastListRainIntenseStrongRain;
     }
     return _uiText.forecastListRainIntenseError;
+  }
+
+  //returns a string with the rain intense
+  // these big values are the pixel values of the png forecast images
+  int getRainColor(int rainIntense){
+    if(rainIntense < 2951124605){
+      return 200;
+    }
+    else if(rainIntense == 2951124605){
+      return 400;
+    }
+    else if(rainIntense == 2951439430){
+      return 600;
+    }
+    else if(rainIntense == 2952725805){
+      return 800;
+    }
+    return 500;
   }
 
   //Return the image for the list entry depending on the rain intense
@@ -47,7 +66,7 @@ class ForecastTile extends StatelessWidget {
         child: ListTile(
           leading: CircleAvatar(
             radius: 25.0,
-            backgroundColor: Colors.blueGrey[(((forecast.rainIntense)/10).round())*100],
+            backgroundColor: Colors.blueGrey[getRainColor(forecast.rainIntense)],
             backgroundImage: getIcon(forecast.rainIntense),
           ),
           title: Text(getRainIntenseString(forecast.rainIntense)),

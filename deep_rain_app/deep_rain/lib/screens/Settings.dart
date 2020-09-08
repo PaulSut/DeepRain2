@@ -200,6 +200,16 @@ class _LoadingState extends State<Settings> {
           SettingsSection(
             title: _uiText.settingsHeaderMore,
             tiles: [
+              SettingsTile.switchTile(
+                title: _uiText.settingsDemoMode,
+                leading: Icon(Icons.insert_chart),
+                switchValue: _globalValues.getAppSwitchDemoMode(),
+                onToggle: (bool value) {
+                  setState(() {
+                    _globalValues.setAppSwitchDemoMode(!_globalValues.getAppSwitchDemoMode());
+                  });
+                },
+              ),
               SettingsTile(
                 title: _uiText.settingsImpressum,
                 leading: Icon(Icons.person_outline),

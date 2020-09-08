@@ -1,11 +1,12 @@
-import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:deep_rain/DataObjects/DataHolder.dart';
+import 'package:deep_rain/DataObjects/ForecastListItem.dart';
+import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:deep_rain/screens/ForecastMap.dart';
 import 'package:deep_rain/services/Database.dart';
+import 'package:deep_rain/services/ProvideForecastData.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class UpdateImageData extends StatefulWidget {
   @override
@@ -15,9 +16,27 @@ class UpdateImageData extends StatefulWidget {
 class _UpdateImageDataState extends State<UpdateImageData> {
   void setupForecastMap() async{
     DatabaseService instance = DatabaseService();
-    for(var i = 1; i <= 20; i++){
-      await instance.getImage(i);
+
+    List<String> time_steps = [];
+    instance.TimeSteps.listen((event) {
+      time_steps = event;
+    });
+
+    // download the forecast images
+    int pixel_value;
+    List<ForecastListItem> forecast_list = [];
+    for(var i = 1; i <= 8; i++){
+      print('Ich hole Bilder');
+      pixel_value = await instance.getImage(i);
+      forecast_list.add(ForecastListItem(rainIntense: pixel_value, time: time_steps[i-1]));
     }
+    ProvideForecastData provider = ProvideForecastData();
+    provider.setForecast(forecast_list);
+    provider.setTimeSteps(time_steps);
+
+    GlobalValues _globalValues = GlobalValues();
+    _globalValues.setAppSwitchDemoMode(true);
+    _globalValues.setAppSwitchDemoMode(false);
   }
 
   @override

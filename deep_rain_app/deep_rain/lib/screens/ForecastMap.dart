@@ -1,15 +1,16 @@
 import 'dart:typed_data';
-
 import 'package:deep_rain/DataObjects/DataHolder.dart';
 import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:deep_rain/global/UIText.dart';
 import 'package:deep_rain/services/Database.dart';
+import 'package:deep_rain/services/ProvideForecastData.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
-
 import 'UpdateImageData.dart';
-
+/*
+The screen in which the forecast png are shown.
+ */
 
 class ForecastMap extends StatefulWidget {
   @override
@@ -24,17 +25,19 @@ class _ForecastMapState extends State<ForecastMap> {
 
   double rating = 0;
   int currentDivison = 1;
-  int numberOfDivisions = 20;
+  int numberOfDivisions = 8;
   Uint8List imageFile;
 
-  List<String> time_steps = ['loading', 'loading'];
+//  List<String> time_steps = ['loading', 'loading'];
+
+  List<String> demo_images = ['1702031500.png', '1702031505.png', '1702031510.png', '1702031515.png', '1702031520.png', '1702031525.png', '1702031530.png', '1702031535.png', '1702031535.png', '1702031535.png'];
 
   @override
   Widget build(BuildContext context) {
 
-    _databaseService.TimeSteps.listen((event) {
-      time_steps = event;
-    });
+//    _databaseService.TimeSteps.listen((event) {
+//      time_steps = event;
+//    });
 
     //if the image for the current dvision is not stored in DataHolder
     if (!imageData.containsKey(currentDivison)) {
@@ -42,9 +45,10 @@ class _ForecastMapState extends State<ForecastMap> {
     } else {
       // set the imageFile to the Image from the DataHolder
       this.setState(() {
-        imageFile = imageData[currentDivison];
+          imageFile = imageData[currentDivison];
       });
     }
+    print('Current Division' + currentDivison.toString());
 
     return Scaffold(
       appBar: AppBar(
@@ -79,7 +83,7 @@ class _ForecastMapState extends State<ForecastMap> {
                   OverlayImage(
                     bounds: LatLngBounds(LatLng(54.5790457, 2.0735617), LatLng(47.07113758, 14.6087025)),
                     opacity: 0.8,
-                    imageProvider: imageFile == null ? AssetImage('assets/error.png') : Image.memory(imageFile).image,
+                    imageProvider: AppSwitchDemoMode == true ? AssetImage('assets/DemoImages/' + demo_images[currentDivison]) : (imageFile == null ? AssetImage('assets/error.png') : Image.memory(imageFile).image),
                   ),
                 ],
                 ),
@@ -93,11 +97,14 @@ class _ForecastMapState extends State<ForecastMap> {
               onChanged: (newRating) {
                 setState(() {
                   rating = newRating;
-                  currentDivison = newRating ~/ (1 / numberOfDivisions);
+                  print('new Rating: ' + newRating.toString());
+                  currentDivison = (newRating * (numberOfDivisions-1)).toInt() + 1;
                 });
+                print(currentDivison);
               },
               divisions: numberOfDivisions-1,
               label: time_steps[(rating*(numberOfDivisions-1)).toInt()],
+              activeColor: currentDivison > 5 ? Colors.teal : Colors.blueGrey,
             ),
           ),
         ],
