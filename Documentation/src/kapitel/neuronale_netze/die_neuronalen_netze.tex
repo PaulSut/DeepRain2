@@ -649,6 +649,33 @@ Einfache Baseline & 44,8 \% & 55,2 \%
 \noindent Aus der Tabelle \ref{tab:nass} hervorgeht, wird die Person die sich auf die Vorhersage verlässt mit einer Wahrscheinlichkeit von 39,1 (im besten Fall) \% Nass.
 Dies ist zwar nicht überragend, es ist jedoch besser als würde sich die Person darauf verlassen, dass das Wetter so bleibt wie es ist.
 
+\begin{figure}[h]
+\centering
+\begin{tabular}{c}
+\includegraphics[width=120mm]{abb/quantile_LSTM.png}\\
+\includegraphics[width=120mm]{abb/quantile_UNET.png}
+\end{tabular}
+\caption{Konfidenzintervall. \label{fig:quantiles}}
+\end{figure}
 
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{cc}
+\includegraphics[width=80mm]{abb/dist_LSTM.png}&
+\includegraphics[width=80mm]{abb/dist_UNET.png}
+\end{tabular}
+\caption{Konfidenzintervall. \label{fig:quantiles}}
+\end{figure}
+
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{cc}
+\includegraphics[width=80mm]{abb/LSTM_LOGBIN.png}&
+\includegraphics[width=80mm]{abb/UNET_LOGBIN.png}
+\end{tabular}
+\caption{Konfidenzintervall. \label{fig:quantiles}}
+\end{figure}
 
 \newpage
