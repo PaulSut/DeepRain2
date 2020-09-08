@@ -3,6 +3,7 @@ import 'package:deep_rain/DataObjects/DataHolder.dart';
 import 'package:deep_rain/global/GlobalValues.dart';
 import 'package:deep_rain/global/UIText.dart';
 import 'package:deep_rain/services/Database.dart';
+import 'package:deep_rain/services/ProvideForecastData.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -24,19 +25,19 @@ class _ForecastMapState extends State<ForecastMap> {
 
   double rating = 0;
   int currentDivison = 1;
-  int numberOfDivisions = 20;
+  int numberOfDivisions = 8;
   Uint8List imageFile;
 
-  List<String> time_steps = ['loading', 'loading'];
+//  List<String> time_steps = ['loading', 'loading'];
 
   List<String> demo_images = ['1702031500.png', '1702031505.png', '1702031510.png', '1702031515.png', '1702031520.png', '1702031525.png', '1702031530.png', '1702031535.png', '1702031540.png', '1702031545.png', '1702031550.png', '1702031555.png', '1702031600.png', '1702031605.png', '1702031610.png', '1702031615.png', '1702031620.png', '1702031625.png', '1702031630.png', '1702031635.png', '1702031635.png'];
 
   @override
   Widget build(BuildContext context) {
 
-    _databaseService.TimeSteps.listen((event) {
-      time_steps = event;
-    });
+//    _databaseService.TimeSteps.listen((event) {
+//      time_steps = event;
+//    });
 
     //if the image for the current dvision is not stored in DataHolder
     if (!imageData.containsKey(currentDivison)) {
