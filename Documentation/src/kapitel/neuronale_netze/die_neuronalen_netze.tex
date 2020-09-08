@@ -548,9 +548,10 @@ Tatsächlich verbessern sich beide Architekturen noch marginal nach weiteren Epo
 
 Wir beschränken uns zuerst auf die Auswertung der binären Klassifikation von Regen und kein Regen. Später werden wir für die verschiedenen Architekturen und Verteilungen die Klassifikation für die Regenvorhersage begutachten.
 
-\subsubsection{Baseline}
+%\subsubsection{Baseline}
 %TODO:
 
+\subsubsection{Auswertung der binären Regenvorhersage}
 Die folgende Abbildung zeigt einen zufälligen Ausschnitt der Regenvorhersage für sieben aufeinanderfolgende Zeitschritte.\\
 
 \begin{figure}[h]
@@ -563,7 +564,7 @@ Die folgende Abbildung zeigt einen zufälligen Ausschnitt der Regenvorhersage f�
 \includegraphics[width=20mm]{abb/prediction/105_maxCont}&
 \includegraphics[width=20mm]{abb/prediction/106_maxCont}
 \end{tabular}
-\caption{Vorhersage in Abständen von fünf Minuten für die Zero-Inflated negative Binomialverteilung. Die erste Zeile entspricht dem momentanen Regen. Zeile zwei entspricht dem tatsächlichen Regen in 30 Minuten. Zeile drei ist die 30 Minuten Vorhersage des Unets. Zeile vier ist die 30 Minuten Vorhersage der LSTM-Architektur. Die Bilder sind kontrastmaximiert dargestellt. Die letzten beiden Zeilen stellen die korrekte bzw. inkorrekte Regenvorhersage für die Unet- und die LSTM-Architektur (letzte Zeile) dar.
+\caption{Vorhersage in Abständen von fünf Minuten für die Zero-Inflated negative Binomialverteilung. Die erste Zeile entspricht dem momentanen Regen. Zeile zwei entspricht dem tatsächlichen Regen in 30 Minuten. Zeile drei ist die 30 Minuten Vorhersage des Unets. Zeile vier ist die 30 Minuten Vorhersage der LSTM-Architektur. Für die Vorhersage wurde der Mittelwert der Verteilung berechnet. Die Bilder sind kontrastmaximiert dargestellt. Die letzten beiden Zeilen stellen die korrekte bzw. inkorrekte Regenvorhersage für die Unet- und die LSTM-Architektur (letzte Zeile) dar.
 Hierbei entspricht true positiv der Farbe Grün, false positiv Rot, false negativ Blau und true negativ Schwarz .\label{fig:predNegBin}}
 \end{figure}
 
@@ -585,8 +586,8 @@ Hierbei entspricht true positiv der Farbe Grün, false positiv Rot, false negati
 \end{figure}
 
 
-\noindent Auch bei der Multinomialenverteilung wird tendenziell zu viel Regen vorhergesagt.Des weiteren wird die Form der Regenfront nicht korrekt vorhergesagt. Zudem scheint die Anzahl der false negative (Blau) Vorhersagen höher als bei der Zero-Inflated negative Binomialverteilung. Zusammenfassend ist für die Ausschnitte der Vorhersagen zu sagen, dass die true positive vorhersagen die false negative und false positiv überwiegen. Um eine generelle Aussage treffen zu können wir im weiteren Verlauf die ''receiver operating characteristic'' auch \textbf{ROC} herangezogen.
-\newpage
+\noindent Auch bei der Multinomialenverteilung wird tendenziell zu viel Regen vorhergesagt. Für die Vorhersage wird das Label mit der größten Wahrscheinlichkeit herangezogen. Es ist erkennbar, dass die Form der Regenfront nicht korrekt vorhergesagt. Zudem scheint die Anzahl der false negative (Blau) Vorhersagen höher als bei der Zero-Inflated negative Binomialverteilung. Zusammenfassend ist für die Ausschnitte der Vorhersagen zu sagen, dass die true positive vorhersagen die false negative und false positiv überwiegen. Um eine generelle Aussage treffen zu können wir im weiteren Verlauf die ''receiver operating characteristic'' auch \textbf{ROC} herangezogen.
+
 
 \noindent In der folgenden Abbildung ist die ROC für beide Architekturen und Verteilungen zu sehen. Die Kurven entstehen indem wir für verschiedene Schwellwerte die binäre Regenvorhersage treffen. Das bedeutet konkret, dass die Wahrscheinlichkeit für kein Regen berechnet wird. Ist diese Wahrscheinlichkeit größer als der Schwellwert so wird auch kein Regen vorhergesagt.
 Die Schwellwerte liegen gleichmäßig verteilt zwischen Null und Eins.
@@ -650,8 +651,9 @@ Einfache Baseline & 44,8 \% & 55,2 \%
 Dies ist zwar nicht überragend, es ist jedoch besser als würde sich die Person darauf verlassen, dass das Wetter so bleibt wie es ist.
 
 \newpage
+\subsubsection{Auswertung der Regenvorhersage}
 \noindent Ein weiterer interessanter Aspekt ist die Genauigkeit der Vorhersage für den Regenfall. Hierfür betrachten wir zuerst die Zero-Inflated negativ Binomialverteilung.
-Hierfür berechnen wir das Konfidenzintervall der Verteilung welches 90\% der Daten umschließt. Daraufhin zählen wir wie oft der wahre Wert innerhalb des Konfidenzintervalls liegt.
+Hierfür berechnen wir das Konfidenzintervall der Verteilung welches 97,5\% der Daten umschließt. Daraufhin zählen wir wie oft der wahre Wert innerhalb des Konfidenzintervalls liegt.
 In der folgenden Abbildung sind die zwei 97,5 \% Konfidenzintervalle für die beiden Architekturen zu sehen.\\
 
 \begin{figure}[h]
@@ -685,30 +687,58 @@ die Vorhersage ungenauer wird.
 \begin{table}[h]
 \centering
 \begin{tabular}[h]{l|c|c|c}
-Verteilung & inklusive Regen & exklusive Regen & Intervall \\
+Architektur & inklusive Regen & exklusive Regen & Konfidenzintervall \\
 \hline
 UNET & \textbf{93,0} \% & \textbf{73,0} \%  & 97,5 \%\\
  & 88,0 \% & 43,0 \% & 95 \% \\
  & 86,0 \% & 35,0 \% & 90 \% \\
  \hline
-LSTM-Architektur &92,0 \% & 71,0 \% & 97,5 \% \\
+LSTM &92,0 \% & 71,0 \% & 97,5 \% \\
  &\textbf{89,0} \% & \textbf{45,0} \% & 95 \% \\
  &\textbf{87,0} \% & \textbf{40,0} \% & 90 \% \\
 
 \end{tabular}
-\caption{\label{tab:konv}}
+\caption{ Relative Anzahl der wahren Werte im Konfidenzintervall für verschiedene Intervalle und Architekturen\label{tab:konv}}
 \end{table}
 
 \noindent In Tabelle \ref{tab:konv} ist zu erkennen, dass je kleiner das Konfidenzintervall gewählt wird, desto seltener liegt die ground truth im Konvidenzintervall.
-Das hat zur Folge, dass
+Für die Spalte ''inklusive Regen'' ist der Unterschied nur marginal. Für die Spalte ''exklusive Regen'' ist ein großer Sprung zwischen dem 97,5 \% und dem 95 \% Konvidenzintervall zu sehen.
+Dies kann so interpretiert werden, dass die ground truth für diese Fälle nicht im ''Zentrum'' des Konfidenzintervalls liegt (bzw. weiter entfernt vom Zentrum). Der Mittelwert ist für diese Fälle eine schlechte Schätzung für die ground truth.\\
+
+\noindent Schauen wir uns nun die Multinomialeverteilung an. Wir gehen ähnlich vor wie bei der Zero-Inflated negativ Binomialverteilung vor und stellen die Anzahl der korrekten Vorhersagen gegenüber der Anzahl der ground truth (pro label). Um dies mit der Zero-Inflated negativ Binomialverteilung vergleichen zu können, skalieren wir die Vorhersage der Zero-Inflated negativ Binomialverteilung logarithmisch und stellen dies ebenfalls als Histogramm dar. Die folgende Abbildung zeigt das Ergebnis dieser Vorgehensweise.\\
 
 \begin{figure}[h]
 \centering
-\begin{tabular}{cc}
+\begin{tabular}{c|c}
+\small{LSTM} & \small{UNET}\\
 \includegraphics[width=80mm]{abb/LSTM_LOGBIN.png}&
-\includegraphics[width=80mm]{abb/UNET_LOGBIN.png}
+\includegraphics[width=80mm]{abb/UNET_LOGBIN.png}\\
+\hline
+\includegraphics[width=80mm]{abb/dist_cat_lstm.png}&
+\includegraphics[width=80mm]{abb/dist_cat_unet.png}\\
 \end{tabular}
-\caption{Konfidenzintervall. \label{fig:quantiles}}
+\caption{Histogramm der Vorhersagen für beide Verteilungen und Architekturen. Die erste Zeile entspricht der Zero-Inflated negativ Binomialverteilung, die letzte der Multinomialverteilung \label{fig:logDist}}
 \end{figure}
+
+\noindent Anhand des Histogramms ist zu erkennen, dass die Zero-Inflated negativ Binomialverteilung eine leicht bessere Vorhersage liefert. Das Histogramm wurde in Richtung y-achse bei 0.2 begrenzt um eine bessere Darstellung zu erreichen. Stellt man die Beziehung in einer Tabelle dar, so kommt man zu folgendem Ergebnis.\\
+
+\begin{table}[h]
+\centering
+\begin{tabular}[h]{|l|c|c|c|c|}
+\hline
+&\multicolumn{2}{c}{exklusive Regen} &
+\multicolumn{2}{c|}{inklusive Regen} \\
+\hline
+& LSTM & UNET & LSTM & UNET \% \\
+\hline
+ZINB & 26 \% & 27 \% & 78 \% & 78 \% \\
+Multinom & 21 \% & 22 \% & 88 \% & 88 \% \\
+\hline
+\end{tabular}
+\caption{\label{tab:raintable}}
+\end{table}
+
+
+
 
 \newpage
