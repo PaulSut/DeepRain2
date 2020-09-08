@@ -30,7 +30,7 @@ class _ForecastMapState extends State<ForecastMap> {
 
 //  List<String> time_steps = ['loading', 'loading'];
 
-  List<String> demo_images = ['1702031500.png', '1702031505.png', '1702031510.png', '1702031515.png', '1702031520.png', '1702031525.png', '1702031530.png', '1702031535.png', '1702031540.png', '1702031545.png', '1702031550.png', '1702031555.png', '1702031600.png', '1702031605.png', '1702031610.png', '1702031615.png', '1702031620.png', '1702031625.png', '1702031630.png', '1702031635.png', '1702031635.png'];
+  List<String> demo_images = ['1702031500.png', '1702031505.png', '1702031510.png', '1702031515.png', '1702031520.png', '1702031525.png', '1702031530.png', '1702031535.png', '1702031535.png', '1702031535.png'];
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +48,7 @@ class _ForecastMapState extends State<ForecastMap> {
           imageFile = imageData[currentDivison];
       });
     }
+    print('Current Division' + currentDivison.toString());
 
     return Scaffold(
       appBar: AppBar(
@@ -96,13 +97,14 @@ class _ForecastMapState extends State<ForecastMap> {
               onChanged: (newRating) {
                 setState(() {
                   rating = newRating;
-                  currentDivison = newRating ~/ (1 / numberOfDivisions);
+                  print('new Rating: ' + newRating.toString());
+                  currentDivison = (newRating * (numberOfDivisions-1)).toInt() + 1;
                 });
                 print(currentDivison);
               },
               divisions: numberOfDivisions-1,
               label: time_steps[(rating*(numberOfDivisions-1)).toInt()],
-              activeColor: currentDivison > 4 ? Colors.green : Colors.blueGrey,
+              activeColor: currentDivison > 5 ? Colors.teal : Colors.blueGrey,
             ),
           ),
         ],
