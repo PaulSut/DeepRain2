@@ -9,10 +9,11 @@
 
 % weitere Pakete
 % Grafiken aus PNG Dateien einbinden
-%\usepackage{graphicx}
-\usepackage[export]{adjustbox}
+\usepackage{graphicx}
 \usepackage{float}
 \usepackage{subfig}
+\usepackage{multirow}
+%\usepackage{wrapfig}
 % aus SVG
 \usepackage{svg}
 
@@ -79,7 +80,10 @@
 %\usepackage[numbers,round]{natbib}
 
 % Festlegung Art der Zitierung - Havardmethode: Abkuerzung Autor + Jahr
-\bibliographystyle{alphadin}
+
+%\bibliographystyle{alphadin}
+%\bibliography{Hauptdatei}
+
 
 % Schaltet den zusätzlichen Zwischenraum ab, den LaTeX normalerweise nach einem Satzzeichen einfügt.
 %\frenchspacing
@@ -132,6 +136,351 @@
 % Optional: Einzelne Zeilen am Ende einer Seite unterdrücken (Hurenkinder)
 % \widowpenalty = 10000
 % \displaywidowpenalty = 10000
+
+
+
+\usepackage{tikz}
+
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,petri, decorations.pathreplacing,shadows,calc}
+
+\definecolor{echoreg}{HTML}{2cb1e1}
+\definecolor{sublimedg}{HTML}{171813}
+\definecolor{lgry}{HTML}{aaaaaa}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+  
+
+\tikzset{%
+  cascaded/.style = {%
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -1ex,
+      shadow yshift = 1ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -1ex,
+      shadow yshift = 1ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -.5ex,
+      shadow yshift = .5ex,
+      draw=black,
+      thick,
+      fill = white},
+    fill = white, 
+    draw,
+    thick}}
+    
+\tikzset{%
+  cascadedd/.style = {%
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -4.5ex,
+      shadow yshift = 4.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -4ex,
+      shadow yshift = 4ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -3.5ex,
+      shadow yshift = 3.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -3ex,
+      shadow yshift = 3ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -2.5ex,
+      shadow yshift = 2.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -2ex,
+      shadow yshift = 2ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -1.5ex,
+      shadow yshift = 1.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -1ex,
+      shadow yshift = 1ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -.5ex,
+      shadow yshift = .5ex,
+      draw=black,
+      thick,
+      fill = white},
+    fill = white, 
+    draw,
+    thick}}
+    
+\tikzset{%
+  cascadeddd/.style = {%
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -9ex,
+      shadow yshift = 9ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -8.5ex,
+      shadow yshift = 8.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -8ex,
+      shadow yshift = 8ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -7.5ex,
+      shadow yshift = 7.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -7ex,
+      shadow yshift = 7ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -6.5ex,
+      shadow yshift = 6.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -6ex,
+      shadow yshift = 6ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -5.5ex,
+      shadow yshift = 5.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -5ex,
+      shadow yshift = 5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -4.5ex,
+      shadow yshift = 4.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -4ex,
+      shadow yshift = 4ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -3.5ex,
+      shadow yshift = 3.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -3ex,
+      shadow yshift = 3ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -2.5ex,
+      shadow yshift = 2.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -2ex,
+      shadow yshift = 2ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -1.5ex,
+      shadow yshift = 1.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -1ex,
+      shadow yshift = 1ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -.5ex,
+      shadow yshift = .5ex,
+      draw=black,
+      thick,
+      fill = white},
+    fill = white, 
+    draw,
+    thick}}
+
+
+\tikzset{%
+  cascaded3/.style = {%
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -9ex,
+      shadow yshift = 9ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -8.5ex,
+      shadow yshift = 8.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -8ex,
+      shadow yshift = 8ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -7.5ex,
+      shadow yshift = 7.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -7ex,
+      shadow yshift = 7ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -6.5ex,
+      shadow yshift = 6.5ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -6ex,
+      shadow yshift = 6ex,
+      draw=black,
+      thick,
+      fill = white},
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -5.5ex,
+      shadow yshift = 5.5ex,
+      draw=black,
+      thick,
+      fill = white},
+
+    fill = white, 
+    draw,
+    thick}}
+
+
+\tikzset{
+test/.style = {%
+    general shadow = {%
+      shadow scale = 1,
+      shadow xshift = -9ex,
+      shadow yshift = 9ex,
+      draw=black,
+      thick,
+      fill = white}
+      }}
+
+
+\tikzset{
+slimconv/.style = {rectangle, 
+  dashed,
+  draw=sublimedg, 
+  fill=cyan,  
+  fill opacity=0.5,
+  very thin, 
+  minimum width=0.1em, 
+  minimum height=12em
+      }}
+
+
+\let\oldquote\quote
+\let\endoldquote\endquote
+\renewenvironment{quote}[2][]
+  {\if\relax\detokenize{#1}\relax
+     \def\quoteauthor{#2}%
+   \else
+     \def\quoteauthor{#2~---~#1}%
+   \fi
+   \oldquote}
+  {\par\nobreak\smallskip\hfill(\quoteauthor)%
+   \endoldquote\addvspace{\bigskipamount}}
+   %\usepackage{wrapfig}
+
+\newpage
 
 \begin{document}
 % hier werden die Trennvorschläge inkludiert
@@ -237,7 +586,12 @@
 % arabische Seitennummerierung ab hier
 \pagenumbering{arabic}
 
-\input{kapitel/einleitung/Einleitung}
+
+
+\nocite{*} % adds all references without citations to bibliography
+\bibliographystyle{apalike}
+\bibliography{Hauptdatei}
+
 
 \input{kapitel/gesamtsystem/Gesamtsystem}
 
@@ -250,9 +604,8 @@
 \input{kapitel/app_datenbank/app_datenbank}
 
 
-\newpage
-
 % In dieser Datei ist viel Beispielcode für alle möglichen Arten von Formattierungen usw.
 %\input{beispiel_text}
+
 
 \end{document}
