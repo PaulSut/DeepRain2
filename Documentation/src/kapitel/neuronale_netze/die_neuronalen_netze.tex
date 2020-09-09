@@ -293,15 +293,15 @@ minimum height=5em] (kl) at (31, 1) {Kl-Schicht};
 	\draw[-stealth, very thick] (top5.east) -- (kl.west);
 
 \end{tikzpicture}
- \caption{Abgespekte Version des Unets  }
-\label{fig:Unet1}
+ \caption{Abgespekte Version des Unets  
+}\label{fig:Unet1}
 \end{figure}
 
 \noindent Die abgespekte Version des Unets hat im Gegensatz zur originalen Architektur wesentlich weniger Gewichte.
-Hier sind es ca 10 000 trainierbare Gewichte. Hierbei liegt der Hauptteil der Gewichte in der Klassifikationsschicht (Kl-Schicht in Bild \ref{fig:Unet1}).\\
+Hier sind es ca 10 000 trainierbare Gewichte. Zusätzliche Gewichte liegen in der Klassifikationsschicht (Kl-Schicht in Bild \ref{fig:classification_layer}).\\
 
 
-\noindent Eine weitere Architektur die wir begutachten ist ein Mix aus Inception-Layer und CNN-LSTM-Layer. Die Regenvorhersage in unserem Setup wird für gewöhnlich auch als Next-Frame prediction bezeichnet. Aus einem Set aufeinander folgender eingehender Bilder wird eine plausible vorhersage für das nächste Bild erzeugt.
+\noindent Eine weitere Architektur die wir begutachten ist ein Mix aus Inception-Layer und CNN-LSTM-Layer. Die Regenvorhersage in unserem Setup wird für gewöhnlich auch als Next-Frame prediction bezeichnet. Aus einem Set aufeinanderfolgender Eingangsbilder wird eine plausible Vorhersage für das nächste Bild erzeugt.
 
 
 %\begin{wrapfigure}{R}{0.5\textwidth}
@@ -582,7 +582,7 @@ Hierbei entspricht true positiv der Farbe Grün, false positiv Rot, false negati
 \includegraphics[width=20mm]{abb/prediction/105_cat_maxCont}&
 \includegraphics[width=20mm]{abb/prediction/106_cat_maxCont}
 \end{tabular}
-\caption{Vorhersage in Abständen von fünf Minuten für die Multinomialeverteilung. Hier sind die Zeilen wie in \ref{fig:predNegBin} dargestellt. Alle Bilder bis auf die Bilder der ersten Zeile sind in sieben Klassen dargestellt.\label{fig:predCat}}
+\caption{Vorhersage in Abständen von fünf Minuten für die Multinomialverteilung. Hier sind die Zeilen wie in \ref{fig:predNegBin} dargestellt. Alle Bilder bis auf die Bilder der ersten Zeile sind in sieben Klassen dargestellt.\label{fig:predCat}}
 \end{figure}
 
 
@@ -598,12 +598,12 @@ Die Schwellwerte liegen gleichmäßig verteilt zwischen Null und Eins.
 \includegraphics[width=70mm]{abb/ROC_ZINFBINOM.png}&
 \includegraphics[width=70mm]{abb/ROC_Categorical.png}
 \end{tabular}
-\caption{ROC/AUR für beide Architekturen und beide Verteilungen. Links für die ZINB und rechts für die Multinomialeverteilung.
+\caption{ROC/AUR für beide Architekturen und beide Verteilungen. Links für die ZINB und rechts für die Multinomialverteilung.
 Die Auserwertung erfolgt für 20 verschiedene Schwellwerte. \label{fig:anomerz}}
 \end{figure}
 
-\noindent Wie Anhand der Kurven zu erkennen ist, ist die ROC für die Multinomialeverteilung gleichmäßiger als die für die ZINB. 
-Auch die Fläche unter der Kurve (''area under curve'' \textbf{AUC}) ist für die Multinomialeverteilung marginal größer. Interessanterweise ist die Performance des Unets bei beiden Verteilungen besser (auch hier nur marginal) als für die LSTM-Architektur.\\
+\noindent Wie Anhand der Kurven zu erkennen ist, ist die ROC für die Multinomialverteilung gleichmäßiger als die für die ZINB. 
+Auch die Fläche unter der Kurve (''area under curve'' \textbf{AUC}) ist für die Multinomialverteilung marginal größer. Interessanterweise ist die Performance des Unets bei beiden Verteilungen besser (auch hier nur marginal) als für die LSTM-Architektur.\\
 
 \noindent Für den Schwellwert 0.5 erhalten wir in beiden Fällen ein relativ gutes Verhältnis von true positiv zu false positiv. In den Nachfolgenden Abbildungen ist die Confusionmatrix für diesen Schwellwert zu sehen.
 
@@ -627,12 +627,12 @@ Anhand der Confusionmatrix wird das ungleichgewicht zwischen Regen und kein Rege
 \includegraphics[width=45mm]{abb/categoricalConfusion_LSTM.png}&
 \includegraphics[width=45mm]{abb/categoricalConfusion_UNET.png}
 \end{tabular}
-\caption{Confusionmatrix für die Multinomialeverteilung und dem Schwellwert 0.5. Links die einfache Baseline, mittig für die LSTM-Architektur und rechts für die Unet-Architektur. \label{fig:confusionmatrix_cat}}
+\caption{Confusionmatrix für die Multinomialverteilung und dem Schwellwert 0.5. Links die einfache Baseline, mittig für die LSTM-Architektur und rechts für die Unet-Architektur. \label{fig:confusionmatrix_cat}}
 \end{figure}
 
-\noindent Auch für die Multinomialeverteilung erhalten wir eine bessere Vorhersage als mit der einfachen Baseline.
+\noindent Auch für die Multinomialverteilung erhalten wir eine bessere Vorhersage als mit der einfachen Baseline.
 Vergleichen wir die Confusionmatrix beider Verteilungen, so lässt sich feststellen, dass die Verteilungen in verschiedenen Bereichen andere Vorteile aufweisen.
-So ist die Regenvorhersage für die Multinomialeverteilung etwas besser als für die ZINB. Letztere (insbesondere die Unet-Variante) produziert mehr true negative und weniger false positiv Vorhersagen als die Multinomialeverteilung.\\
+So ist die Regenvorhersage für die Multinomialverteilung etwas besser als für die ZINB. Letztere (insbesondere die Unet-Variante) produziert mehr true negative und weniger false positiv Vorhersagen als die Multinomialverteilung.\\
 
 \noindent Für die tatsächliche Regenvorhersage ist jedoch interessant, in wie vielen Fällen eine Person Nass wird obwohl kein Regen vorhergesagt wird.
 Dazu wird die untere Zeile der Confusionmatrix mit einem Faktor multipliziert, sodass deren Summe 100 ergibt.\\
@@ -640,7 +640,7 @@ Dazu wird die untere Zeile der Confusionmatrix mit einem Faktor multipliziert, s
 \begin{tabular}[h]{l|c|c}
 Verteilung & Person wird Nass & Person wird nicht Nass  \\
 \hline
-Multinomialeverteilung & \textbf{39,9} \% & \textbf{60,1} \%  \\
+Multinomialverteilung & \textbf{39,9} \% & \textbf{60,1} \%  \\
 ZINB &43,0 \% & 57,0 \%  \\
 Einfache Baseline & 44,8 \% & 55,2 \% 
 \end{tabular}
@@ -680,8 +680,8 @@ In der folgenden Abbildung sind die zwei 97,5 \% Konfidenzintervalle für die be
 \caption{Relative Anzahl der ground truth im Konfidenzintervall. \label{fig:dist}}
 \end{figure}
 
-\noindent Anhand der Diagramme ist zu sehen, dass der ''wahre'' Wert in den meisten Fällen von der Verteilung umschlossen wird. Für die Diagramme wurde der Balken der kein Regen repräsentiert weggelassen. Für größere Regenwerte sieht man hingegen, dass der ''wahre'' Wert außerhalb der Konfidenzintervalle liegt. Das bedeutet, dass für die extremen Werte (die auch seltener vorkommen)
-die Vorhersage ungenauer wird.
+\noindent Anhand der Diagramme ist zu sehen, dass der ''wahre'' Wert in den meisten Fällen von der Verteilung umschlossen wird. Für die Diagramme wurde der Balken der kein Regen repräsentiert weggelassen. Für größere Regenwerte sieht man, dass der ''wahre'' Wert selten innerhalb der Konfidenzintervalle liegt. Daraus folgt, dass die Vorhersage mit der Zunahme der Regenstärke schlechter wird.\\
+
 
 
 \begin{table}[h]
@@ -705,7 +705,7 @@ LSTM &92,0 \% & 71,0 \% & 97,5 \% \\
 Für die Spalte ''inklusive Regen'' ist der Unterschied nur marginal. Für die Spalte ''exklusive kein Regen'' ist ein großer Sprung zwischen dem 97,5 \% und dem 95 \% Konvidenzintervall zu sehen.
 Dies kann so interpretiert werden, dass die ground truth für diese Fälle nicht im ''Zentrum'' des Konfidenzintervalls liegt (bzw. weiter entfernt vom Zentrum). Der Mittelwert ist für diese Fälle eine schlechte Schätzung für die ground truth.\\
 
-\noindent Schauen wir uns nun die Multinomialeverteilung an. Wir gehen ähnlich vor wie bei der ZINB vor und stellen die Anzahl der korrekten Vorhersagen gegenüber der Anzahl der ground truth (pro label). Um dies mit der ZINB vergleichen zu können, skalieren wir die Vorhersage der ZINB logarithmisch und stellen dies ebenfalls als Histogramm dar. Die folgende Abbildung zeigt das Ergebnis dieser Vorgehensweise.\\
+\noindent Schauen wir uns nun die Multinomialverteilung an. Wir gehen ähnlich vor wie bei der ZINB vor und stellen die Anzahl der korrekten Vorhersagen gegenüber der Anzahl der ground truth (pro label). Um dies mit der ZINB vergleichen zu können, skalieren wir die Vorhersage der ZINB logarithmisch und stellen dies ebenfalls als Histogramm dar. Die folgende Abbildung zeigt das Ergebnis dieser Vorgehensweise.\\
 
 \begin{figure}[h]
 \centering
@@ -738,7 +738,7 @@ Multinom & 21 \% & 22 \% & 88 \% & 88 \% \\
 \caption{Relative Anzahl der korrekt vorhergesagten Regenwerte\label{tab:raintable}}
 \end{table}
 
-\noindent Anhand der Tabelle \ref{tab:raintable} ist ersichtlich, dass die ZINB eine bessere Vorhersage für die Regenstärke liefert. Die Multinomialeverteilung hingegen liefert eine bessere Vorhersage im allgemeinen.
+\noindent Anhand der Tabelle \ref{tab:raintable} ist ersichtlich, dass die ZINB eine bessere Vorhersage für die Regenstärke liefert. Die Multinomialverteilung hingegen liefert eine bessere Vorhersage im allgemeinen.
 
 \subsubsection{Fazit der Auswertung}
 
