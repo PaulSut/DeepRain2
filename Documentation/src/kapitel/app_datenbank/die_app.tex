@@ -1,4 +1,5 @@
-\subsection{Die App}\label{die app}
+
+
 
 \subsubsection{Funktionen der App}\label{funkionen der app}
 Die App soll die von den Netzen berechnete Vorhersagen visualisieren und dem Benutzer zur Verfügung stellen. Die Daten werden dabei sowohl in 
@@ -39,7 +40,7 @@ Im Normalfall werden die Bilder einmalig bei dem App Start heruntergeladen.
 
 \subsubsection*{Einstellungen}
 Auf diesem Screen können alle relevanten Einstellungen gemacht werden. Dazu gehört z.B. die Sprache der Benutzeroberfläche. 
-Außerdem kann die Region eingestellt werden. 
+Außerdem kann die Region eingestellt werden 
 Die hier ausgewählte Region wird standardmäßig auf der Karte angezeigt und nur für diese Region werden Regenwarnungen gesendet. 
 Unter der Benachrichtigungs Kategorie können die Regenwarnungen aktiviert und der Zeitpunkt der Regenwarnung eingestellt werden. 
 Jede Aktion in dieser Kategorie löst verschiedene Datenbankaufrufe aus. 
@@ -112,7 +113,7 @@ Da das Bild eine Auflösung von 900x900 Pixeln hat, sind diese Listen 810.000 El
  Diese wird durch die in den Einstellungen festgelegte Region geändert und festgelegt. 
  Es wird nun ein Algorithmus gesucht der mithilfe von einer Koordinate, bestehend aus Latitude und Longitude werten, den dazugehörigen Pixel in dem Vorhersage PNG findet. 
  Nun wäre es natürlich möglich, durch alle Indizes zu Iterieren und somit den richtigen Pixel zu finden.
- Ein solcher bruteforce Ansatz ist bei einem Regenbild von n auf n Pixeln aufgrund der Laufzeit von O(n²) nicht zielführend.
+ Ein solcher bruteforce Ansatz ist bei einem Regenbild von n auf n Pixeln aufgrund der Laufzeit von O($n^2$) nicht zielführend.
 
  \noindent 
  Der erste Ansatz basierte auf dem Teile und Herrsche Prinzip. 
