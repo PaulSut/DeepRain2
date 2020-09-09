@@ -63,13 +63,25 @@ Wie man an der Position von Konstanz sieht, ist das Vorhersage PNG um 180 Grad a
 
 
 \noindent
-Um sicherzugehen, dass die für die Vorhersage verwendeten Daten mit dem tatsächlichen Niederschlag in Konstanz übereinstimmen, wurden sie grafisch veranschaulicht. 
+Um sicherzugehen, dass die für die Vorhersage verwendeten Daten mit dem tatsächlichen Niederschlag in Konstanz übereinstimmen, wurden sie grafisch dargestellt. 
 In Abbildung \ref{fig:radar_station_daten_vergleich} ist der Niederschlag aus den RADAR Daten und der Bodenstation zu sehen. 
 Es ist zu erkennen, dass die Regenstärke tendenziell leicht abweicht, während der Zeitpunkt des Regens sehr gut übereinstimmt.  
+Die Abweichung der Intensität ist systematisch und sollte somit kein Problem darstellen. 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth,angle=0]{abb/radar_station_daten_vergleich_June}
+    \includegraphics[width=0.6\textwidth,angle=0]{abb/radar_station_daten_vergleich_June}
     \caption[Radar und Stationsdaten]{Die Radar und Stationsdaten für Juni im Vergleich}
    \label{fig:radar_station_daten_vergleich}
+\end{figure}
+
+\noindent
+In folgender Abbildung ist zu erkennen, dass die Regenstation in Konstanz im Juni 214 Zeitschritte mit Regen aufgezeichnet hat, es laut Radardaten aber 258 Zeitschritte mit Regen gab.
+In 68\% der Regenzeitpunkte stimmen die Radar und Stationsdaten überein. 
+Der fehlende Regen in den Stationsdaten könnte sich durch Messungenauigkeiten oder eine etwas abweichende geografische Lage von Konstanz erklären lassen.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth,angle=0]{abb/confusion_matrix_stationdata_radardata}
+    \caption[Confusion Matrix mit Radar und Stationsdaten]{Confusionmatrix für die Radar und Stationsdaten im Juni}
+   \label{fig:confusion_radar_station}
 \end{figure}
  
