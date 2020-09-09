@@ -11,10 +11,10 @@ In folgender Abbildung ist die komplette Datenpipeline von dem Server des DWD bi
     \tolerance 9999
     \noindent
     Der DWD stellt alle fünf Minuten die neusten Regendaten für Deutschland im Binär Format auf dem Opendata Server des DWD zur Verfügung. 
-    Diese werden heruntergeladen und in der Datenaufbereitung verwendet, um PNGs zu generieren (Siehe Kapitel “Datenaufbereitung”). 
-    Dieses PNGs werden im Anschluss verwendet, um eine Regenvorhersage zu machen (Siehe Kapitel “Regenvorhersage / Netze”). 
+    Diese werden heruntergeladen und in der Datenaufbereitung verwendet, um PNGs zu generieren (Siehe Kapitel \ref{die datenaufbereitung}). 
+    Dieses PNGs werden im Anschluss verwendet, um eine Regenvorhersage zu machen (Siehe Kapitel \ref{die neuronalen netze}). 
     Der Output der Regenvorhersage ist wieder ein PNG. 
-    Dieses PNG wird in der Firebase gespeichert und auf allen Geräten mit der installierten App angezeigt (Siehe Kapitel “App und Datenbank”). 
+    Dieses PNG wird in der Firebase gespeichert und auf allen Geräten mit der installierten App angezeigt (Siehe Kapitel \ref{die deeprain app und das datenbankhandling}). 
     Der Übersichtlichkeit halber haben wir das gesamte Projekt in die drei Komponenten “Datenbeschaffung \& Vorverarbeitung”, “Vorhersage” und
     “App \& Datenbankhandling” aufgeteilt. 
     Die Komponente “Datenbeschaffung \& Vorverarbeitung” reicht vom Download der Binär - Daten beim DWD bis zu den daraus generierten PNG’s. 
