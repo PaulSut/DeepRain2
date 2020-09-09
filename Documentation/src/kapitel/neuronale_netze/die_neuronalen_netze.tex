@@ -687,7 +687,7 @@ die Vorhersage ungenauer wird.
 \begin{table}[h]
 \centering
 \begin{tabular}[h]{l|c|c|c}
-Architektur & inklusive Regen & exklusive Regen & Konfidenzintervall \\
+Architektur & inklusive kein Regen & exklusive kein Regen & Konfidenzintervall \\
 \hline
 UNET & \textbf{93,0} \% & \textbf{73,0} \%  & 97,5 \%\\
  & 88,0 \% & 43,0 \% & 95 \% \\
@@ -702,7 +702,7 @@ LSTM &92,0 \% & 71,0 \% & 97,5 \% \\
 \end{table}
 
 \noindent In Tabelle \ref{tab:konv} ist zu erkennen, dass je kleiner das Konfidenzintervall gewählt wird, desto seltener liegt die ground truth im Konvidenzintervall.
-Für die Spalte ''inklusive Regen'' ist der Unterschied nur marginal. Für die Spalte ''exklusive Regen'' ist ein großer Sprung zwischen dem 97,5 \% und dem 95 \% Konvidenzintervall zu sehen.
+Für die Spalte ''inklusive Regen'' ist der Unterschied nur marginal. Für die Spalte ''exklusive kein Regen'' ist ein großer Sprung zwischen dem 97,5 \% und dem 95 \% Konvidenzintervall zu sehen.
 Dies kann so interpretiert werden, dass die ground truth für diese Fälle nicht im ''Zentrum'' des Konfidenzintervalls liegt (bzw. weiter entfernt vom Zentrum). Der Mittelwert ist für diese Fälle eine schlechte Schätzung für die ground truth.\\
 
 \noindent Schauen wir uns nun die Multinomialeverteilung an. Wir gehen ähnlich vor wie bei der ZINB vor und stellen die Anzahl der korrekten Vorhersagen gegenüber der Anzahl der ground truth (pro label). Um dies mit der ZINB vergleichen zu können, skalieren wir die Vorhersage der ZINB logarithmisch und stellen dies ebenfalls als Histogramm dar. Die folgende Abbildung zeigt das Ergebnis dieser Vorgehensweise.\\
@@ -726,10 +726,10 @@ Dies kann so interpretiert werden, dass die ground truth für diese Fälle nicht
 \centering
 \begin{tabular}[h]{|l|c|c|c|c|}
 \hline
-&\multicolumn{2}{c}{exklusive Regen} &
-\multicolumn{2}{c|}{inklusive Regen} \\
+&\multicolumn{2}{c}{exklusive kein Regen} &
+\multicolumn{2}{c|}{inklusive kein Regen} \\
 \hline
-& LSTM & UNET & LSTM & UNET \% \\
+& LSTM & UNET & LSTM & UNET \\
 \hline
 ZINB & 26 \% & 27 \% & 78 \% & 78 \% \\
 Multinom & 21 \% & 22 \% & 88 \% & 88 \% \\
