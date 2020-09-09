@@ -30,7 +30,7 @@ class _ForecastMapState extends State<ForecastMap> {
 
 //  List<String> time_steps = ['loading', 'loading'];
 
-  List<String> demo_images = ['1702031500.png', '1702031505.png', '1702031510.png', '1702031515.png', '1702031520.png', '1702031525.png', '1702031530.png', '1702031535.png', '1702031535.png', '1702031535.png'];
+  List<String> demo_images = ['1.png','1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png'];
 
   @override
   Widget build(BuildContext context) {
