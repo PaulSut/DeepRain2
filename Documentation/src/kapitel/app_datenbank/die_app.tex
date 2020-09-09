@@ -75,6 +75,7 @@ Der Appstart ist in folgender Abbildung schematisch dargestellt.
 \end{figure}
 
 \subsubsection{Die Berechnung der Regenintensität}
+Um die aktuelle Regensituation auf einer Liste anzuzeigen, muss der Farbwert aus dem richtigen Pixel im Vorhersage ausgelesen werden. 
 Zu Beginn wurde angenommen, dass die App nur in Konstanz verwendet werden soll. 
 Im Laufe des Projektes stellte sich jedoch heraus, dass die entwickelten Netze in Zukunft auch in der Lage seien könnten, Vorhersagen 
 für ganz Deutschland zu machen. Da die Softwarearchitektur nicht für eine solche Anwendung ausgelegt war, 
@@ -92,7 +93,6 @@ Auf diese Berechnung wird in Abschnitt \ref{sec: pixel_berechnung} eingegangen.
 Wenn die Bilder beim Appstart oder bei einem Vorhersageupdate heruntergeladen werden, wird von jedem Bild der Regenwert 
 in dem entsprechenden Pixel berechnet. 
 Es wird eine Liste mit ForecastListItem Objekten erstellt. Diese wird global gespeichert und in der Vorhersage Liste angezeigt. 
-Aufgrund der verhältnismäßig hohen Datenmenge der 20 Vorhersage PNGs, werden aktuell nur beim App Start oder durch manuelles Auslösen eines Updates die Vorhersage Daten aktualisiert.
 
 \subsubsection{Berechnung des Pixels} \label{sec: pixel_berechnung}
 Um die Regensituation an dem jeweiligen Ort des Users auszuwerten, muss der Pixel in dem Vorhersagebild berechnet werden. 
@@ -107,23 +107,25 @@ Da das Bild eine Auflösung von 900x900 Pixeln hat, sind diese Listen 810.000 El
   \caption{Der Exemplarische Aufbau der Listen zur Berechnung des eigenen Pixels}
  \label{fig:sequence_diagram_app_start}
  \end{figure}
- \noindent Jeder User hat eine eigene Position in Deutschland, welche in Form von Höhen und Breitengrad angaben bekannt ist. 
+ \noindent 
+ Jeder User hat eine eigene Position in Deutschland, welche in Form von Höhen und Breitengrad angaben bekannt ist. 
  Diese wird durch die in den Einstellungen festgelegte Region geändert und festgelegt. 
  Es wird nun ein Algorithmus gesucht der mithilfe von einer Koordinate, bestehend aus Latitude und Longitude werten, den dazugehörigen Pixel in dem Vorhersage PNG findet. 
- Nun wäre es natürlich möglich, durch alle Indizes zu Iterieren und somit den richtigen Pixel zu finden. 
- Dieses Verfahren ist aber sehr Zeitaufwändig und daher nicht geeignet um es während der Laufzeit der App anzuwenden.
+ Nun wäre es natürlich möglich, durch alle Indizes zu Iterieren und somit den richtigen Pixel zu finden.
+ Ein solcher bruteforce Ansatz ist bei einem Regenbild von n auf n Pixeln aufgrund der Laufzeit von O(n²) nicht zielführend.
 
- \noindent Der erste Ansatz basierte auf dem Teile und Herrsche Prinzip. 
- Dabei wurde das vorhersage PNG in 4 gleichgroße teile aufgeteilt und überprüft in welchem Quadrant sich das Gerät befindet.
- Alle Quadranten, in denen sich das Gerät nicht befindet, wurden verworfen. 
- Der übrige Quadrant wurde erneut in vier teile aufgeteilt. 
- Dieser Vorgang wurde so oft wiederholt, bis nur noch ein Pixel übrig blieb. 
+ \noindent 
+ Der erste Ansatz basierte auf dem Teile und Herrsche Prinzip. 
+ Dieser auf einem Quadtree basierende Algorithmus, teilt das Regenbild in vier Bereiche auf und berechnet anschließend in welcher der vier Mittelpunkte der aktuellen Position am nähsten ist. 
+ Anschließed wird der Bereich erneut in vier Teilbereiche unterteilt und die Berechnung wiederholt sich. 
+ Dieser Prozess wird so lange wiederholt, bis man den Pixel indem sich die aktuelle Position befindet ausgemacht hat.
  Wie bereits in \ref{die daten} beschrieben, ist der abgedeckte Kartenbereich nicht rechteckig. 
- Die daraus resultierenden nichtlinearität verursachte in bestimmen Fällen fehler. 
+ Die daraus resultierenden nichtlinearität verursachte bei diesem Verfahren in bestimmen Fällen fehler. 
  Daher wurde ein neuer, stabilerer, Algorithmus entwickelt. 
  
- \noindent Das neue Verfahren wird von den Problemen des alten Verfahrens nicht beeinflusst, ist dafür allerdings im durchschnitt ein bisschen langsamer. 
- Dieser Unterschied ist für unsere Anwendung vernachlässigbar. 
+ \noindent 
+ Das neue Verfahren wird von den Problemen des alten Verfahrens nicht beeinflusst, ist dafür allerdings im durchschnitt ein bisschen langsamer. 
+ Dieser Laufzeitunterschied ist für unsere Anwendung vernachlässigbar. 
  Es wird an einem Startpixel gestartet, von dem aus die Distanz zu den Koordinaten des Gerätes berechnet wird. 
  Dann wird die Distanz der Nachbarpixel zu den Koordinaten des Gerätes berechnet. 
  Wenn eine verringerung der Distanz durch einen Nachbarpixel erzielt werden kann, wird einer der Nachbarpixel zu dem neuen betrachteten Kästchen. 
@@ -134,19 +136,16 @@ Da das Bild eine Auflösung von 900x900 Pixeln hat, sind diese Listen 810.000 El
 Bei der Entwicklung einer App steht die Frage der zu bedienenden Plattformen an erster Stelle. Soll die App zum Beispiel nur unternehmensintern verwendet 
 werden oder ist das Gerät auf dem sie verwendet wird eine Neuanschaffung kann es ausreichend sein nativ auf einer Plattform zu entwickeln. Soll jedoch, 
 wie bei den meisten Apps, eine breite Zielgruppe angesprochen werden, ist es unerlässlich, die App auf IOS und Android zur Verfügung zu stellen. 
-je nachdem, auf welchen Betriebssystemen die App verwendet werden soll, muss eine komplett andere Frameworkwahl getroffen werden. 
-So würde man, wenn man entweder nur für IOS oder Android entwickeln möchte, zu einer der nativen Lösungen greifen. Je nach Anforderungen kann auch, 
-wenn beide Betriebssysteme bedient werden sollen, zu der nativen Lösung gegriffen werden. In dem Fall muss der komplette Code doppelt 
-geschrieben werden. Daher wird normalerweise auf Frameworks zurückgegriffen, welche beide Betriebssysteme bedienen. 
-Einige bekannte Frameworks sind zum Beispiel Xamarin, React Native oder Flutter. Jedes dieser Frameworks ist zukunftsträchtig und wurde von großen 
+Je nachdem, auf welchen Betriebssystemen die App verwendet werden soll, muss eine komplett andere Frameworkwahl getroffen werden. 
+Einige bekannte hybride Frameworks sind Xamarin, React Native oder Flutter. Jedes dieser Frameworks ist zukunftsträchtig und wurde von großen 
 Unternehmen auf den Markt gebracht. So steht Microsoft hinter Xamarin, Facebook hinter React Native und Google hinter Flutter. 
-Je nach Frameworkwahl kann von ca. 80-100 Prozent von dem kompletten Code für beide Betriebssysteme verwendet werden. 
-Dafür sind Cross-Plattform Frameworks oft nicht so performant wie die nativen. Dies fällt besonders bei rechenaufwendigen Apps und Spielen ins Gewicht. 
-Bei so einer leichten App wie DeepRain fällt dieser Nachteil nicht ins Gewicht. Außerdem hätten wir auch nicht genug Kapazitäten um zwei native und 
-voneinander unabhängige Apps zu entwickeln. 
+Je nach Frameworkwahl kann ca. 80-100 Prozent von dem kompletten Code für beide Betriebssysteme verwendet werden. 
+Dafür sind Cross-Plattform Frameworks oft nicht so performant wie native. Dies fällt besonders bei rechenaufwendigen Apps und Spielen ins Gewicht. 
+Bei so einer leichten App wie DeepRain ist dieser Leistungsunterschied vernachlässigbar.
+Die Entscheidung viel auf Flutter.
 Ein großer Vorteil von Flutter ist, dass 100 Prozent der Codebasis für Android und IOS übernommen werden können. Außerdem hat die Prominenz von 
-Flutter in den letzten Jahren seit der Veröffentlichung stark zugenommen. In der folgenden Abbildung sind die Google Suchanfragen für den Begriff 
-Flutter abgebildet.  Das in Kombination mit eigenem Interesse an dem Framework, ist der Grund dafür, dass die DeepRain App mit Flutter entwickelt wurde.
+Flutter in den letzten Jahren, seit der Veröffentlichung, stark zugenommen. In der folgenden Abbildung sind die Google Suchanfragen für den Begriff 
+Flutter abgebildet. 
 \begin{figure}[H]
  \centering
  \includegraphics[width=0.8\textwidth,angle=0]{abb/flutter_google_trends}
@@ -156,34 +155,12 @@ Flutter abgebildet.  Das in Kombination mit eigenem Interesse an dem Framework, 
 
 \subsubsection{Technischer Aufbau von Flutter}
 Flutter Anwendungen werden in der Programmiersprache Dart geschrieben und können anschließend für IOS, Android, Windows, Linux, MacOs und als WebApp 
-veröffentlicht werden. Dart bringt dabei im Vergleich zu Java Script den Vorteil mit, dass es objektorientiert ist, was vor allem in größeren 
+veröffentlicht werden. Dart bringt dabei im Vergleich zu Java Script (React Native) den Vorteil mit, dass es objektorientiert ist, was vor allem in größeren 
 Softwarearchitekturen zum tragen kommt. Auch alle Bibliotheken um Code asynchron auszuführen, werden bereits von Dart mitgeliefert. 
 Die wohl größte Rolle für jeden Dart Entwickler spielen die sogenannten Widgets. Widgets sind einzelne Bausteine, welche die UI repräsentieren. 
 Jedes UI Element ist dabei ein eigenes Widget. Dabei werden Widgets oft ineinander geschachtelt, was es ermöglicht, komplexere UI’s zu entwerfen. 
 Dabei werden Widgets in Stateless und Statefull Widgets unterschieden. Während ein Stateless Widget keine Daten und somit keinen Zustand speichern kann, 
 ist das mit einem Stateful Widget möglich.
-
-Die Grundlage von Flutter sind Widgets. \\
-Wie funktioniert flutter?   \\
-Was ist der Unterschied zu anderen hybriden Frameworks?  \\ 
-Nur eine Codebasis \\
-Keine weiteren Frameworks nötig\\
-Alles dabei, UI, Widgets, Animationen\\
-
-\subsubsection{Projektstruktur}
-Der gesamte Code der App ist in die fünf Ordner DataObjects, global, screens, services und Widgets aufgeteilt. 
-Die erste verwendete Datei ist main.dart. In dieser wird festgelegt welcher Screen als erstes nach dem Start 
-aufgerufen wird und die Bottom Navigation wird konfiguriert. 
-Für jeden Screen der App gibt es eine .dart datei in dem Ordner Screens. 
-Welche Files gibt es? \\
-Welche Klassen gibt es? \\
-Wie arbeitet was zusammen? \\
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.3\textwidth,angle=0]{abb/projektstruktur}
-  \caption{Die Projektstruktur der App}
- \label{fig:projektstruktur_app}
- \end{figure}
 
 \subsection{Cloudfunktionen}
 Mit den Cloudfunktionen von Firebase kann Backend-Code direkt auf den Servern von Google gespeichert und ausgeführt werden. 
