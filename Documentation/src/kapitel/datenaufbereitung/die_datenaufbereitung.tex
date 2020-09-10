@@ -1,6 +1,6 @@
 \section{Die Datenaufbereitung}\label{die datenaufbereitung}
 Die vom Deutschen Wetterdienst (im Folgenden DWD abgekürzt) in fünf minütiger Auflösung bereitgestellten Radardaten, müssen für das Training der Netze und deren Vorhersage in ein Bildformat umgewandelt werden.
-Bei den bereits umgewandelten Bildern viel während der Entwicklung der Baseline auf, dass die Bilder weit weniger Regentage abbilden als es tatsächlich regnet. Daraufhin wurde das bisher vorgenommene Preprocessing evaluiert. Um die Radardaten in ein Bild umzuwandeln, muss jeder Radardatenpunkt in ein Pixelfarbwert transformiert werden. Bisher wurde dafür ein Sakalierungsfaktor berechnet mit dem jeder Radardatenpunkt multipliziert wurde. Der Faktor ergab sich aus dem zur Verfügung stehenden Wertebereich (0 bis 255), welcher durch den Maximalwert der Radardaten geteilt wurde. So erhält man transformierte Radarwerte in einem Bereich von 0 bis 255.
+Bei den bereits umgewandelten Bildern viel während der Entwicklung der Baseline auf, dass die Bilder weit weniger Regentage abbilden als es tatsächlich regnet. Daraufhin wurde das bisher vorgenommene Preprocessing evaluiert. Um die Radardaten in ein Bild umzuwandeln, muss jeder Radardatenpunkt in ein Pixelfarbwert transformiert werden. Bisher wurde dafür ein Skalierungsfaktor berechnet mit dem jeder Radardatenpunkt multipliziert wurde. Der Faktor ergab sich aus dem zur Verfügung stehenden Wertebereich (0 bis 255), welcher durch den Maximalwert der Radardaten geteilt wurde. So erhält man transformierte Radarwerte in einem Bereich von 0 bis 255.
 Anschließend folgte eine Inspizierung der Daten. Hierfür wurde exemplarisch die Radardaten von Juni 2016 herangezogen.
 
 \begin{figure}[H]
@@ -22,7 +22,7 @@ In Abbildung \ref{fig:Radardatapoints_of_June_2016_larger0} werden die beiden Au
     \label{fig:Radardatapoints_of_June_2016_larger0}
 \end{figure}
 
-In Abbildung \ref{fig:Radardatapoints_of_June_2016_larger0} dargestellt sind die Radardaten bei denen es regnet. Es wird deutlich, dass ein Großteil der Datenpunkte klein ist. Der Mittelwert liegt bei 0,1744 und zeigt das Problem der bestehenden preprocessing Methode: Radardatenpunkte deren Wert auch nach der Multiplikation mit dem berechneten Skalierungsfaktor kleiner eins sind werden zu null. Aufgrund der vorliegenden Datenverteilung führt das zu einem erheblichen Fehler weshalb eine andere Methode entwickelt werden muss.
+In Abbildung \ref{fig:Radardatapoints_of_June_2016_larger0} dargestellt sind die Radardaten bei denen es regnet. Es wird deutlich, dass ein Großteil der Datenpunkte klein ist. Der Mittelwert liegt bei 0,1744 und zeigt das Problem der bestehenden Preprocessing Methode: Radardatenpunkte deren Wert auch nach der Multiplikation mit dem berechneten Skalierungsfaktor kleiner eins sind werden zu null. Aufgrund der vorliegenden Datenverteilung führt das zu einem erheblichen Fehler weshalb eine andere Methode entwickelt werden muss.
 Abbildung \ref{fig:Radardatapoints_of_June_2016_larger0_percentiles} und \ref{fig:Radardatapoints_of_June_2016_larger0_99percentile} zeigen verschiedene Perzentile und machen so die Häufigkeitsverteilung deutlich.
 
 \begin{figure}[H]
@@ -50,7 +50,7 @@ Abbildung \ref{fig:Radardatapoints_of_June_2016_RemainingData} zeigt die Verteil
 \end{figure}
 
 Noch immer befindet sich der größte Teil der Datenpunkte im kleinem Wertebereich.
-Da für die verbleibenden Daten eine lineare Transformation ähnlich dem bereits bestehenden preprocessing Vorgang eingesetzt wird, entstehen Rundungsfehler.
+Da für die verbleibenden Daten eine lineare Transformation ähnlich dem bereits bestehenden Preprocessing Vorgang eingesetzt wird, entstehen Rundungsfehler.
 Für die Berechnung des Skalierungsfaktors wird nicht der tatsächliche Maximalwert genutzt, weshalb Werte die nach der Transformation über 255 sind auf 255 gesetzt werden.
 Diese Fehler sind verkraftbar, da es zum einen wichtiger ist alle Datenpunkte abzubilden und zum anderen die Auflösung der verschiedenen Regenstärken immer noch höher ist, als die der menschlichen Wahrnehmung.
 In Abbildung \ref{fig:Radardatapoints_of_June_2016_larger0} werden die Radardaten dargestellt welche im folgenden Transformiert werden.
