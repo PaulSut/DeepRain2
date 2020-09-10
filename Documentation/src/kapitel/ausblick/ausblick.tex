@@ -1,10 +1,12 @@
 \section{Ausblick}
-Entzerrung der Vorhersage Bilder\\
+\textbf{Entzerrung der Vorhersage PNGs} \\
+Um die App endgültig praxistauglich zu machen, muss die Projektion der PNGs richtig funktionieren. 
+Hierfür müsste die Krümmung der Erde aus den Vorhersage PNGs rausgerechnet werden, oder die PNGs dementsprechend angepasst werden. 
+Nur dann ist es möglich, die Regenvorhersagen den richtigen Regionen zuzuordnen. 
+Auf diese Thematik wird in Kapitel \ref*{die daten} genauer eingegangen. \\
 
-\newpage
 \noindent \textbf{Optimierung der Netzte} \\
-
-\noindent Die Architektur unserer Netzwerke berücksichtigt kaum die Tatsache, dass die Regenbilder zusammenhängende Sequenzen sind.
+Die Architektur unserer Netzwerke berücksichtigt kaum die Tatsache, dass die Regenbilder zusammenhängende Sequenzen sind.
 Insbesondere das Unet vergisst nach jeder Vorhersage den vorherigen Zustand. Diesen Umstand in die Architektur mit einzubeziehen könnte sich positiv auf die Vorhersage auswirken.
 
-Netzte die mehr als ein Zeitschritt vorhersagen?\\
+----------------------------Netzte die mehr als ein Zeitschritt vorhersagen?\\

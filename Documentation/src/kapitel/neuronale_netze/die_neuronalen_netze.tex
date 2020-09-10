@@ -3,7 +3,7 @@
 \section{Die neuronalen Netze}\label{die neuronalen netze}
 
 Die Regenvorhersage mit Hilfe von künstlichen neuronalen Netzen (KNN) möchten wir mit einem Zitat einführen.
-Der Nobelpreisträge Richard P. Feynman ist in einem Gespräch mit einem nicht namentlich erwähnten Laien wobei es um die Existenz fliegender Untertassen geht. Feynman trifft die Aussage, dass es sehr unwahrscheinlich ist, dass es fliegende Untertassen gibt. Der Laie antwortet darauf, dass das sehr unwissenschaftlich sei, worauf Feynman erwiedert:
+Der Nobelpreisträge Richard P. Feynman ist in einem Gespräch mit einem nicht namentlich erwähnten Laien wobei es um die Existenz fliegender Untertassen geht. Feynman trifft die Aussage, dass es sehr unwahrscheinlich ist, dass es fliegende Untertassen gibt. Der Laie antwortet darauf, dass das sehr unwissenschaftlich sei, worauf Feynman erwidert:
 
 \begin{quote}{Richard P. Feynman}
 ''...But that is the way that is scientific. It is scientific only to say what is more likely and what less likely, and not to be proving all the time the possible and impossible.''  
@@ -25,13 +25,13 @@ Der Nobelpreisträge Richard P. Feynman ist in einem Gespräch mit einem nicht n
 Die zu schätzende Verteilung ist im vornherein nicht klar, weshalb wir eingangs drei Verteilungen begutachten.
 Wir schauen uns die Multinomiale, und die negativ Binomial Verteilung an.
 Die negativ Binomialverteilung wird allerdings mit der Multinomialen Verteilung gemischt, sodass wir die ''Zero Inflated negativ Binomial'' Verteilung (ZINB) erhalten.
-Dies kann so aufgefasst werden, dass wir eine Bernoulli-Verteilung für die binäre Entscheidung über Regen oder kein Regen erhalten. Für den Fall dass Regen vorhergesagt wird, greifen wir auf die Negativ Binomialverteilung zurück.
+Dies kann so aufgefasst werden, dass wir eine Bernoulli-Verteilung für die binäre Entscheidung über Regen oder kein Regen erhalten. Für den Fall, dass Regen vorhergesagt wird, greifen wir auf die Negativ Binomialverteilung zurück.
 \\
 
 \subsection{Netzwerk Topologie}
 
 \noindent Wir schauen uns zwei verschiedene Netzwerarchitekturen an. Hierbei passen wir uns den Beschränkungen der uns zur Verfügung stehenden Hardware an.
-Uns steht eine Geforce 2060 Super mit 8GB VRAM zur Verfügung. Die Netzwertopologie ist auf die Größe des VRAMS beschränkt, wir werden unser Netzwerk also auf diese Größe beschränken. Die Größe der Eingangsbilder setzen wir auf 96x96 Pixel fest und die Größe der Ausgangsbilder auf 64x64. Die Patches werden um den Pixel, der Konstanz repräsentiert ausgeschnitten.
+Uns steht eine Geforce 2060 Super mit 8GB VRAM zur Verfügung. Die Netzwerktopologie ist auf die Größe des VRAMS beschränkt, wir werden unser Netzwerk also auf diese Größe beschränken. Die Größe der Eingangsbilder setzen wir auf 96x96 Pixel fest und die Größe der Ausgangsbilder auf 64x64. Die Patches werden um den Pixel, der Konstanz repräsentiert ausgeschnitten.
 Alle Netzwerke die wir trainieren haben die Klassifikationsschicht gemeinsam, unterscheiden sich jedoch für die verschiedenen Verteilungen.\\
 
 \begin{figure}[h]
@@ -291,7 +291,7 @@ minimum height=5em] (kl) at (31, 1) {Kl-Schicht};
 	\draw[-stealth, very thick] (top5.east) -- (kl.west);
 
 \end{tikzpicture}
- \caption{Abgespekte Version des Unets  
+ \caption{Abgespeckte Version des Unets  
 }\label{fig:Unet1}
 \end{figure}
 
@@ -389,7 +389,7 @@ minimum height=21.0em] (duh) at (2.75, -7.25) {};
 
 \newpage
 
-\noindent In der nachfolgenden Abbildung ist die von uns verwendete Architektur zu sehen. Diese Architektur ist angelehnt an die Inception-LSTM Layer des Papers ''Inception-inspired LSTM for Next-frame Video Prediction'' von \cite{hosseini2019inceptioninspired}. Wie Eingangs erwähnt beschränkt die Hardware (und auch die größe der Bilder) unsere Architektur und aus diesem Grund werden nicht mehr LSTM-Layer gestackt, wie im Paper beschrieben.
+\noindent In der nachfolgenden Abbildung ist die von uns verwendete Architektur zu sehen. Diese Architektur ist angelehnt an die Inception-LSTM Layer des Papers ''Inception-inspired LSTM for Next-frame Video Prediction'' von \cite{hosseini2019inceptioninspired}. Wie Eingangs erwähnt beschränkt die Hardware (und auch die Größe der Bilder) unsere Architektur und aus diesem Grund werden nicht mehr LSTM-Layer gestackt, wie im Paper beschrieben.
 \begin{figure}[h]
  \centering
 \begin{tikzpicture}[thick,scale=0.8, every node/.style={scale=0.8},->,>=stealth',shorten >=1pt,auto,node distance=2cm,
@@ -506,7 +506,7 @@ minimum height=5em] (kl) at (12.5, -13) {Kl-Schicht};
 
 \noindent Unsere Architektur unterscheidet sich jedoch von der im Paper vorgestellten Architektur insofern, als dass die Inception-Layer nicht in das LSTM-Modul eingebaut sind.
 Wir verwenden hierbei herkömmliche Convolution-LSTM Layer. Die Inception-Layer sind hierbei lediglich vor oder nach den Convolution-LSTM Layern zu finden.
-Der Vorteil von Inception-Layer ist, dass diese in die Breite und nicht so sehr in die Tiefe gehen. Das hat zum Vorteil, dass beim aktualisieren der Gewichte der Gradient nicht so weit in das Netzwerk durchgereicht werden muss. Dadurch soll das Auftreten des vanishing Gradients vermindert werden und das aktualisieren der Gewichte bzw. das lernen verbessert werden.\\
+Der Vorteil von Inception-Layer ist, dass diese in die Breite und nicht so sehr in die Tiefe gehen. Das hat zum Vorteil, dass beim aktualisieren der Gewichte der Gradient nicht so weit in das Netzwerk durchgereicht werden muss. Dadurch soll das Auftreten des vanishing Gradients vermindert werden und das aktualisieren der Gewichte bzw. das Lernen verbessert werden.\\
 
 \subsection{Training}
 Beide Architekturen werden mindestens 35 Epochen trainiert, wobei die Architektur mit den LSTM-Layern 1:30 Stunden benötigt, das Unet hingegen benötigt ca. 10 Minuten pro Epoche.
@@ -527,10 +527,10 @@ Die Eingangsdaten werden allerdings auf den Bereich zwischen Null und Eins normi
 \label{fig:Inception-Conv-LSTM}
 \end{figure}
 
-\noindent Zu sehen ist, dass die Unet-Architektur schlechtere Performance als die LSTM-Architektur liefert. In dieser Abbildung scheint der Overfitting bereich noch nicht erreicht worden zu sein.
+\noindent Zu sehen ist, dass die Unet-Architektur schlechtere Performance als die LSTM-Architektur liefert. In dieser Abbildung scheint der Overfitting Bereich noch nicht erreicht worden zu sein.
 Tatsächlich verbessern sich beide Architekturen noch marginal nach weiteren Epochen, aus Darstellungsgründen wurde die X-Achse auf 35 Epochen beschnitten.\\
 
-\noindent Zusätzlich zur ZINB wurden beide Architekturen mit einer weiteren Verteilung trainiert. Hierfür verwenden wir die Multinomiale Verteilung, woebei wir die Daten in Sieben Klassen einteilen. Die geschieht durch logarithmisches skalieren der Daten. Dadurch soll zusätzlich dem Klassenungleichgewicht entgegengesteuert werden (Regenwerte im höheren Bereich kommen seltener vor). 
+\noindent Zusätzlich zur ZINB wurden beide Architekturen mit einer weiteren Verteilung trainiert. Hierfür verwenden wir die Multinomiale Verteilung, wobei wir die Daten in Sieben Klassen einteilen. Die geschieht durch logarithmisches skalieren der Daten. Dadurch soll zusätzlich dem Klassenungleichgewicht entgegengesteuert werden (Regenwerte im höheren Bereich kommen seltener vor). 
 
 \begin{figure}[htb]
  \centering
@@ -762,8 +762,8 @@ LSTM &96,0 \% & 71,0 \% & 97,5 \% \\
 \caption{ Relative Anzahl der wahren Werte im Konfidenzintervall für verschiedene Intervalle und Architekturen\label{tab:konv}}
 \end{table}
 
-\noindent In Tabelle \ref{tab:konv} ist zu erkennen, dass je kleiner das Konfidenzintervall gewählt wird, desto seltener liegt die ground truth im Konvidenzintervall.
-Für die Spalte ''inklusive Regen'' ist der Unterschied nur marginal. Für die Spalte ''exklusive kein Regen'' ist ein großer Sprung zwischen dem 97,5 \% und dem 95 \% Konvidenzintervall zu sehen.
+\noindent In Tabelle \ref{tab:konv} ist zu erkennen, dass je kleiner das Konfidenzintervall gewählt wird, desto seltener liegt die ground truth im Konfidenzintervall.
+Für die Spalte ''inklusive Regen'' ist der Unterschied nur marginal. Für die Spalte ''exklusive kein Regen'' ist ein großer Sprung zwischen dem 97,5 \% und dem 95 \% Konfidenzintervall zu sehen.
 Dies kann so interpretiert werden, dass die ground truth für diese Fälle nicht im ''Zentrum'' des Konfidenzintervalls liegt (bzw. weiter entfernt vom Zentrum). Der Mittelwert ist für diese Fälle eine schlechte Schätzung für die ground truth.\\
 
 

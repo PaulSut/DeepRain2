@@ -42,7 +42,7 @@ Im Normalfall werden die Bilder einmalig bei dem App Start heruntergeladen.
 Auf diesem Screen können alle relevanten Einstellungen gemacht werden. Dazu gehört z.B. die Sprache der Benutzeroberfläche. 
 Außerdem kann die Region eingestellt werden 
 Die hier ausgewählte Region wird standardmäßig auf der Karte angezeigt und nur für diese Region werden Regenwarnungen gesendet. 
-Unter der Benachrichtigungs Kategorie können die Regenwarnungen aktiviert und der Zeitpunkt der Regenwarnung eingestellt werden. 
+Unter der Benachrichtigungskategorie können die Regenwarnungen aktiviert und der Zeitpunkt der Regenwarnung eingestellt werden. 
 Jede Aktion in dieser Kategorie löst verschiedene Datenbankaufrufe aus. 
 Wenn die Regenwarnung aktiviert wird, wird der Devicetoken von dem Gerät in die Datenbank hochgeladen, beim Deaktivieren wird der Devicetoken gelöscht. 
 Wenn der Zeitpunkt der Regenwarnung verändert wird, wird der Devicetoken in der Datenbank von einer Kollektion in eine andere Kollektion verschoben.   
@@ -58,7 +58,7 @@ dargestellt.
 \end{figure}
 
 \subsubsection{Der Appstart}
-Während dem Appstart wird die App für die Verwendung vorbereitet, Einstellungen werden wieder hergestellt und
+Während dem Appstart wird die App für die Verwendung vorbereitet, Einstellungen werden wiederhergestellt und
 die aktuellen Regenvorhersagen werden aus der Datenbank heruntergeladen. 
 Die Einstellungen können dabei aus den Shared Preferences ausgelesen werden. 
 Die Shared Preferences sind eine lokale Key-Value Datenbank, in der alle benutzerspezifischen Daten gespeichert werden. 
@@ -76,7 +76,7 @@ Der Appstart ist in folgender Abbildung schematisch dargestellt.
 \end{figure}
 
 \subsubsection{Die Berechnung der Regenintensität}
-Um die aktuelle Regensituation auf einer Liste anzuzeigen, muss der Farbwert aus dem richtigen Pixel im Vorhersage ausgelesen werden. 
+Um die aktuelle Regensituation auf einer Liste anzuzeigen, muss der Farbwert aus dem richtigen Pixel in der Vorhersage ausgelesen werden. 
 Zu Beginn wurde angenommen, dass die App nur in Konstanz verwendet werden soll. 
 Im Laufe des Projektes stellte sich jedoch heraus, dass die entwickelten Netze in Zukunft auch in der Lage seien könnten, Vorhersagen 
 für ganz Deutschland zu machen. Da die Softwarearchitektur nicht für eine solche Anwendung ausgelegt war, 
@@ -109,27 +109,27 @@ Da das Bild eine Auflösung von 900x900 Pixeln hat, sind diese Listen 810.000 El
  \label{fig:sequence_diagram_app_start}
  \end{figure}
  \noindent 
- Jeder User hat eine eigene Position in Deutschland, welche in Form von Höhen und Breitengrad angaben bekannt ist. 
+ Jeder User hat eine eigene Position in Deutschland, welche in Form von Höhen und Breitengrad bekannt ist. 
  Diese wird durch die in den Einstellungen festgelegte Region geändert und festgelegt. 
  Es wird nun ein Algorithmus gesucht der mithilfe von einer Koordinate, bestehend aus Latitude und Longitude werten, den dazugehörigen Pixel in dem Vorhersage PNG findet. 
  Nun wäre es natürlich möglich, durch alle Indizes zu Iterieren und somit den richtigen Pixel zu finden.
- Ein solcher bruteforce Ansatz ist bei einem Regenbild von n auf n Pixeln aufgrund der Laufzeit von O($n^2$) nicht zielführend.
+ Ein solcher Bruteforce Ansatz ist bei einem Regenbild von n auf n Pixeln aufgrund der Laufzeit von O($n^2$) nicht zielführend.
 
  \noindent 
  Der erste Ansatz basierte auf dem Teile und Herrsche Prinzip. 
- Dieser auf einem Quadtree basierende Algorithmus, teilt das Regenbild in vier Bereiche auf und berechnet anschließend in welcher der vier Mittelpunkte der aktuellen Position am nähsten ist. 
+ Dieser auf einem Quadtree basierende Algorithmus, teilt das Regenbild in vier Bereiche auf und berechnet anschließend in welcher der vier Mittelpunkte der aktuellen Position am nächsten ist. 
  Anschließed wird der Bereich erneut in vier Teilbereiche unterteilt und die Berechnung wiederholt sich. 
  Dieser Prozess wird so lange wiederholt, bis man den Pixel indem sich die aktuelle Position befindet ausgemacht hat.
  Wie bereits in \ref{die daten} beschrieben, ist der abgedeckte Kartenbereich nicht rechteckig. 
- Die daraus resultierenden nichtlinearität verursachte bei diesem Verfahren in bestimmen Fällen fehler. 
+ Die daraus resultierenden Nichtlinearität verursachte bei diesem Verfahren in bestimmen Fällen fehler. 
  Daher wurde ein neuer, stabilerer, Algorithmus entwickelt. 
  
  \noindent 
- Das neue Verfahren wird von den Problemen des alten Verfahrens nicht beeinflusst, ist dafür allerdings im durchschnitt ein bisschen langsamer. 
+ Das neue Verfahren wird von den Problemen des alten Verfahrens nicht beeinflusst, ist dafür allerdings im Durchschnitt ein bisschen langsamer. 
  Dieser Laufzeitunterschied ist für unsere Anwendung vernachlässigbar. 
  Es wird an einem Startpixel gestartet, von dem aus die Distanz zu den Koordinaten des Gerätes berechnet wird. 
  Dann wird die Distanz der Nachbarpixel zu den Koordinaten des Gerätes berechnet. 
- Wenn eine verringerung der Distanz durch einen Nachbarpixel erzielt werden kann, wird einer der Nachbarpixel zu dem neuen betrachteten Kästchen. 
+ Wenn eine Verringerung der Distanz durch einen Nachbarpixel erzielt werden kann, wird einer der Nachbarpixel zu dem neuen betrachteten Kästchen. 
  Von diesem aus werden wieder alle Nachbarpixel überprüft. 
  Dieser Vorgang wird so oft wiederholt, bis keine Verbesserung der Distanz mehr erzielt werden kann.
 
@@ -143,7 +143,7 @@ Unternehmen auf den Markt gebracht. So steht Microsoft hinter Xamarin, Facebook 
 Je nach Frameworkwahl kann ca. 80-100 Prozent von dem kompletten Code für beide Betriebssysteme verwendet werden. 
 Dafür sind Cross-Plattform Frameworks oft nicht so performant wie native. Dies fällt besonders bei rechenaufwendigen Apps und Spielen ins Gewicht. 
 Bei so einer leichten App wie DeepRain ist dieser Leistungsunterschied vernachlässigbar.
-Die Entscheidung viel auf Flutter.
+Die Entscheidung fiel auf Flutter.
 Ein großer Vorteil von Flutter ist, dass 100 Prozent der Codebasis für Android und IOS übernommen werden können. Außerdem hat die Prominenz von 
 Flutter in den letzten Jahren, seit der Veröffentlichung, stark zugenommen. In der folgenden Abbildung sind die Google Suchanfragen für den Begriff 
 Flutter abgebildet. 
@@ -157,7 +157,7 @@ Flutter abgebildet.
 \subsubsection{Technischer Aufbau von Flutter}
 Flutter Anwendungen werden in der Programmiersprache Dart geschrieben und können anschließend für IOS, Android, Windows, Linux, MacOs und als WebApp 
 veröffentlicht werden. Dart bringt dabei im Vergleich zu Java Script (React Native) den Vorteil mit, dass es objektorientiert ist, was vor allem in größeren 
-Softwarearchitekturen zum tragen kommt. Auch alle Bibliotheken um Code asynchron auszuführen, werden bereits von Dart mitgeliefert. 
+Softwarearchitekturen zum Tragen kommt. Auch alle Bibliotheken um Code asynchron auszuführen, werden bereits von Dart mitgeliefert. 
 Die wohl größte Rolle für jeden Dart Entwickler spielen die sogenannten Widgets. Widgets sind einzelne Bausteine, welche die UI repräsentieren. 
 Jedes UI Element ist dabei ein eigenes Widget. Dabei werden Widgets oft ineinander geschachtelt, was es ermöglicht, komplexere UI’s zu entwerfen. 
 Dabei werden Widgets in Stateless und Statefull Widgets unterschieden. Während ein Stateless Widget keine Daten und somit keinen Zustand speichern kann, 
@@ -188,17 +188,17 @@ Die Funktion findet diese Schnittmenge und weiß somit, welche Geräte eine Push
 \begin{figure}[H]
  \centering
  \includegraphics[width=0.8\textwidth,angle=0]{abb/funktionsweise_pushnachrichten_senden}
- \caption[Funktionsweise von Pushbenachrichtigungen]{Funktionsweise des Prozesses zum senden von Push - Benachrichtigungen.}
+ \caption[Funktionsweise von Pushbenachrichtigungen]{Funktionsweise des Prozesses zum Senden von Push - Benachrichtigungen.}
 \label{fig:funktionsweise_pushnachrichten_senden}
 \end{figure}
 
 \subsection{Vorgehen bei Entwicklung}
 In Flutter entwickelte Apps können sowohl auf Android als auch auf IOS ausgeführt werden. 
 Um eine Flutter App auf einem IPhone auszuführen, wird allerdings MacOS als Betriebssystem benötigt. 
-Da während des Entwicklungsprozesses nur ein Linuxrechner zur Verfügung stand, wurde die App lange Zeit nur unter
+Da während des Entwicklungsprozesses nur ein Linux Rechner zur Verfügung stand, wurde die App lange Zeit nur unter
 Android getestet. 
 Erst gegen Ende des Projektes wurde der Code für IOS kompiliert und für das IPhone angepasst.  
-Da die gesamte Pipeline zu beginn noch nicht funktioniert hat, wurde der für die App relevante Teil der Pipeline simuliert.
+Da die gesamte Pipeline zu Beginn noch nicht funktioniert hat, wurde der für die App relevante Teil der Pipeline simuliert.
 Dazu wurde ein Pythonprogramm geschrieben, welches reale Daten in die Firebase pushed. 
 Somit war es möglich, gekapselt vom Rest des Projektes zu arbeiten und die App fertigzustellen.
 
