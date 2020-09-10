@@ -46,18 +46,60 @@
 \section*{Data}\label{data}
 Images must be generated from the binary radar data provided by the German Weather Service (DWD) in five-minute resolution.
 To convert the radar data into an image, each radar data point must be transformed into a pixel color value.
-In order to achieve a suitable transformation, the radar data of June 2016 were inspected exemplarily (Figure \ref{fig:Radardatapoints_of_June_2016}). 
+In order to achieve a suitable transformation, the radar data of June 2016 were inspected exemplarily (figure \ref{fig:Radardatapoints_of_June_2016}). 
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.6\textwidth,angle=0]{../abb/Radardatapoints_of_June_2016.png}
-    \caption[Datenaufbereitung]{Häufigkeitsverteilung der Regendaten}
+    \includegraphics[width=1\linewidth,angle=0]{../abb/Radardatapoints_of_June_2016.png}
+    \caption[Datenaufbereitung]{Frequency distribution of rain data}
     \label{fig:Radardatapoints_of_June_2016}
+\end{figure}
+
+All occurring values and their frequency are plotted. 
+Two outliers stand out in figure \ref{fig:Radardatapoints_of_June_2016}, which occur much more frequently than the other values. 
+The value -9999 indicates that no data is available and the second outlier is at 0, which stands for \"no rain\". 
+In Figure \ref{fig:Radardatapoints_of_June_2016_larger0_99percentile} the two outliers are filtered, because the relevant information is contained in the remaining data points.
+In addition, the 99\% percentile illustrates the frequency distribution. 
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth,angle=0]{../abb/Radardatapoints_of_June_2016_larger0_99percentile.png}
+    \caption[Datenaufbereitung]{Frequency distribution of rain data with 99\% percentile}
+    \label{fig:Radardatapoints_of_June_2016_larger0_99percentile}
+\end{figure}
+
+The 99\% percentile contains 138 different values, each of which is assigned a color value.
+The remaining data is transformed linearly to the remaining range of values.
+This results in rounding and maximum value errors. These errors are bearable, because it is more important to map all data points.
+Furthermore the resolution of the different rainfall intensities is still higher than the human perception.
+Reconstructing the radar data from the PNG data results in the plot shown in figure \ref{fig:Radardatapoints_of_June_2016_RecoveredData}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth,angle=0]{../abb/Radardatapoints_of_June_2016_RecoveredData.png}
+    \caption[Datenaufbereitung]{Comparison between output distribution and distribution from recovered data}
+    \label{fig:Radardatapoints_of_June_2016_RecoveredData}
 \end{figure}
 
 
 
-\section*{Data preprocessing}
+
+
+
+\section*{Data Validation}\label{data validation}
+
+To validate the quality of the data as well as the correct position of the constant pixel, the radar data were compared with the weather station in Konstanz.
+The radar data of one week from all over Germany were correlated with the weather station.
+The correlation coefficient reached its maximum around Konstanz.
+There are deviations from radar data to rainfall compensation, especially with small rainfall values, but these are caused by inaccuracies of the weather station itself (figure \ref{fig:radar_station_daten_vergleich_June}).
+The correlation is significant, the position of Konstanz could be validated and the data quality is suitable for a rain forecast.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth,angle=0]{../abb/radar_station_daten_vergleich_June.png}
+    \caption[Datenaufbereitung]{Comparison between Radar and Weatherstation in June 2016}
+    \label{fig:radar_station_daten_vergleich_June}
+\end{figure}
 
 \section*{DeepRain Application}
     \begin{sloppypar}
@@ -76,9 +118,6 @@ In order to achieve a suitable transformation, the radar data of June 2016 were 
         The algorithm starts at any pixel, checks the current distance to the target coordinates and the distance of the neighboring pixels to the target coordinates. 
         If an neighboring pixel has a smaller distance, the pixel is updated. If no more improvement can be achieved, the correct pixel is found. 
     \end{sloppypar}
-
-
-\section*{Pipeline}
 
 
 \section*{Conclusion and Future Work}
