@@ -49,8 +49,9 @@ Abbildung \ref{fig:Radardatapoints_of_June_2016_RemainingData} zeigt die Verteil
     \label{fig:Radardatapoints_of_June_2016_RemainingData}
 \end{figure}
 
-Noch immer befindet sich der größte Teil der Datenpunkte im kleinem Wertebereich. Da für die verbleibenden Daten eine lineare Transformation ähnlich dem bereits bestehenden preprocessing Vorgang eingesetzt wird, entstehen Rundungsfehler.
-Da für die Berechnung des Skalierungsfaktors auch nicht der tatsächliche Maximalwert genutzt wird werden Werte die nach der Transformation über 255 sind auf 255 gesetzt.
+Noch immer befindet sich der größte Teil der Datenpunkte im kleinem Wertebereich.
+Da für die verbleibenden Daten eine lineare Transformation ähnlich dem bereits bestehenden preprocessing Vorgang eingesetzt wird, entstehen Rundungsfehler.
+Für die Berechnung des Skalierungsfaktors wird nicht der tatsächliche Maximalwert genutzt, weshalb Werte die nach der Transformation über 255 sind auf 255 gesetzt werden.
 Diese Fehler sind verkraftbar, da es zum einen wichtiger ist alle Datenpunkte abzubilden und zum anderen die Auflösung der verschiedenen Regenstärken immer noch höher ist, als die der menschlichen Wahrnehmung.
 In Abbildung \ref{fig:Radardatapoints_of_June_2016_larger0} werden die Radardaten dargestellt welche im folgenden Transformiert werden.
 Die transformierten Daten befinden sich in einem Wertebereich von 0 bis 255, dargestellt in Abbildung \ref{fig:Radardatapoints_of_June_2016_Radardatapoints_of_June_2016_TransformedToPNG}.
