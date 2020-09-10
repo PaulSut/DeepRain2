@@ -104,8 +104,6 @@ class _LoadingState extends State<Loading> {
       _globalValues.setDeviceToken(token);
     });
 
-
-
     // Navigate to the next screen.
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainApp()));
   }

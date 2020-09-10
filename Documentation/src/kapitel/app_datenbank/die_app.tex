@@ -1,0 +1,207 @@
+
+
+
+\subsubsection{Funktionen der App}\label{funkionen der app}
+Die App soll die von den Netzen berechnete Vorhersagen visualisieren und dem Benutzer zur Verfügung stellen. Die Daten werden dabei sowohl in 
+Tabellarischer als auch in Form einer Karte dargestellt. Dabei wird gewährleistet, dass immer die aktuellsten Daten zur Verfügung stehen. 
+Außerdem wird der Benutzer benachrichtigt, sobald es eine Regenwarnung gibt. Der Zeitpunkt der Regenwarnung kann eingestellt werden.
+Für Präsentationszwecke wurde der Demo Modus eingeführt. In diesem werden Beispiel Vorhersage Daten angezeigt.
+
+\subsubsection{Screens der App}\label{screens der app}
+Im Wesentlichen besteht die App aus drei Screens. Einem Screen zum Anzeigen der Daten in Listenform, 
+einem zum Anzeigen der Daten auf einer Karte und den Einstellungen. 
+Die jeweiligen Screens können über die Bottomnavigation erreicht werden, somit ist es möglich, intuitiv zwischen den einzelnen 
+Screens zu wechseln.
+Im Folgenden wird auf die einzelnen Screens und deren technische Funktionsweise genauer eingegangen.
+\begin{figure}[H]
+    \centering
+    \subfloat[][]{\includegraphics[width=0.3\linewidth]{abb/screenshot_forecast_list}}
+    \subfloat[][]{\includegraphics[width=0.3\linewidth]{abb/screenshot_forecast_map}}
+    \subfloat[][]{\includegraphics[width=0.3\linewidth]{abb/screenshot_settings}}
+    \caption{Die drei Hauptscreens der App}
+\end{figure}
+
+\subsubsection*{Regenvorhersage als Liste}
+Auf diesem Screen werden die von den Netzen berechneten Regenvorhersagen angezeigt. 
+Dabei wird in die drei Kategorien “Kein Regen”, “Leichter Regen” und “Starker Regen” unterschieden. 
+Je höher die berechnete Regenintensität ist, je dunkler wird der Regenschirm, welcher zu Beginn jedes einzelnen Listeneintrages zu sehen ist.   
+Die anzuzeigenden Daten werden während dem Appstart in der Klasse ProvideForecastData gespeichert und können währende der Laufzeit
+von dort gelesen werden.
+
+\subsubsection*{Regenvorhersage als Karte}
+Auf diesem Screen werden die von den Netzen erzeugten PNGs visualisiert. 
+Dafür werden die PNGs mit einer Karte hinterlegt, auf welcher der User frei navigieren kann, 
+um die aktuelle Regensituation an jedem beliebigen Ort zu prüfen. 
+Dabei wird standardmäßig der Kartenausschnitt von der Region angezeigt, die in den Einstellungen eingestellt wurde. 
+Mit dem Slider kann der Zeitpunkt eingestellt werden, in dem die Regenvorhersage angezeigt werden soll. 
+Mit dem Aktualisieren Button in der Actionbar können die neusten Bilder vom Server heruntergeladen werden. 
+Aufgrund der verhältnismäßig großen Datenmenge werden die neuen Vorhersagen nicht automatisch vom Server heruntergeladen. 
+Im Normalfall werden die Bilder einmalig bei dem App Start heruntergeladen.
+
+\subsubsection*{Einstellungen}
+Auf diesem Screen können alle relevanten Einstellungen gemacht werden. Dazu gehört z.B. die Sprache der Benutzeroberfläche. 
+Außerdem kann die Region eingestellt werden 
+Die hier ausgewählte Region wird standardmäßig auf der Karte angezeigt und nur für diese Region werden Regenwarnungen gesendet. 
+Unter der Benachrichtigungskategorie können die Regenwarnungen aktiviert und der Zeitpunkt der Regenwarnung eingestellt werden. 
+Jede Aktion in dieser Kategorie löst verschiedene Datenbankaufrufe aus. 
+Wenn die Regenwarnung aktiviert wird, wird der Devicetoken von dem Gerät in die Datenbank hochgeladen, beim Deaktivieren wird der Devicetoken gelöscht. 
+Wenn der Zeitpunkt der Regenwarnung verändert wird, wird der Devicetoken in der Datenbank von einer Kollektion in eine andere Kollektion verschoben.   
+Alle gemachten Einstellungen werden in sogenannten Shared Preferences gespeichert, damit sie auch nach Appstart noch vorhanden sind.   
+In Abbildung \ref*{fig:sequence_diagram_change_settings} ist der Datenfluss beim Anpassen des Zeitpunktes für die Regenwarnung 
+dargestellt. 
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[width=0.8\textwidth,angle=0]{abb/sequence_diagram_change_settings}
+ \caption[Sequencediagram Einstellungen ändern]{Der Datenfluss beim ändern des Zeitpunktes der Regenwarnung}
+\label{fig:sequence_diagram_change_settings}
+\end{figure}
+
+\subsubsection{Der Appstart}
+Während dem Appstart wird die App für die Verwendung vorbereitet, Einstellungen werden wiederhergestellt und
+die aktuellen Regenvorhersagen werden aus der Datenbank heruntergeladen. 
+Die Einstellungen können dabei aus den Shared Preferences ausgelesen werden. 
+Die Shared Preferences sind eine lokale Key-Value Datenbank, in der alle benutzerspezifischen Daten gespeichert werden. 
+Bei dem App Start werden die Einstellungen aus den Shared Preferences gelesen und auf globale Variablen gespeichert, somit
+sind sie während der Laufzeit der App dynamisch verfügbar. 
+Außerdem wird bei dem ersten Appstart die Position in dem Vorhersagebild berechnet. 
+Diese wird benötigt, um aus den Vorhersagebildern den richtigen Pixel auszulesen und in der Vorhersageliste anzuzeigen.
+Der Appstart ist in folgender Abbildung schematisch dargestellt.
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[width=0.8\textwidth,angle=0]{abb/sequence_diagram_app_start}
+ \caption[Sequencediagram Appstart]{Datenfluss beim starten der App inklusive der Datenbankabfragen (Server und Lokale Datenbank)}
+\label{fig:sequence_diagram_app_start}
+\end{figure}
+
+\subsubsection{Die Berechnung der Regenintensität}
+Um die aktuelle Regensituation auf einer Liste anzuzeigen, muss der Farbwert aus dem richtigen Pixel in der Vorhersage ausgelesen werden. 
+Zu Beginn wurde angenommen, dass die App nur in Konstanz verwendet werden soll. 
+Im Laufe des Projektes stellte sich jedoch heraus, dass die entwickelten Netze in Zukunft auch in der Lage seien könnten, Vorhersagen 
+für ganz Deutschland zu machen. Da die Softwarearchitektur nicht für eine solche Anwendung ausgelegt war, 
+mussten einige Änderungen vorgenommen werden. 
+Bis zu diesem Zeitpunkt wurden die Vorhersage Daten für jeden Pixel auf dem Server berechnet und im Anschluss in 
+der Firebase gespeichert. 
+Bei verschiedenen Nutzern in verschiedenen Regionen kommt diese Architektur allerdings schnell an seine Grenzen. 
+Hat die App bspw. 1000 Nutzer in verschiedenen Regionen, 
+müssen für jeden der 1000 Nutzer alle fünf Minuten 20 Vorhersage Daten hochgeladen werden. 
+Daher musste der Datenfluss so umstrukturiert werden, dass der neue Regenwert direkt in der App berechnet wird. 
+Dabei muss das Handy den entsprechenden, eigenen Pixel auf der Karte berechnen. 
+Die Berechnung hierfür ist verhältnismäßig aufwendig, da mit großen Listen (810.000 Einträge) gearbeitet werden muss.
+Auf diese Berechnung wird in Abschnitt \ref{sec: pixel_berechnung} eingegangen. 
+
+Wenn die Bilder beim Appstart oder bei einem Vorhersageupdate heruntergeladen werden, wird von jedem Bild der Regenwert 
+in dem entsprechenden Pixel berechnet. 
+Es wird eine Liste mit ForecastListItem Objekten erstellt. Diese wird global gespeichert und in der Vorhersage Liste angezeigt. 
+
+\subsubsection{Berechnung des Pixels} \label{sec: pixel_berechnung}
+Um die Regensituation an dem jeweiligen Ort des Users auszuwerten, muss der Pixel in dem Vorhersagebild berechnet werden. 
+Hierfür dienen zwei Listen welche die Latitude und Longitude Werte für jeden Pixel enthalten. 
+Die Koordinaten in den einzelnen Indizes kombiniert geben die Position der einzelnen Pixel im Weltkoordinatensystem an.
+Diese Listen wurden in Python mit der Wradlib erstellt, und anschließend im JSON Format in die App übertragen. 
+Somit steht jeder Index für eine Position im Weltkoordinatensystem, ausgedrückt durch Höhen und Breitengrad Informationen.
+Da das Bild eine Auflösung von 900x900 Pixeln hat, sind diese Listen 810.000 Elemente groß.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth,angle=0]{abb/listen_pixel_berechnung.png}
+  \caption{Der Exemplarische Aufbau der Listen zur Berechnung des eigenen Pixels}
+ \label{fig:sequence_diagram_app_start}
+ \end{figure}
+ \noindent 
+ Jeder User hat eine eigene Position in Deutschland, welche in Form von Höhen und Breitengrad bekannt ist. 
+ Diese wird durch die in den Einstellungen festgelegte Region geändert und festgelegt. 
+ Es wird nun ein Algorithmus gesucht der mithilfe von einer Koordinate, bestehend aus Latitude und Longitude werten, den dazugehörigen Pixel in dem Vorhersage PNG findet. 
+ Nun wäre es natürlich möglich, durch alle Indizes zu Iterieren und somit den richtigen Pixel zu finden.
+ Ein solcher Bruteforce Ansatz ist bei einem Regenbild von n auf n Pixeln aufgrund der Laufzeit von O($n^2$) nicht zielführend.
+
+ \noindent 
+ Der erste Ansatz basierte auf dem Teile und Herrsche Prinzip. 
+ Dieser auf einem Quadtree basierende Algorithmus, teilt das Regenbild in vier Bereiche auf und berechnet anschließend in welcher der vier Mittelpunkte der aktuellen Position am nächsten ist. 
+ Anschließed wird der Bereich erneut in vier Teilbereiche unterteilt und die Berechnung wiederholt sich. 
+ Dieser Prozess wird so lange wiederholt, bis man den Pixel indem sich die aktuelle Position befindet ausgemacht hat.
+ Wie bereits in \ref{die daten} beschrieben, ist der abgedeckte Kartenbereich nicht rechteckig. 
+ Die daraus resultierenden Nichtlinearität verursachte bei diesem Verfahren in bestimmen Fällen fehler. 
+ Daher wurde ein neuer, stabilerer, Algorithmus entwickelt. 
+ 
+ \noindent 
+ Das neue Verfahren wird von den Problemen des alten Verfahrens nicht beeinflusst, ist dafür allerdings im Durchschnitt ein bisschen langsamer. 
+ Dieser Laufzeitunterschied ist für unsere Anwendung vernachlässigbar. 
+ Es wird an einem Startpixel gestartet, von dem aus die Distanz zu den Koordinaten des Gerätes berechnet wird. 
+ Dann wird die Distanz der Nachbarpixel zu den Koordinaten des Gerätes berechnet. 
+ Wenn eine Verringerung der Distanz durch einen Nachbarpixel erzielt werden kann, wird einer der Nachbarpixel zu dem neuen betrachteten Kästchen. 
+ Von diesem aus werden wieder alle Nachbarpixel überprüft. 
+ Dieser Vorgang wird so oft wiederholt, bis keine Verbesserung der Distanz mehr erzielt werden kann.
+
+\subsubsection{Framework Entscheidung}\label{framework entscheidung}
+Bei der Entwicklung einer App steht die Frage der zu bedienenden Plattformen an erster Stelle. Soll die App zum Beispiel nur unternehmensintern verwendet 
+werden oder ist das Gerät auf dem sie verwendet wird eine Neuanschaffung kann es ausreichend sein nativ auf einer Plattform zu entwickeln. Soll jedoch, 
+wie bei den meisten Apps, eine breite Zielgruppe angesprochen werden, ist es unerlässlich, die App auf IOS und Android zur Verfügung zu stellen. 
+Je nachdem, auf welchen Betriebssystemen die App verwendet werden soll, muss eine komplett andere Frameworkwahl getroffen werden. 
+Einige bekannte hybride Frameworks sind Xamarin, React Native oder Flutter. Jedes dieser Frameworks ist zukunftsträchtig und wurde von großen 
+Unternehmen auf den Markt gebracht. So steht Microsoft hinter Xamarin, Facebook hinter React Native und Google hinter Flutter. 
+Je nach Frameworkwahl kann ca. 80-100 Prozent von dem kompletten Code für beide Betriebssysteme verwendet werden. 
+Dafür sind Cross-Plattform Frameworks oft nicht so performant wie native. Dies fällt besonders bei rechenaufwendigen Apps und Spielen ins Gewicht. 
+Bei so einer leichten App wie DeepRain ist dieser Leistungsunterschied vernachlässigbar.
+Die Entscheidung fiel auf Flutter.
+Ein großer Vorteil von Flutter ist, dass 100 Prozent der Codebasis für Android und IOS übernommen werden können. Außerdem hat die Prominenz von 
+Flutter in den letzten Jahren, seit der Veröffentlichung, stark zugenommen. In der folgenden Abbildung sind die Google Suchanfragen für den Begriff 
+Flutter abgebildet. 
+\begin{figure}[H]
+ \centering
+ \includegraphics[width=0.8\textwidth,angle=0]{abb/flutter_google_trends}
+ \caption[Entwicklung von Flutter]{Entwicklung der Suchanfragen für den Begriff 'Flutter'\cite{GoogleTrends}}
+\label{fig:flutter_google_trends}
+\end{figure}
+
+\subsubsection{Technischer Aufbau von Flutter}
+Flutter Anwendungen werden in der Programmiersprache Dart geschrieben und können anschließend für IOS, Android, Windows, Linux, MacOs und als WebApp 
+veröffentlicht werden. Dart bringt dabei im Vergleich zu Java Script (React Native) den Vorteil mit, dass es objektorientiert ist, was vor allem in größeren 
+Softwarearchitekturen zum Tragen kommt. Auch alle Bibliotheken um Code asynchron auszuführen, werden bereits von Dart mitgeliefert. 
+Die wohl größte Rolle für jeden Dart Entwickler spielen die sogenannten Widgets. Widgets sind einzelne Bausteine, welche die UI repräsentieren. 
+Jedes UI Element ist dabei ein eigenes Widget. Dabei werden Widgets oft ineinander geschachtelt, was es ermöglicht, komplexere UI’s zu entwerfen. 
+Dabei werden Widgets in Stateless und Statefull Widgets unterschieden. Während ein Stateless Widget keine Daten und somit keinen Zustand speichern kann, 
+ist das mit einem Stateful Widget möglich.
+
+\subsection{Cloudfunktionen}
+Mit den Cloudfunktionen von Firebase kann Backend-Code direkt auf den Servern von Google gespeichert und ausgeführt werden. 
+Dabei ist es möglich, auf bestimmte Datenbankaktionen zu reagieren. 
+Diese Funktionalität wird verwendet, um Push Benachrichtigungen zu senden. 
+Der Code wird in Java Script geschrieben und anschließend als Cloud Funktion hochgeladen.
+
+\subsubsection{Push Benachrichtigungen}\label{sec:Pushbenachrichtigungen}
+Zum Warnen der Benutzer, wenn es eine Regenvorhersage gibt, werden Push Nachrichten verwendet. 
+Der Zeitpunkt der Push Benachrichtigungen kann in der App eingestellt werden. 
+So kann man sich zwischen 5 und 60 Minuten vor dem bevorstehenden Regen warnen lassen.  
+Um eine Pushbenachrichtigung zu versenden, speichert der Server ein Dokument in der Firebase welches alle für die 
+Pushbenachrichtigung relevanten Informationen enthält. 
+Dazu gehört zum Beispiel der Push Benachrichtigungstitel und Text, sowie die Zeit bis der Regen eintritt.
+Sobald das neue Dokument mit den Informationen für die Push Benachrichtigung hochgeladen wurde, wird eine Callback 
+Funktion in Form einer Cloudfunktion aufgerufen.
+Je nachdem, zu welchem Zeitpunkt ein User die Regenwarnung erhalten möchte, wird sein Device Token in eine andere 
+Kollektion gespeichert.   
+Außerdem wird je nach Region, in der sich der User befindet, sein Token in einer anderen Kollektion gespeichert. 
+Nur die Tokens, die sowohl mit dem Zeitpunkt, als auch mit der Region, aus dem vom Server hochgeladenen Dokument übereinstimmen, 
+sollen eine Pushbenachrichtigung erhalten. 
+Die Funktion findet diese Schnittmenge und weiß somit, welche Geräte eine Pushbenachrichtigung erhalten sollen.
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[width=0.8\textwidth,angle=0]{abb/funktionsweise_pushnachrichten_senden}
+ \caption[Funktionsweise von Pushbenachrichtigungen]{Funktionsweise des Prozesses zum Senden von Push - Benachrichtigungen.}
+\label{fig:funktionsweise_pushnachrichten_senden}
+\end{figure}
+
+\subsection{Vorgehen bei Entwicklung}
+In Flutter entwickelte Apps können sowohl auf Android als auch auf IOS ausgeführt werden. 
+Um eine Flutter App auf einem IPhone auszuführen, wird allerdings MacOS als Betriebssystem benötigt. 
+Da während des Entwicklungsprozesses nur ein Linux Rechner zur Verfügung stand, wurde die App lange Zeit nur unter
+Android getestet. 
+Erst gegen Ende des Projektes wurde der Code für IOS kompiliert und für das IPhone angepasst.  
+Da die gesamte Pipeline zu Beginn noch nicht funktioniert hat, wurde der für die App relevante Teil der Pipeline simuliert.
+Dazu wurde ein Pythonprogramm geschrieben, welches reale Daten in die Firebase pushed. 
+Somit war es möglich, gekapselt vom Rest des Projektes zu arbeiten und die App fertigzustellen.
+
+
+    
+

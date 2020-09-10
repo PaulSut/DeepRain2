@@ -1,0 +1,17 @@
+\subsection{Übersicht}\label{übersicht}
+Die Komponente “App und Datenbankhandling” besteht zum wesentlich aus diesen drei Unterkomponenten.  
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=1\textwidth,angle=0]{abb/KomponentenUebersicht.png}
+ \caption[Komponentenübersicht App und Datenbankhandling]{Die Komponente App und Datenbankhandling}
+\label{fig:Beschreibung}
+\end{figure}
+
+Die App dient zur Visualisierung der Daten und macht somit die Regenvorhersagen für den Endnutzer brauchbar. 
+Auf dem Server werden die Vorhersagen berechnet und in dem für dieses Kapitel relevanten Teil
+für die App zur Verfügung gestellt. 
+Außerdem löst der Server die Regenwarnungen (Push Benachrichtigungen) aus, indem er eine Cloud Funktion triggert. 
+Die Firebase verbindet den Server mit der App und erfüllt dabei im Wesentlichen zwei verschiedene Aufgaben. 
+Sie stellt die Regenvorhersagen als PNG für die App zur Verfügung und übernimmt mit der besagten Cloud Funktion das eigentliche Senden der Regenwarnungen. 
+ 

@@ -1,0 +1,33 @@
+\section{Pipeline}\label{sec: Pipeline}
+Nachdem die einzelnen Komponenten für sich funktionieren gilt es sie in einer Pipeline zu kombinieren und so ein funktionierendes Gesamtkonzept zu erhalten.
+Der dadurch entstehende Workflow lässt sich in die Bereiche Datenbeschaffung, Regenvorhersage sowie Datenaufbereitung und Bereitstellung aufteilen.
+Diese werden im Folgenden erläutert.
+
+\subsection{Datenbeschaffung}
+Zum Training sowie zur Validierung der Netze konnten bisher historische Daten verwendet werden.
+Um eine Praxistaugliche Wettervorhersage zu berechnen, muss diese allerdings in der Zukunft liegen.
+Die Input Daten der Netze müssen daher möglichst aktuell sein.
+Hiefür wurden, wie bereits bei den Historischen Daten, Daten des DWDs genutzt.
+Dieser stellt alle fünf Minuten aktuelle Binärradardaten bereit.
+Das Skript prüft alle fünf Sekunden ob neue Daten bereitstehen, falls das der Fall ist, werden diese heruntergeladen und anschließend wie in Abschnitt \ref{die datenaufbereitung} erläutert in Bilder mit einer Auflösung von 900x900 Pixeln konvertiert.
+Anschließend wird ein Ausschnitt des Bildes genommen welcher gegebenenfalls skaliert werden kann.
+So kann der Ort für die Spätere Wettervorhersage leicht angepasst werden.
+
+\subsection{Regenvorhersage}
+Die Vorhersage selbst hängt stark von den eingesetzten Netzen ab.
+Derzeit werden drei gleiche Netze eingesetzt welche auf 10, 20 und 30 Minuten vorhersagen trainiert wurden.
+Als Input für jedes Netz werden die 5 aktuellsten Bilder verwendet.
+Deren Werte werden normiert und anschließend in einen Batch mit der Shape (1, 96, 96, 5) gebracht.
+
+\subsection{Datenaufbereitung und Bereitstellung}
+Die berechnete Vorhersage hat einen Wertebereich von 0-255 und eine Auflösung von 64x64 Pixel.
+Um die Vorhersage in der App richtig darstellen zu können muss diese noch weiterbearbeitet werden.
+Um vorhersagen flexibel an verschiedenen Orten oder in verschiedenen Auflösungen bereitstellen zu können ohne die App anzupassen, stellt diese für jede Vorhersage ein PNG mit 900x900 Pixeln dar.
+Daher muss der Ausschnitt mit der Vorhersage bzw. mit den historischen Daten an der richtigen Position des PNGs eingefügt werden.
+Die Pixel außerhalb dieses Ausschnitts sind transparent.
+Die unterschiedlichen Regenstärken werden mit drei verschiedenen Blautönen dargestellt.
+Da die Regenintensität wie in Abschnitt \ref{die datenaufbereitung} erläutert nicht gleichverteilt ist, wurden die Schwellwerte zwei und zehn gewählt. 
+Zudem wird jedem historischen Bild sowie jeder Vorhersage einen Zeitpunkt zugewiesen welcher später auf dem Slider in der App visualisiert wird.
+Nun können die fünf historischen Regenbilder sowie die drei Vorhersagen in der Firebase-Datenbank ersetzt und so der App, also dem Nutzer bereitgestellt werden. 
+Der Vorgang wiederholt sich und es wird alle fünf Sekunden geprüft ob auf dem Server des DWDs neue Daten vorhanden sind. 
+
