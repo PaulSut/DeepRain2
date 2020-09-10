@@ -569,12 +569,12 @@ slimconv/.style = {rectangle,
 % das Abkürzungsverzeichnis
 \newpage
 % Abkürzungsverzeichnis soll im Inhaltsverzeichnis auftauchen
-\addcontentsline{toc}{section}{Abkürzungsverzeichnis}
+%\addcontentsline{toc}{section}{Abkürzungsverzeichnis}
 % das Abkürzungsverzeichnis ausgeben
 \fancyhead[L]{Abkürzungsverzeichnis} %Kopfzeile links
 \input{latex_einstellungen/abkuezungen/abkuerzungen}
 \printnomenclature[3cm]
-
+\renewcommand\refname{Literaturverzeichnis}
 
 %%%%%%% EINLEITUNG %%%%%%%%%%%%
 \newpage
@@ -588,11 +588,9 @@ slimconv/.style = {rectangle,
 
 
 
-\nocite{*} % adds all references without citations to bibliography
-\bibliographystyle{apalike}
-\bibliography{Hauptdatei}
 
 
+\newpage
 \input{kapitel/einleitung/Einleitung}
 
 \input{kapitel/gesamtsystem/Gesamtsystem}
@@ -610,6 +608,10 @@ slimconv/.style = {rectangle,
 \input{kapitel/ausblick/ausblick}
 
 \input{kapitel/fazit/fazit}
+
+\nocite{*} % adds all references without citations to bibliography
+\bibliographystyle{apalike}
+\bibliography{Hauptdatei}
 
 
 % In dieser Datei ist viel Beispielcode für alle möglichen Arten von Formattierungen usw.

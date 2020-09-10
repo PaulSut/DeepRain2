@@ -1,12 +1,17 @@
+\newpage
 \section{Ausblick}
 \textbf{Entzerrung der Vorhersage PNGs} \\
-Um die App endgültig praxistauglich zu machen, muss die Projektion der PNGs richtig funktionieren. 
+
+\noindent Um die App endgültig praxistauglich zu machen, muss die Projektion der PNGs richtig funktionieren. 
 Hierfür müsste die Krümmung der Erde aus den Vorhersage PNGs rausgerechnet werden, oder die PNGs dementsprechend angepasst werden. 
 Nur dann ist es möglich, die Regenvorhersagen den richtigen Regionen zuzuordnen. 
 Auf diese Thematik wird in Kapitel \ref*{die daten} genauer eingegangen. \\
 
-\noindent \textbf{Optimierung der Netzte} \\
+\noindent \textbf{Optimierung der Netzwerke} \\
+
+\noindent Das Optimieren unserer Netzwerke, insbesondere das Verändern der Architektur ist ein Aspekt bei dem wir sehr großes Verbesserungspotential sehen.
 Die Architektur unserer Netzwerke berücksichtigt kaum die Tatsache, dass die Regenbilder zusammenhängende Sequenzen sind.
 Insbesondere das Unet vergisst nach jeder Vorhersage den vorherigen Zustand. Diesen Umstand in die Architektur mit einzubeziehen könnte sich positiv auf die Vorhersage auswirken.
+Eines der schwerwiegenderen Probleme ist das Ungleichgewicht der Klassen. In Kapitel \ref{sec:Training} erklären wir, dass wir davon ausgehen, dass die Landschaft um Konstanz einen direkten Einfluss auf das Wetter hat. Hier sehen wir einen Punkt, an dem gearbeitet werden kann. Beispielsweise könnte man die komplette Regenkarte zum trainieren nutzen.
 
-----------------------------Netzte die mehr als ein Zeitschritt vorhersagen?\\
+
