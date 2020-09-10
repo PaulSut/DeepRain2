@@ -79,11 +79,12 @@ class DatabaseService{
 
   Future<int> calculate_pixel_value(data, division) async{
     var pixel_of_current_location = await _globalValues.getAppPixel();
+    print('Current App Pixel: ' + pixel_of_current_location.toString());
     //Example for
-    int x = pixel_of_current_location[0];
-    int y = pixel_of_current_location[1];
+    int y = 900 - pixel_of_current_location[1];
+    int x = 900 - pixel_of_current_location[0];
     image_libary.Image image = image_libary.decodeImage(data);
-    int pixel = image.getPixel(x, y);
+    int pixel = image.getPixel(y, x);
     print('Pixel value: ' + pixel.toString() + ' In division: ' + division.toString());
     return pixel;
   }

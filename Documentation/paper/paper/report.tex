@@ -44,39 +44,40 @@
     \end{sloppypar}
 
 \section*{Data}\label{data}
+\begin{sloppypar}
 Images must be generated from the binary radar data provided by the German Weather Service (DWD) in five-minute resolution.
 To convert the radar data into an image, each radar data point must be transformed into a pixel color value.
 In order to achieve a suitable transformation, the radar data of June 2016 were inspected exemplarily (figure \ref{fig:Radardatapoints_of_June_2016}). 
-
+\end{sloppypar}
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=1\linewidth,angle=0]{../abb/Radardatapoints_of_June_2016.png}
+    \includegraphics[width=0.8\linewidth,angle=0]{../abb/Radardatapoints_of_June_2016.png}
     \caption[Datenaufbereitung]{Frequency distribution of rain data}
     \label{fig:Radardatapoints_of_June_2016}
 \end{figure}
-
+\begin{sloppypar}
 All occurring values and their frequency are plotted. 
 Two outliers stand out in figure \ref{fig:Radardatapoints_of_June_2016}, which occur much more frequently than the other values. 
-The value -9999 indicates that no data is available and the second outlier is at 0, which stands for \"no rain\". 
+The value -9999 indicates that no data is available and the second outlier is at 0, which stands for no rain. 
 In Figure \ref{fig:Radardatapoints_of_June_2016_larger0_99percentile} the two outliers are filtered, because the relevant information is contained in the remaining data points.
 In addition, the 99\% percentile illustrates the frequency distribution. 
-
+\end{sloppypar}
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=1\linewidth,angle=0]{../abb/Radardatapoints_of_June_2016_larger0_99percentile.png}
+    \includegraphics[width=0.8\linewidth,angle=0]{../abb/Radardatapoints_of_June_2016_larger0_99percentile.png}
     \caption[Datenaufbereitung]{Frequency distribution of rain data with 99\% percentile}
     \label{fig:Radardatapoints_of_June_2016_larger0_99percentile}
 \end{figure}
-
+\begin{sloppypar}
 The 99\% percentile contains 138 different values, each of which is assigned a color value.
 The remaining data is transformed linearly to the remaining range of values.
 This results in rounding and maximum value errors. These errors are bearable, because it is more important to map all data points.
 Furthermore the resolution of the different rainfall intensities is still higher than the human perception.
 Reconstructing the radar data from the PNG data results in the plot shown in figure \ref{fig:Radardatapoints_of_June_2016_RecoveredData}.
-
+\end{sloppypar}
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=1\linewidth,angle=0]{../abb/Radardatapoints_of_June_2016_RecoveredData.png}
+    \includegraphics[width=0.8\linewidth,angle=0]{../abb/Radardatapoints_of_June_2016_RecoveredData.png}
     \caption[Datenaufbereitung]{Comparison between output distribution and distribution from recovered data}
     \label{fig:Radardatapoints_of_June_2016_RecoveredData}
 \end{figure}
@@ -87,16 +88,17 @@ Reconstructing the radar data from the PNG data results in the plot shown in fig
 
 
 \section*{Data Validation}\label{data validation}
-
+\begin{sloppypar}
 To validate the quality of the data as well as the correct position of the constant pixel, the radar data were compared with the weather station in Konstanz.
 The radar data of one week from all over Germany were correlated with the weather station.
 The correlation coefficient reached its maximum around Konstanz.
 There are deviations from radar data to rainfall compensation, especially with small rainfall values, but these are caused by inaccuracies of the weather station itself (figure \ref{fig:radar_station_daten_vergleich_June}).
 The correlation is significant, the position of Konstanz could be validated and the data quality is suitable for a rain forecast.
+\end{sloppypar}
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=1\linewidth,angle=0]{../abb/radar_station_daten_vergleich_June.png}
+    \includegraphics[width=0.8\linewidth,angle=0]{../abb/radar_station_daten_vergleich_June.png}
     \caption[Datenaufbereitung]{Comparison between Radar and Weatherstation in June 2016}
     \label{fig:radar_station_daten_vergleich_June}
 \end{figure}
@@ -120,8 +122,79 @@ The correlation is significant, the position of Konstanz could be validated and 
     \end{sloppypar}
 
 
+\subsection*{Networks}
+    \begin{sloppypar}
+    We compare the performance of two neural network architectures.The first one is the widely known unet-architecture \cite{DBLP:journals/corr/RonnebergerFB15} the second is a mixture of inception layer and convolution-LSTM which is derived from the paper ''Inception-inspired LSTM for Next-frame Video Prediction'' \cite{hosseini2019inceptioninspired}.
+    The output of our network is a 64x64 matrix of distributions. We compare a indenpendent zero-inflated negative binomial distribution with a indenpendent seven-class multinomial-distribution. The last layer (Ki-Schicht in figure \ref{fig:lstm_conv}) of both networktypes holds three vectors of dense-layers which will compute the parameters for one of the two distributions. Our baseline which we outperform assumes that the weather will not change in 30 minutes.\\
+
+    \begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\linewidth,angle=0]{../abb/lstm_conv.png}
+    \caption{\centering Our second architecture }
+    \label{fig:lstm_conv}
+    \end{figure}
+
+
+For the binary rainprediction the receiver operating characteristic (more precisely the area under curve shown in table \ref{tab:area}) concludes that the multinomial-distribution performs a little better than the negative binomial-distribution.
+\newpage
+\begin{table}[h]
+
+\begin{tabular}[h]{|c|cc|cc|}
+\hline
+&\multicolumn{2}{c}{LSTM} &
+\multicolumn{2}{c|}{Unet} \\
+\hline
+ & ZNIB & Multi & ZNIB & Multi \\
+\hline
+auc & 64 & 68 & 66 & 69 \\
+NLL & 0,82 & 0,36 & 0,94 & 0,37\\
+\hline
+\end{tabular}
+
+\caption{\centering area under curve and negative loglikelihood loss\label{tab:area}}
+\end{table}
+
+ Table \ref{tab:area} also shows the best test losses which concludes the superiority of the multinomial-distribution.
+But when we review the rain intensity we see that no network architecture has a clear advantage over the other.
+Nevertheless as with the auc, we can determine slightly better performances.Although the overall accuracy is not very good we see in table \ref{tab:raintable_classes} that the Unet-version performs the best.
+Note that the output of the zero-inflated negative binomial-distribution (ZINB) are discrete values between 0 and 255 (for prediction we use the mean of the distribution). We bin the values to seven classes so we can compare the distributions.
+
+\begin{table}[h]
+\centering
+\begin{tabular}[h]{|c|cc|cc|}
+\hline
+&\multicolumn{2}{c}{LSTM} &
+\multicolumn{2}{c|}{Unet} \\
+\hline
+Class & ZINB & Multi & ZINB & Multi \\
+\hline
+0 & 97 \% & 97 \% & \textbf{98} \% & 97 \% \\
+\hline
+1 & \textbf{10} \% & 0 \% & \textbf{10} \% & 0 \% \\
+\hline
+2 & \textbf{42} \% & 21 \% & 41 \% & 23 \% \\
+\hline
+3 & 30 \% & 33 \% & \textbf{34} \% & \textbf{34} \% \\
+\hline
+4 & 5 \% & \textbf{21} \% & 7 \% & 20 \% \\
+\hline
+5 & 0 \% & \textbf{8} \% & 0 \% & 6 \% \\
+\hline
+6 & 0 \% & 0 \% & 0 \% & 0 \% \\
+\hline
+\end{tabular}
+\caption{\centering Classification accuracy\label{tab:raintable_classes}}
+\end{table}
+
+
+\end{sloppypar}
+
 \section*{Conclusion and Future Work}
-
-
+\begin{sloppypar}
+Both neural networks exceed the performance of the baseline. 
+Nevertheless an improvement of the nets is still desirable. 
+The pipeline from the server to the app runs stable and newly developed networks can be integrated with minimal effort. 
+\end{sloppypar}
+\printbibliography[title={References}, heading=subbibliography]
 \end{document}
 

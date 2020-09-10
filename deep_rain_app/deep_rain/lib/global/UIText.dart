@@ -35,6 +35,7 @@ class UIText{
     String chooseWarningTimeDialogOkButton;
   String settingsHeaderMore;
   String settingsImpressum;
+  String settingsDemoMode;
 
   //Impressum
   String impressumAppTitle;
@@ -79,6 +80,7 @@ class UIText{
         chooseWarningTimeDialogOkButton= "Bestätigen";
       settingsHeaderMore = "Weiteres";
       settingsImpressum = "Impressum";
+      settingsDemoMode = "Demo Modus";
 
       //Impressum
       impressumAppTitle = "Impressum";
@@ -123,6 +125,7 @@ class UIText{
         chooseWarningTimeDialogOkButton= "Confirme";
       settingsHeaderMore = "More";
       settingsImpressum = "Impressum";
+      settingsDemoMode = "Modo demo";
 
       //Impressum
       impressumAppTitle = "Impressum";
@@ -168,6 +171,7 @@ class UIText{
         chooseWarningTimeDialogOkButton= "Ok";
       settingsHeaderMore = "Otro";
       settingsImpressum = "Impressum";
+      settingsDemoMode = "Demo Mode";
 
       //Impressum
       impressumAppTitle = "Impressum";
