@@ -21,9 +21,9 @@
 \newcommand{\verfasserB}{Paul Sutter}
 \newcommand{\verfasserC}{Till Reitlinger}
 \newcommand{\thema}{DeepRain: Rain forecast with neural networks and the visualization of these in an App}
-\newcommand{\hoschschule}{Hochschule für Technik, Wirtschaft und Gestaltung}
-\newcommand{\institut}{HTWG Konstanz, Institut für Optische Systeme}
-\newcommand{\prueferA}{Oliver Dürr}
+\newcommand{\hoschschule}{HTWG Konstanz - University of Applied Sciences}
+\newcommand{\institut}{HTWG Konstanz - Institute for Optical Systems}
+\newcommand{\prueferA}{Prof. Dr. Oliver Dürr}
 
 
 \title[Teamprojektthema]{\thema}
@@ -35,80 +35,54 @@
 
 \input{extended_abstract}
 \twocolumn
-\section*{Data}
-HalloHalloHallo
-We are using radar data from the Climate Data Center of the DWD\footnote{\url{https://www.dwd.de/DE/klimaumwelt/cdc/cdc_node.html}}. There are radar images from the years 2004 until 2017.
-This data has to be downloaded and converted to png, this is done by our crawler\footnote{\url{https://github.com/thgnaedi/DeepRain/tree/master/DWD_Crawler}} and converter\footnote{\url{https://github.com/thgnaedi/DeepRain/blob/master/Data/DWDtoPngScript.py}}.
-The rainfall images then are tailored and scaled. Unattractive images are then rejected, and only interesting images are used for the training.
-The resulting images are grayscale PNG files. As network input five temporally consecutive of them are combined to a 3D tensor. The label consists of seven of them.
+\section*{Introduction}
+    \begin{sloppypar}
+        \tolerance 9999
+        Even today, rain forecasts are still very computationally complex and relatively inaccurate. 
+        Therefore, it may make sense to make such predictions with the help of neural networks. 
+        These do not require as much computing power and can recognize a pattern in the often chaotic data even without complex physical models.
+    \end{sloppypar}
 
-\section*{Architecture}
-To predict precipitation either with regression or classification we are using a UNet.
-This Architecture is a convolutional neural network that was at first developed for biomedical image segmentation.
-A UNet is a set of convulution layers, combined with an downsampling part, such as pooling layers, and later with upsampling parts like deconvolution layers.
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=0.8\linewidth]{../pics/UNet_Biomedical}
-\caption{The image is taken from the university of Freiburg~\cite{ronneberger2015u}}
-\end{figure}
-
-The input images have a shape of 64x64 pixels. They are pooled until the shape reaches a minimum of 8x8 features. Then they are upsampled and concatenated with the downsampling part.
-This yields into an u-shaped architecture with crosslinks and is the reason for its name.
-
-\section*{Regression}
-First approache is to predict the complete radar image. For this regression we use the MSE as lossfunction. The input layer takes the five incoming timesteps and transfers it into a 7 timestep prediction wich reaches up to 35 minutes into the future.
-Our network is trained on the radar data from 2005 till 2017. As validation set we use the images from 2004. further information can be found in our full project description\footnote{\url{https://github.com/thgnaedi/DeepRain/blob/master/Docs/Langdokumentation.pdf}}.
-The result of this task is shown in the following graphics.
+\section*{Data}\label{data}
+Images must be generated from the binary radar data provided by the German Weather Service (DWD) in five-minute resolution.
+To convert the radar data into an image, each radar data point must be transformed into a pixel color value.
+In order to achieve a suitable transformation, the radar data of June 2016 were inspected exemplarily (Figure \ref{fig:Radardatapoints_of_June_2016}). 
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.8\linewidth]{../pics/UNet_Biomedical}
-    \caption{The image is taken from the university of Freiburg~\cite{ronneberger2015u}}
+    \includegraphics[width=0.6\textwidth,angle=0]{../abb/Radardatapoints_of_June_2016.png}
+    \caption[Datenaufbereitung]{Häufigkeitsverteilung der Regendaten}
+    \label{fig:Radardatapoints_of_June_2016}
 \end{figure}
 
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\linewidth]{../pics/UNet_Biomedical}
-    \caption{The image is taken from the university of Freiburg~\cite{ronneberger2015u}}
-\end{figure}
 
-The predicted values are very close to the label for a difference of only 5 minutes to the input data. The further the time progresses, the worse the prediction becomes.
-In the last image it looks like the resolution of the output has been drastically decreased compared to the first output. 
-In fact the resolution is the same we can say that this is an indication of uncertainty in the network.
-Over time, the movement of the rainfall is well predicted. Even the tiny spot in the top left of images can be predicted.
-Even if the area of rainfall increases much faster than in the labels, the center is still well predicted and close to the center of the label.
+\section*{Data preprocessing}
 
-\section*{Classification}
-The second approach is to predict the precipitation by classification. Here we try to classify into either three classes (no rain, rain, heavy rain) or two classes (no rain, rain) for each pixel.
-Therefore the Unets output is modified to three classes per pixel and an additional softmax layer at the output to provide propabilities. The labels are generated by a threshold for each class.
+\section*{DeepRain Application}
+    \begin{sloppypar}
+        The DeepRain App was developed with Flutter. 
+        Firebase is used for the user administration, the forecast image transmission and the sending of rain warnings (push notifications). 
+        The App basically consists of three screens. One screen is the settings. 
+        In the settings you can change the region, configure the rain warning function and some other settings.
+        On the Rain Map screen the current and future rain situation is displayed using the forecast PNGs. With a slider you can display the rain situation at different times.
+        On the Prediction List screen the current and future rain situation is displayed quantitatively. The rain values are read from the respective pixel of the region in the forecast image.   
+    \end{sloppypar}
+\subsection*{Calculate rain intense}
+    \begin{sloppypar}
+        To display the rain intensity of a certain region in a list, the color value of the pixel belonging to the region must be read out. 
+        To calculate the pixel of the region in the forecast image, an algorithm was developed, which finds the corresponding pixel in the forecast image with the help of a latitude and longitude coordinate. 
+        This is only possible because the latitude and longitude coordinates of each pixel are known. 
+        The algorithm starts at any pixel, checks the current distance to the target coordinates and the distance of the neighboring pixels to the target coordinates. 
+        If an neighboring pixel has a smaller distance, the pixel is updated. If no more improvement can be achieved, the correct pixel is found. 
+    \end{sloppypar}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\linewidth]{../pics/UNet_Biomedical}
-    \caption{The image is taken from the university of Freiburg~\cite{ronneberger2015u}}
-\end{figure}
 
+\section*{Pipeline}
 
-The gray spots can be rainfall or not depending on the propability of the other two classes. The right image (difference) shows us the absolute difference between the prediction and the label.
-Here we can see that the big black spots (no difference between prediction and label) are at the no rainfall labels.
-The network has a high accuracy by predicting rainfree pixels. This can be shown in the follwing ROC-image. 
-By evaluating the confusion matrix for three class classification, you can recognize that the last class (heavy rainfall) is higly undersampled. 
-There are much more rainfall pixels and even more no rainfall pixels in the dataset. To increase the the performance we tried over and undersampling, but both techniques didnt work well for our scenario.
-Finally we changed the problem to a two clas classification with a threshold of 0, so the classes are 'no rainfall' and 'rainfall'.
-
-The ROC-curve in figure~\ref{fig:roc} shows how well the two classes rain and no rain can be separated and predicted independent of the number of elements per class.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\linewidth]{../pics/UNet_Biomedical}
-    \caption{The image is taken from the university of Freiburg~\cite{ronneberger2015u}}
-\end{figure}
 
 \section*{Conclusion and Future Work}
-In summary, this paper argued that short term precipitation prediction can be done by only observing radar data and without any other source of information.
-The accuracy could still be improved as well at the regression, were another lossfunction may could help, as at the classification were the 'rainfall' class is still undersampled and worse accurate than the 'no rain' class.
+
 
 \end{document}
 
