@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "150855812144",
+    "firebase_url": "https://deeprain.firebaseio.com",
+    "project_id": "deeprain",
+    "storage_bucket": "deeprain.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:150855812144:android:4578c85513cf9b383619f5",
+        "android_client_info": {
+          "package_name": "com.example.deep_rain"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "150855812144-ctj43o0c96bo46hmgk6bcqd7fdtmg1ik.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-MTMTogzAAWN2t4tR6QsOV2lyMYPAiiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "150855812144-ctj43o0c96bo46hmgk6bcqd7fdtmg1ik.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "150855812144-cf5ro46un2qqfr0djuh5gm3fq1a2dn70.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ios.deepRain"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
