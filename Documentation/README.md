@@ -1,2 +1,2 @@
-# Dokumentation für nächste Entwickler 
-Hier ist die Ordnerstruktur der DeepRain App dokumentiert. 
+# Dokumentation
+Die Latex Projekte für die Dokmentationen. 
