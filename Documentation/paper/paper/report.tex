@@ -105,22 +105,15 @@ The correlation is significant, the position of Konstanz could be validated and 
 
 \section*{DeepRain Application}
     \begin{sloppypar}
-        The DeepRain App was developed with Flutter. 
+        The DeepRain app was developed with Flutter, which makes the app available Android and IOS. 
         Firebase is used for the user administration, the forecast image transmission and the sending of rain warnings (push notifications). 
+        The serverside functions are written in python and the cloudfunctions, which are used for the push notifications, is written in JavaSript. 
+        The main code of the application is written in Dart.  
         The App basically consists of three screens. One screen is the settings. 
         In the settings you can change the region, configure the rain warning function and some other settings.
         On the Rain Map screen the current and future rain situation is displayed using the forecast PNGs. With a slider you can display the rain situation at different times.
         On the Prediction List screen the current and future rain situation is displayed quantitatively. The rain values are read from the respective pixel of the region in the forecast image.   
     \end{sloppypar}
-\subsection*{Calculate rain intense}
-    \begin{sloppypar}
-        To display the rain intensity of a certain region in a list, the color value of the pixel belonging to the region must be read out. 
-        To calculate the pixel of the region in the forecast image, an algorithm was developed, which finds the corresponding pixel in the forecast image with the help of a latitude and longitude coordinate. 
-        This is only possible because the latitude and longitude coordinates of each pixel are known. 
-        The algorithm starts at any pixel, checks the current distance to the target coordinates and the distance of the neighboring pixels to the target coordinates. 
-        If an neighboring pixel has a smaller distance, the pixel is updated. If no more improvement can be achieved, the correct pixel is found. 
-    \end{sloppypar}
-
 
 \subsection*{Networks}
     \begin{sloppypar}
