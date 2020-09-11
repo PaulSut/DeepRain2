@@ -713,7 +713,7 @@ Klasse & ZNIB & Multi & ZNIB & Multi \\
 Eine eindeutig bessere Architektur bzw. Verteilung lässt sich hier allerdings nicht erkennen. Die ZINB ist allerdings bei den Klassen 0 - 3 genauer als die Multinomialverteilung.
 
 
-\noindent Ein weiterer interessanter Aspekt ist das Konfidenzintervall der ZINB. Insbesondere interessiert uns wie nahe der ''wahre'' Wert am Mittelwert liegt (dieser wird zur Vorhersage berechnet).
+\noindent Ein weiterer interessanter Aspekt ist das Konfidenzintervall der ZINB. Insbesondere interessiert uns wie gut die Verteilung die ground truth überdeckt.
 Hierfür berechnen wir das Konfidenzintervall der Verteilung welches 97,5\% der Daten umschließt. Daraufhin zählen wir wie oft der ''wahre'' Wert innerhalb des Konfidenzintervalls liegt.
 In der folgenden Abbildung sind die zwei 97,5 \% Konfidenzintervalle für die beiden Architekturen zu sehen.\\
 
@@ -763,13 +763,14 @@ LSTM &96,0 \% & 71,0 \% & 97,5 \% \\
 \end{table}
 
 \noindent In Tabelle \ref{tab:konv} ist zu erkennen, dass je kleiner das Konfidenzintervall gewählt wird, desto seltener liegt die ground truth im Konfidenzintervall.
-Für die Spalte ''inklusive Regen'' ist der Unterschied nur marginal. Für die Spalte ''exklusive kein Regen'' ist ein großer Sprung zwischen dem 97,5 \% und dem 95 \% Konfidenzintervall zu sehen.
-Dies kann so interpretiert werden, dass die ground truth für diese Fälle nicht im ''Zentrum'' des Konfidenzintervalls liegt (bzw. weiter entfernt vom Zentrum). Der Mittelwert ist für diese Fälle eine schlechte Schätzung für die ground truth.\\
+Für die Spalte ''inklusive Regen'' ist der Unterschied nur marginal. Es ist jedoch zu erkennen, dass für die Auswertung inklusive Regen die ground truth so wie es zu erwarten ist im Konfidenzintervall liegt. Für die Spalte ''exklusive kein Regen'' ist ein großer Sprung zwischen dem 97,5 \% und dem 95 \% Konfidenzintervall zu sehen.
+Dies kann so interpretiert werden, dass die ground truth für diese Fälle nicht im ''Zentrum'' des Konfidenzintervalls liegt (bzw. weiter entfernt vom Zentrum).
+Der Mittelwert ist in diesen Fällen keine gute Schätzung.\\
 
 
 
 \subsubsection{Fazit der Auswertung}
 
-Für die binäre Regenvorhersage ist Multinomialverteilung die Verteilung welche die besten Resultate liefert. Laut Abbildung \ref{fig:confusionmatrix_cat} bleibt eine Person zu 60,1 \% trocken, wenn sie sich auf die Vorhersage verlässt. Hierbei spielt es keine Rolle ob die UNET oder die LSTM-Architektur verwendet wird. Da der Loss für die LSTM-Architektur besser als für die U-netarchitektur ist(siehe Abbildung \ref{fig:multinomialeVerteilung}), bevorzugen wir hier die LSTM-Architektur. Für die Klassifikation der Regenvorhersage liefert die Verteilung der ZINB die besten Resultate (siehe Tabelle \ref{tab:raintable}). Hier ist laut Tabelle \ref{tab:raintable} die U-netarchitektur marginal besser. Jedoch ist der Loss der LSTM-Architektur besser (siehe Abbildung \ref{fig:Inception-Conv-LSTM}). Zudem liegt laut Tabelle \ref{tab:konv} die ground truth für kleinere Konfidenzintervalle öfters in eben diesen Intervallen. Daraus schließen wir, dass der Mittelwert näher an der ground truth liegt und dieser dadurch eine bessere Vorhersage liefert. Für unsere Vorhersage wäre es optimal, wenn wir für die binäre Regenvorhersage die Multinomialverteilung und für die Regenklassifikation die ZINB in Kombination mit der LSTM-Architektur verwenden. Da dies nicht praktisch ist verwenden wir für die Vorhersage die LSTM-Architektur mit der ZINB.
+Für die binäre Regenvorhersage ist Multinomialverteilung die Verteilung welche die besten Resultate liefert. Laut Abbildung \ref{fig:confusionmatrix_cat} bleibt eine Person zu 60,1 \% trocken, wenn sie sich auf die Vorhersage verlässt. Hierbei spielt es keine Rolle ob die UNET oder die LSTM-Architektur verwendet wird. Da der Loss für die LSTM-Architektur besser als für die U-netarchitektur ist(siehe Abbildung \ref{fig:multinomialeVerteilung}), bevorzugen wir hier die LSTM-Architektur. Für die Klassifikation der Regenvorhersage liefert die Verteilung der ZINB die besten Resultate (siehe Tabelle \ref{tab:raintable}). Hier ist laut Tabelle \ref{tab:raintable} die U-netarchitektur marginal besser. Jedoch ist der Loss der LSTM-Architektur besser (siehe Abbildung \ref{fig:Inception-Conv-LSTM}). Zudem liegt laut Tabelle \ref{tab:konv} die ground truth für kleinere Konfidenzintervalle öfters in eben diesen Intervallen. Für unsere Vorhersage wäre es optimal, wenn wir für die binäre Regenvorhersage die Multinomialverteilung und für die Regenklassifikation die ZINB in Kombination mit der LSTM-Architektur verwenden. Da dies nicht praktisch ist verwenden wir für die Vorhersage die LSTM-Architektur mit der ZINB.
 
 
