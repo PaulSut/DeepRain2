@@ -8,8 +8,8 @@ Furthermore, an app was developed in which the rain forecasts are visualized.
 It also offers the possibility tonotify the user in case of imminent rain.
 
 ## Results & Documentation
-* Detailed documentation in german: [hier noch den richtigen Pfad einsetzten](https://github.com/PaulIVI/DeepRain2/blob/master/Documentation/src/Hauptdatei.pdf)
-* Summary of the work in english: [hier noch den richtigen Pfad einsetzten](https://github.com/PaulIVI/DeepRain2/blob/master/Documentation/paper/paper/report.pdf)
+* Detailed documentation in german: [here](https://github.com/PaulIVI/DeepRain2/blob/master/Documentation/src/Hauptdatei.pdf)
+* Summary of the work in english: [here](https://github.com/PaulIVI/DeepRain2/blob/master/Documentation/paper/paper/report.pdf)
 
 ## DeepRain App 
 The apk for the app is stored here: [DeepRain App](https://github.com/PaulIVI/DeepRain2/blob/master/deep_rain_app/DeepRain.apk) <br>
