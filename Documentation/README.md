@@ -1,2 +1,2 @@
-# Dokumentation
-Die Latex Projekte für die Dokmentationen. 
+# Documentation
+The Latex projects for the documentation. 
