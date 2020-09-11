@@ -11,6 +11,10 @@ It also offers the possibility tonotify the user in case of imminent rain.
 * Detailed documentation in german: [hier noch den richtigen Pfad einsetzten](https://github.com/PaulIVI/DeepRain2/blob/master/Documentation/src/Hauptdatei.pdf)
 * Summary of the work in english: [hier noch den richtigen Pfad einsetzten](https://github.com/PaulIVI/DeepRain2/blob/master/Documentation/paper/paper/report.pdf)
 
+## DeepRain App 
+The apk for the app is stored here: [DeepRain App](https://github.com/PaulIVI/DeepRain2/blob/master/deep_rain_app/DeepRain.apk) <br>
+Store it local on an android smartphone and just click on the file to install it. 
+
 ## Directory structure
 * [deep_rain_app](https://github.com/PaulIVI/DeepRain2/tree/master/deep_rain_app): The code for the DeepRain App, the server simulator,  and the corresponding cloudfunction 
 * [Documentation](https://github.com/PaulIVI/DeepRain2/tree/master/Documentation): All the Latex Documentation directorys. 
